@@ -1,0 +1,37 @@
+ query 70110 "Total Sales ILE"
+ {
+     quertype = Entity;
+     dataitem("Item Ledger Entry"; "Item Ledger Entry")
+    {
+         DataItemLink = "Entry Type" = CONST Sale;  
+        DataItemLink = "Document Type" = CONST "Sales Order";  
+
+          dataitem("Dimension Value"; "Dimension Value")
+         {
+             DataItemLink = "Dimension Code" = "Global Dimension 1 Code";
+             DataItemLink = "Dimension Code" = "Global Dimension 2 Code";
+            
+             column(Global_Dimension_1_Code; "Global Dimension 1 Code")
+             {
+             }
+             column(Global_Dimension_2_Code; "Global Dimension 2 Code")
+             {
+             }
+            column("sales amount (Actual) "; decimal)
+             {
+
+             }
+             column("source no."; integer)
+        
+             {
+             }
+
+         }
+
+
+
+
+
+ }
+
+ }

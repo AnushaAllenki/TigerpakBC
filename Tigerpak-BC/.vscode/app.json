@@ -1,0 +1,61 @@
+{
+  "id": "2cc9585b-d11d-4b9c-b39e-b8558554e040",
+  "name": "Tigerpak-BC",
+  "publisher": "Tigerpak",
+  "version": "25.08.26.05",
+  "brief": "",
+  "target": "Cloud",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [
+    {
+    "id" : "c4bae218-fc58-4850-a39e-60a59373688f",
+    "name" : "Tigerpak-Base",
+    "version" : "2025.8.15.1",
+    "publisher" : "Wild-Tech"
+    },
+    {
+      "id" : "754368ed-2446-4ced-afb2-c693c70dc5cb",
+      "name" : "TigerPak - Email Processor",
+      "version" : "25.3.24.1",
+      "publisher" : "Wild-Tech"
+      }
+      ,
+    {
+      "id" : "d36f1fab-93da-4ce2-8393-f683804f236d",
+      "name" : "IA D365 BC Pages_1002",
+      "version" : "2.0.14.4",
+      "publisher" : "Netstock"
+      }
+,
+    {
+      "id" : "6da8dd2f-e698-461f-9147-8e404244dd85",
+      "name" : " Continia Document Capture",
+      "version" : "26.0.2.200769",
+      "publisher" : "Continia Software"
+      }
+
+  ],
+  "screenshots": [],
+  "platform": "20.0.37114.38020",
+  "application": "24.2.20227.20460",
+  "idRanges": [
+    {
+      "from": 70100,
+      "to": 70149
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "13.1",
+  "features": [
+    "NoImplicitWith"
+  ]
+}

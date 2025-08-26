@@ -51,7 +51,7 @@ codeunit 70100 "EventSubscribers1"
         registeredWhseActivityHdr2: Record "Registered Whse. Activity hdr.";
         registedWhseActivityLine2: Record "Registered Whse. Activity Line";
     begin
-        if WarehouseActivityHeader.Type = WarehouseActivityHeader.Type::Pick then begin
+        if WarehouseActivityHeader.Type = WarehouseActivityHeader.Type::Pick then begin // Only to update for Pick type
 
             RegisteredWhseActivityHdr."Pick Completed Date time" := CurrentDateTime(); // To capture the pick completed date time
             RegisteredWhseActivityHdr."Pick Duration" := RegisteredWhseActivityHdr."Pick Completed Date time" - RegisteredWhseActivityHdr."Pick Created Date time";

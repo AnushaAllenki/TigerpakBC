@@ -561,5 +561,18 @@ codeunit 70100 "EventSubscribers1"
 
     end;
 
+    procedure UpdatedEmailSent()
+    var
+        SIH: Record "Sales Invoice Header";
+    begin
+        SIH.Reset();
+        SIH.SetRange("WTPL Email Sent", false);
+        if SIH.FindFirst() then
+            repeat
+                SIH."WTPL Email Sent" := true;
+                SIH.Modify();
+            until SIH.Next() = 0;
+    end;
+
 }
 

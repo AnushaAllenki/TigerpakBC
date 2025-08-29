@@ -31,17 +31,10 @@ pageextension 70111 PostedSalesInvoicesExt extends "Posted Sales Invoices"
                 trigger OnAction()
 
                 var
-                    SalesInvHeader: Record "Sales Invoice Header";
-
+                    eventSub: Codeunit "EventSubscribers1";
                 begin
-                    SalesInvHeader.Reset();
-                    //SalesInvHeader.SetRange("Document Type", SalesInvHeader."Document Type"::Invoice);  
-                    SalesInvHeader.SetRange("WTPL Email Sent", false);
-                    if SalesInvHeader.FindFirst() then
-                        repeat
-                            SalesInvHeader."WTPL Email Sent" := true;
-                            SalesInvHeader.Modify();
-                        until SalesInvHeader.Next() = 0;
+                    eventSub.UpdatedEmailSent();
+
                 end;
 
             }

@@ -31,18 +31,11 @@ pageextension 70140 "Bin Contents Ext" extends "Bin Contents"
                 ApplicationArea = All;
                 Caption = 'Update Items Blocked';
                 ToolTip = 'Update the blocked status of items based on the Bin Content.';
-                Image = Update;
-
-
-
+                Image = Item;
                 trigger OnAction()
                 var
-
                     Item: Record Item;
-
                 begin
-
-
                     if Rec.FindSet() then
                         repeat
 

@@ -62,11 +62,11 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
 
         }
 
-        field(70301; "Auto Email - Post"; Boolean)
-        {
-            Caption = 'Auto Email - Post';
-            DataClassification = ToBeClassified;
-        }
+        // field(70301; "Auto Email - Post"; Boolean)
+        // {
+        //     Caption = 'Auto Email - Post';
+        //     DataClassification = ToBeClassified;
+        // }
 
     }
 

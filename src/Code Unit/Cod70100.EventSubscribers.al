@@ -55,6 +55,7 @@ codeunit 70100 "EventSubscribers1"
 
             RegisteredWhseActivityHdr."Pick Completed Date time" := CurrentDateTime(); // To capture the pick completed date time
             RegisteredWhseActivityHdr."Pick Duration" := RegisteredWhseActivityHdr."Pick Completed Date time" - RegisteredWhseActivityHdr."Pick Created Date time";
+            RegisteredWhseActivityHdr."Pick Duration" := Round(RegisteredWhseActivityHdr."Pick Duration", 1000); // To convert duration to only minutes
             registeredWhseActivityHdr.Modify();
         end;
         //RegisteredWhseActivityHdr2."Pick Duration" := RegisteredWhseActivityHdr2."Pick Completed Date time" - RegisteredWhseActivityHdr2."Pick Created Date time";
@@ -217,19 +218,19 @@ codeunit 70100 "EventSubscribers1"
 
     // end;
 
-    [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterSalesCrMemoHeaderInsert, '', true, true)]
-    local procedure OnAfterSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
-    begin
-        SalesCrMemoHeader.SetRange("Pre-Assigned No.", SalesHeader."No.");
-        if SalesCrMemoHeader.findfirst() then begin
-            if SalesCrMemoHeader."Auto Email - Post" then begin
-                SalesCrMemoHeader.SetRecFilter();
-                salesCrMemoHeader.EmailRecords(false);
-            end;
-        end;
+    // [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterSalesCrMemoHeaderInsert, '', true, true)]
+    // local procedure OnAfterSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
+    // begin
+    //     SalesCrMemoHeader.SetRange("Pre-Assigned No.", SalesHeader."No.");
+    //     if SalesCrMemoHeader.findfirst() then begin
+    //         if SalesCrMemoHeader."Auto Email - Post" then begin
+    //             SalesCrMemoHeader.SetRecFilter();
+    //             salesCrMemoHeader.EmailRecords(false);
+    //         end;
+    //     end;
 
 
-    end;
+    // end;
 
 
 
@@ -518,15 +519,45 @@ codeunit 70100 "EventSubscribers1"
         // else
         //     rec."Alt Address" := '';
         // rec.Modify();
-
-
-
         if rec."Ship-to Address" <> Rec."Sell-to Address" then
             rec."Alt Address" := 'Alternative Address'
         else
             Rec."Alt Address" := '';
         rec.Modify();
 
+
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Templ. Mgt.", OnApplyItemTemplateOnBeforeItemGet, '', false, false)]
+    local procedure OnApplyItemTemplateOnBeforeItemGet(var Item: Record Item; ItemTempl: Record "Item Templ."; UpdateExistingValues: Boolean)
+    var
+        ExtTextheader: Record "Extended Text Header";
+        ExtTextLine: Record "Extended Text Line";
+        ExtTextheader1: Record "Extended Text Header";
+        ExtTextLine1: Record "Extended Text Line";
+    begin
+        ExtTextheader.Reset();
+        ExtTextheader.SetRange(ExtTextheader."Table Name", ExtTextheader."Table Name"::"Item Templ.");
+        ExtTextheader.SetRange("No.", ItemTempl.Code);
+        if ExtTextheader.FindFirst() then begin
+            ExtTextheader1.Init();
+            ExtTextheader1 := ExtTextheader;
+            ExtTextheader1."Table Name" := ExtTextheader1."Table Name"::Item;
+            ExtTextheader1."No." := Item."No.";
+            ExtTextheader1.Insert(true);
+
+            ExtTextLine.SetRange("Table Name", ExtTextLine."Table Name"::"Item Templ.");
+            ExtTextLine.SetRange("No.", ItemTempl.Code);
+            if ExtTextLine.FindFirst() then begin
+                repeat
+                    ExtTextLine1.Init();
+                    ExtTextLine1 := ExtTextLine;
+                    ExtTextLine1."Table Name" := ExtTextLine1."Table Name"::Item;
+                    ExtTextLine1."No." := Item."No.";
+                    ExtTextLine1.Insert(true);
+                until ExtTextLine.Next() = 0;
+            end;
+        end;
 
     end;
 

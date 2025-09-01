@@ -62,11 +62,30 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
 
         }
 
+
         // field(70301; "Auto Email - Post"; Boolean)
         // {
         //     Caption = 'Auto Email - Post';
         //     DataClassification = ToBeClassified;
         // }
+
+        field(70310; "Quote Type"; Option)
+        {
+            Caption = 'Quote Type';
+            DataClassification = ToBeClassified;
+            OptionMembers = "RFQ – Request for Quote","CPL – Customer Price List","NBQ – New Business Quote";
+            NotBlank = true;
+        }
+
+        field(70320; "Quote Status"; Option)
+        {
+            Caption = 'Quote Status';
+            DataClassification = ToBeClassified;
+            OptionMembers = "Won","Lost";
+            NotBlank = true;
+            Editable = false;
+        }
+
 
     }
 

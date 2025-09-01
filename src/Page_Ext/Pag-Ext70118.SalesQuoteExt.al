@@ -11,27 +11,39 @@ pageextension 70118 "Sales Quote Ext" extends "Sales Quote"
                 Editable = true;
             }
 
-            
-            }
-
-            addafter("Sell-to Customer Name")
-            {
-                field("Account Instructions"; Rec."Account Instructions")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Account Instructions';
-                    Editable = true;
-                    StyleExpr = true; 
-                }
-                
-            }
-
-
 
         }
 
-       
+        addafter("Sell-to Customer Name")
+        {
+            field("Account Instructions"; Rec."Account Instructions")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Account Instructions';
+                Editable = true;
+                StyleExpr = true;
+            }
+
+        }
+        addafter(Status)
+        {
+            field("Quote Type"; Rec."Quote Type")
+            {
+                ApplicationArea = All;
+                Caption = 'Quote Type';
+                ToolTip = 'Quote Type';
+                Editable = true;
+            }
+
+        }
+
+
+
+
     }
 
-    
+
+}
+
+
 

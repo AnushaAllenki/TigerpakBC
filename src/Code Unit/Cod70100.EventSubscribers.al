@@ -50,12 +50,18 @@ codeunit 70100 "EventSubscribers1"
         WarehouseActivityLine: Record "Warehouse Activity Line";
         registeredWhseActivityHdr2: Record "Registered Whse. Activity hdr.";
         registedWhseActivityLine2: Record "Registered Whse. Activity Line";
+    //Durationmin: Duration;
+
     begin
         if WarehouseActivityHeader.Type = WarehouseActivityHeader.Type::Pick then begin // Only to update for Pick type
 
             RegisteredWhseActivityHdr."Pick Completed Date time" := CurrentDateTime(); // To capture the pick completed date time
-            RegisteredWhseActivityHdr."Pick Duration" := RegisteredWhseActivityHdr."Pick Completed Date time" - RegisteredWhseActivityHdr."Pick Created Date time";
-            RegisteredWhseActivityHdr."Pick Duration" := Round(RegisteredWhseActivityHdr."Pick Duration", 1000); // To convert duration to only minutes
+            RegisteredWhseActivityHdr."Pick Duration" := RegisteredWhseActivityHdr."Pick Completed Date time" - RegisteredWhseActivityHdr."Pick Created Date time"; // To calculate the pick duration in minutes
+            //RegisteredWhseActivityHdr."Pick Duration" := Round(RegisteredWhseActivityHdr."Pick Duration"); // To convert duration to only minutes
+            //  RegisteredWhseActivityHdr."Pick Duration" := Round(RegisteredWhseActivityHdr."Pick Duration" / 60000);
+            //Durationmin := Round(RegisteredWhseActivityHdr."Pick Duration" / 60000);
+            //RegisteredWhseActivityHdr."Pick Duration" := Durationmin;
+
             registeredWhseActivityHdr.Modify();
         end;
         //RegisteredWhseActivityHdr2."Pick Duration" := RegisteredWhseActivityHdr2."Pick Completed Date time" - RegisteredWhseActivityHdr2."Pick Created Date time";

@@ -580,21 +580,21 @@ codeunit 70100 "EventSubscribers1"
             until SIH.Next() = 0;
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", OnBeforePerformManualReleaseProcedure, '', false, false)]
-    local procedure OnBeforePerformManualReleaseProcedure(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean; var IsHandled: Boolean)
-    begin
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", OnBeforePerformManualReleaseProcedure, '', false, false)]
+    // local procedure OnBeforePerformManualReleaseProcedure(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean; var IsHandled: Boolean)
+    // begin
 
 
-        if SalesHeader."Document Type" = SalesHeader."Document Type"::Quote then begin
+    //     if SalesHeader."Document Type" = SalesHeader."Document Type"::Quote then begin
 
 
-            if SalesHeader."Quote Type" = SalesHeader."Quote Type"::" " then
-                Error('Please select Quote Type before releasing the Quote');
+    //         if SalesHeader."Quote Type" = SalesHeader."Quote Type"::" " then
+    //             Error('Please select Quote Type before releasing the Quote');
 
-            if SalesHeader."Quote Status" = SalesHeader."Quote Status"::" " then
-                Error('Please select Quote Status before releasing the Quote');
-        end;
-    end;
+    //         if SalesHeader."Quote Status" = SalesHeader."Quote Status"::" " then
+    //             Error('Please select Quote Status before releasing the Quote');
+    //     end;
+    // end;
 
 
 }

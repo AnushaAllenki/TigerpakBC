@@ -534,38 +534,38 @@ codeunit 70100 "EventSubscribers1"
 
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Templ. Mgt.", OnApplyItemTemplateOnBeforeItemGet, '', false, false)]
-    local procedure OnApplyItemTemplateOnBeforeItemGet(var Item: Record Item; ItemTempl: Record "Item Templ."; UpdateExistingValues: Boolean)
-    var
-        ExtTextheader: Record "Extended Text Header";
-        ExtTextLine: Record "Extended Text Line";
-        ExtTextheader1: Record "Extended Text Header";
-        ExtTextLine1: Record "Extended Text Line";
-    begin
-        ExtTextheader.Reset();
-        ExtTextheader.SetRange(ExtTextheader."Table Name", ExtTextheader."Table Name"::"Item Templ.");
-        ExtTextheader.SetRange("No.", ItemTempl.Code);
-        if ExtTextheader.FindFirst() then begin
-            ExtTextheader1.Init();
-            ExtTextheader1 := ExtTextheader;
-            ExtTextheader1."Table Name" := ExtTextheader1."Table Name"::Item;
-            ExtTextheader1."No." := Item."No.";
-            ExtTextheader1.Insert(true);
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Templ. Mgt.", OnApplyItemTemplateOnBeforeItemGet, '', false, false)]
+    // local procedure OnApplyItemTemplateOnBeforeItemGet(var Item: Record Item; ItemTempl: Record "Item Templ."; UpdateExistingValues: Boolean)
+    // var
+    //     ExtTextheader: Record "Extended Text Header";
+    //     ExtTextLine: Record "Extended Text Line";
+    //     ExtTextheader1: Record "Extended Text Header";
+    //     ExtTextLine1: Record "Extended Text Line";
+    // begin
+    //     ExtTextheader.Reset();
+    //     ExtTextheader.SetRange(ExtTextheader."Table Name", ExtTextheader."Table Name"::"Item Templ.");
+    //     ExtTextheader.SetRange("No.", ItemTempl.Code);
+    //     if ExtTextheader.FindFirst() then begin
+    //         ExtTextheader1.Init();
+    //         ExtTextheader1 := ExtTextheader;
+    //         ExtTextheader1."Table Name" := ExtTextheader1."Table Name"::Item;
+    //         ExtTextheader1."No." := Item."No.";
+    //         ExtTextheader1.Insert(true);
 
-            ExtTextLine.SetRange("Table Name", ExtTextLine."Table Name"::"Item Templ.");
-            ExtTextLine.SetRange("No.", ItemTempl.Code);
-            if ExtTextLine.FindFirst() then begin
-                repeat
-                    ExtTextLine1.Init();
-                    ExtTextLine1 := ExtTextLine;
-                    ExtTextLine1."Table Name" := ExtTextLine1."Table Name"::Item;
-                    ExtTextLine1."No." := Item."No.";
-                    ExtTextLine1.Insert(true);
-                until ExtTextLine.Next() = 0;
-            end;
-        end;
+    //         ExtTextLine.SetRange("Table Name", ExtTextLine."Table Name"::"Item Templ.");
+    //         ExtTextLine.SetRange("No.", ItemTempl.Code);
+    //         if ExtTextLine.FindFirst() then begin
+    //             repeat
+    //                 ExtTextLine1.Init();
+    //                 ExtTextLine1 := ExtTextLine;
+    //                 ExtTextLine1."Table Name" := ExtTextLine1."Table Name"::Item;
+    //                 ExtTextLine1."No." := Item."No.";
+    //                 ExtTextLine1.Insert(true);
+    //             until ExtTextLine.Next() = 0;
+    //         end;
+    //     end;
 
-    end;
+    // end; // #275: Item Template- Extended Text. Need to uncomment and deploy upon Justin's confirmation
 
     procedure UpdatedEmailSent()
     var
@@ -594,7 +594,9 @@ codeunit 70100 "EventSubscribers1"
     //         if SalesHeader."Quote Status" = SalesHeader."Quote Status"::" " then
     //             Error('Please select Quote Status before releasing the Quote');
     //     end;
-    // end;
+    // end;  // Support ticket from outlook from Justin, need to uncomment and deploy upon Justin's confirmation
+
+
 
 
 }

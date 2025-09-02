@@ -30,6 +30,14 @@ pageextension 70141 "Registered Pick Ext" extends "Registered Pick"
                 ToolTip = 'Specifies the duration of the pick operation.';
                 Editable = false;
             }
+
+            field("Pick Duration in Min"; Rec."Pick Duration in Min")
+            {
+                ApplicationArea = All;
+                Caption = 'Pick Duration in Min';
+                ToolTip = 'Specifies the duration of the pick operation in minutes.';
+                Editable = false;
+            }
         }
     }
 }

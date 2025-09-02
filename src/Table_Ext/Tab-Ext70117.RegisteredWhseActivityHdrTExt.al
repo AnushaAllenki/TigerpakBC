@@ -36,6 +36,14 @@ tableextension 70117 "RegisteredWhse.ActivityHdrTExt" extends "Registered Whse. 
             ToolTip = 'Specifies the duration of the pick operation.';
             Editable = false;
         }
+
+        field(70113; "Pick Duration in Min"; Text[50])
+        {
+            Caption = 'Pick Duration in Min';
+            DataClassification = ToBeClassified;
+            ToolTip = 'Specifies the duration of the pick operation in minutes.';
+            Editable = false;
+        }
     }
 
 

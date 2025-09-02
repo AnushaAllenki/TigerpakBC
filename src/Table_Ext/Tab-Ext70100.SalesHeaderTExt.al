@@ -73,17 +73,17 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
         {
             Caption = 'Quote Type';
             DataClassification = ToBeClassified;
-            OptionMembers = "RFQ – Request for Quote","CPL – Customer Price List","NBQ – New Business Quote";
-            NotBlank = true;
+            OptionMembers = " ","RFQ - Request for Quote","CPL - Customer Price List","NBQ - New Business Quote";
+
         }
 
         field(70320; "Quote Status"; Option)
         {
             Caption = 'Quote Status';
             DataClassification = ToBeClassified;
-            OptionMembers = "Won","Lost";
-            NotBlank = true;
-            Editable = false;
+            OptionMembers = " ","Won","Lost";
+
+
         }
 
 

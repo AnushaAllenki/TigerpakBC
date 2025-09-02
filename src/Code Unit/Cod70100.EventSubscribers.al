@@ -50,17 +50,17 @@ codeunit 70100 "EventSubscribers1"
         WarehouseActivityLine: Record "Warehouse Activity Line";
         registeredWhseActivityHdr2: Record "Registered Whse. Activity hdr.";
         registedWhseActivityLine2: Record "Registered Whse. Activity Line";
-    //Durationmin: Duration;
+
+        PickDurationMinutes: Text;
 
     begin
         if WarehouseActivityHeader.Type = WarehouseActivityHeader.Type::Pick then begin // Only to update for Pick type
 
             RegisteredWhseActivityHdr."Pick Completed Date time" := CurrentDateTime(); // To capture the pick completed date time
             RegisteredWhseActivityHdr."Pick Duration" := RegisteredWhseActivityHdr."Pick Completed Date time" - RegisteredWhseActivityHdr."Pick Created Date time"; // To calculate the pick duration in minutes
-            //RegisteredWhseActivityHdr."Pick Duration" := Round(RegisteredWhseActivityHdr."Pick Duration"); // To convert duration to only minutes
-            //  RegisteredWhseActivityHdr."Pick Duration" := Round(RegisteredWhseActivityHdr."Pick Duration" / 60000);
-            //Durationmin := Round(RegisteredWhseActivityHdr."Pick Duration" / 60000);
-            //RegisteredWhseActivityHdr."Pick Duration" := Durationmin;
+
+            PickDurationMinutes := Format(RegisteredWhseActivityHdr."Pick Duration" div 60000);
+            RegisteredWhseActivityHdr."Pick Duration in Min" := PickDurationMinutes;
 
             registeredWhseActivityHdr.Modify();
         end;
@@ -579,6 +579,23 @@ codeunit 70100 "EventSubscribers1"
                 SIH.Modify();
             until SIH.Next() = 0;
     end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", OnBeforePerformManualReleaseProcedure, '', false, false)]
+    local procedure OnBeforePerformManualReleaseProcedure(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean; var IsHandled: Boolean)
+    begin
+
+
+        if SalesHeader."Document Type" = SalesHeader."Document Type"::Quote then begin
+
+
+            if SalesHeader."Quote Type" = SalesHeader."Quote Type"::" " then
+                Error('Please select Quote Type before releasing the Quote');
+
+            if SalesHeader."Quote Status" = SalesHeader."Quote Status"::" " then
+                Error('Please select Quote Status before releasing the Quote');
+        end;
+    end;
+
 
 }
 

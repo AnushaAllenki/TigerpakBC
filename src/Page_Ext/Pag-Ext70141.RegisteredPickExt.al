@@ -23,13 +23,13 @@ pageextension 70141 "Registered Pick Ext" extends "Registered Pick"
                 Editable = false;
             }
 
-            field("Pick Duration"; Rec."Pick Duration")
-            {
-                ApplicationArea = All;
-                Caption = 'Pick Duration';
-                ToolTip = 'Specifies the duration of the pick operation.';
-                Editable = false;
-            }
+            // field("Pick Duration"; Rec."Pick Duration")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Pick Duration';
+            //     ToolTip = 'Specifies the duration of the pick operation.';
+            //     Editable = false;
+            // }
 
             field("Pick Duration in Min"; Rec."Pick Duration in Min")
             {

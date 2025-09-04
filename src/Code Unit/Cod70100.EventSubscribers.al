@@ -219,24 +219,24 @@ codeunit 70100 "EventSubscribers1"
         end;
     end;
 
-    // local procedure OnAfterReturnRcptHeaderInsert(var ReturnReceiptHeader: Record "Return Receipt Header"; SalesHeader: Record "Sales Header"; SuppressCommit: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
-    // begin
+    local procedure OnAfterReturnRcptHeaderInsert(var ReturnReceiptHeader: Record "Return Receipt Header"; SalesHeader: Record "Sales Header"; SuppressCommit: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
+    begin
 
-    // end;
+    end;
 
-    // [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterSalesCrMemoHeaderInsert, '', true, true)]
-    // local procedure OnAfterSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
-    // begin
-    //     SalesCrMemoHeader.SetRange("Pre-Assigned No.", SalesHeader."No.");
-    //     if SalesCrMemoHeader.findfirst() then begin
-    //         if SalesCrMemoHeader."Auto Email - Post" then begin
-    //             SalesCrMemoHeader.SetRecFilter();
-    //             salesCrMemoHeader.EmailRecords(false);
-    //         end;
-    //     end;
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterSalesCrMemoHeaderInsert, '', true, true)]
+    local procedure OnAfterSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
+    begin
+        SalesCrMemoHeader.SetRange("Pre-Assigned No.", SalesHeader."No.");
+        if SalesCrMemoHeader.findfirst() then begin
+            if SalesCrMemoHeader."Auto Email - Post" then begin
+                SalesCrMemoHeader.SetRecFilter();
+                salesCrMemoHeader.EmailRecords(false);
+            end;
+        end;
 
 
-    // end;
+    end;
 
 
 

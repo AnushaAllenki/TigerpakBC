@@ -19,11 +19,11 @@ tableextension 70104 "Sales Cr.Memo Header TExt" extends "Sales Cr.Memo Header"
             DataClassification = ToBeClassified;
         }
 
-        // field(70301; "Auto Email - Post"; Boolean)
-        // {
-        //     Caption = 'Auto Email - Post';
-        //     DataClassification = ToBeClassified;
-        // }
+        field(70301; "Auto Email - Post"; Boolean)
+        {
+            Caption = 'Auto Email - Post';
+            DataClassification = ToBeClassified;
+        }
 
     }
 

@@ -8,17 +8,12 @@ pageextension 70146 "Registered Whse. Picks Ext" extends "Registered Whse. Picks
     {
         addafter("location Code")
         {
-
-
             field("Source No."; Rec."Source No.")
             {
                 ApplicationArea = All;
                 Caption = 'Source No.';
                 ToolTip = 'Specifies the source document for the warehouse put-away.';
                 Editable = false;
-
-
-
             }
         }
     }

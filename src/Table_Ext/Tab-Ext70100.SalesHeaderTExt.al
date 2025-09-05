@@ -87,6 +87,7 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
         }
 
 
+
     }
 
     // trigger OnafterInsert()

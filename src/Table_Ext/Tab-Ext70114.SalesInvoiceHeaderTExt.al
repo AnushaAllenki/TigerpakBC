@@ -1,6 +1,7 @@
 namespace ALProject.ALProject;
 
 using Microsoft.Sales.History;
+using Microsoft.Warehouse.Activity.History;
 
 tableextension 70114 "Sales Invoice Header TExt" extends "Sales Invoice Header"
 {
@@ -25,6 +26,14 @@ tableextension 70114 "Sales Invoice Header TExt" extends "Sales Invoice Header"
             DataClassification = ToBeClassified;
         }
 
+        field(70150; "Pick Duration in Mins"; Text[50])
+        {
+            Caption = 'Pick Duration in Mins';
+            DataClassification = ToBeClassified;
 
+
+        }
     }
+
 }
+

@@ -591,8 +591,7 @@ codeunit 70100 "EventSubscribers1"
             if SalesHeader."Quote Type" = SalesHeader."Quote Type"::" " then
                 Error('Please select Quote Type before releasing the Quote');
 
-            if SalesHeader."Quote Status" = SalesHeader."Quote Status"::" " then
-                Error('Please select Quote Status before releasing the Quote');
+
         end;
     end;  // Support ticket from outlook from Justin, need to uncomment and deploy upon Justin's confirmation
 

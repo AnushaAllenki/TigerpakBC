@@ -1,6 +1,7 @@
 namespace ALProject.ALProject;
 
 using Microsoft.Warehouse.Activity.History;
+using Microsoft.Sales.History;
 
 tableextension 70117 "RegisteredWhse.ActivityHdrTExt" extends "Registered Whse. Activity Hdr."
 {
@@ -45,6 +46,18 @@ tableextension 70117 "RegisteredWhse.ActivityHdrTExt" extends "Registered Whse. 
             Editable = false;
         }
     }
+
+    trigger OnAfterInsert()
+    var
+        SIH: Record "Sales Invoice Header";
+    begin
+
+        if SIH.Get("Source No.") then begin
+            SIH."Pick Duration in Mins" := "Pick Duration in Min";
+            SIH.Modify();
+        end;
+
+    end;
 
 
 }

@@ -42,7 +42,7 @@ pageextension 70118 "Sales Quote Ext" extends "Sales Quote"
                 Caption = 'Quote Status';
                 ToolTip = 'Quote Status';
                 Editable = true;
-                ShowMandatory = true;
+                // ShowMandatory = true;
             }
 
         }

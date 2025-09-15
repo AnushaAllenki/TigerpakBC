@@ -48,7 +48,7 @@ codeunit 70100 "EventSubscribers1"
     var
         // WarehousActivityHdr2: Record "Warehouse Activity Header";
         WarehouseActivityLine: Record "Warehouse Activity Line";
-        registeredWhseActivityHdr2: Record "Registered Whse. Activity hdr.";
+        //registeredWhseActivityHdr2: Record "Registered Whse. Activity hdr.";
         registedWhseActivityLine2: Record "Registered Whse. Activity Line";
 
         PickDurationMinutes: Text;
@@ -64,22 +64,22 @@ codeunit 70100 "EventSubscribers1"
 
             registeredWhseActivityHdr.Modify();
         end;
-        //RegisteredWhseActivityHdr2."Pick Duration" := RegisteredWhseActivityHdr2."Pick Completed Date time" - RegisteredWhseActivityHdr2."Pick Created Date time";
 
         registedWhseActivityLine2.Reset();
-        registedWhseActivityLine2.SetRange("No.", registeredWhseActivityHdr2."No.");
+        registedWhseActivityLine2.SetRange("No.", registeredWhseActivityHdr."No.");
         if registedWhseActivityLine2.Findfirst() then begin
-            registeredWhseActivityHdr2.Reset();
-            registeredWhseActivityHdr2.setrange(RegisteredWhseActivityHdr2."No.", registedWhseActivityLine2."No.");
-            if registeredWhseActivityHdr2.Findfirst() then begin
-                registeredWhseActivityHdr2."Source No." := registedWhseActivityLine2."Source No.";
+            // registeredWhseActivityHdr2.Reset();
+            //registeredWhseActivityHdr2.setrange(RegisteredWhseActivityHdr2."No.", registedWhseActivityLine2."No.");
+            // if registeredWhseActivityHdr2.Findfirst() then begin
+            registeredWhseActivityHdr."Source No." := registedWhseActivityLine2."Source No.";
 
-                registeredWhseActivityHdr2.Modify();
+            registeredWhseActivityHdr.Modify();
 
-            end;
         end;
-
     end;
+    // end;
+
+
 
     procedure UpdateAllSN()
     var

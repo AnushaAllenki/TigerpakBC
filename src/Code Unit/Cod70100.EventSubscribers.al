@@ -292,6 +292,26 @@ codeunit 70100 "EventSubscribers1"
     end;
 
 
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterInsertPostedHeaders, '', true, true)]
+    local procedure OnAfterInsertPostedHeaders(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header"; var GenJournalDocumentType: Enum "Gen. Journal Document Type"; var GenJnlLineDocNo: Code[20]; var GenJnlLineExtDocNo: Code[35])
+    var
+        SIH: Record "Sales Invoice Header";
+        RWAH: Record "Registered Whse. Activity Hdr.";
+    begin
+
+        if SIH.Get(SalesInvoiceHeader."No.") then begin
+            RWAH.SetRange("Source No.", SIH."No.");
+            if RWAH.FindFirst() then begin
+                SIH."Pick Duration in Mins" := RWAH."Pick Duration in Min";
+                SIH.Modify();
+            end;
+        end;
+    end;
+
+
+
+
+
 
     [EventSubscriber(ObjectType::Codeunit, codeunit::"WMS Management", OnInitWhseJnlLineCopyFromItemJnlLine, '', true, true)]
     procedure OnInitWhseJnlLineCopyFromItemJnlLine(var WarehouseJournalLine: Record "Warehouse Journal Line"; ItemJournalLine: Record "Item Journal Line")

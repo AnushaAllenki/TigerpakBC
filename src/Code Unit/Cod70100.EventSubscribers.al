@@ -224,6 +224,28 @@ codeunit 70100 "EventSubscribers1"
 
     end;
 
+    procedure UpdatePickDuration()
+    var
+        SIH: Record "Sales Invoice Header";
+        RWAH: Record "Registered Whse. Activity Hdr.";
+        window: Dialog;
+    begin
+
+        window.Open('Updating Pick Duration in Mins in Sales Invoice Header from Registered Whse. Activity Hdr.#1');
+        SIH.Reset();
+        SIH.SetRange("Pick Duration in Mins", '');
+        if SIH.FindSet() then
+            repeat
+                window.Update(1, SIH."No.");
+                RWAH.SetRange("Source No.", SIH."Order No.");
+                if RWAH.FindFirst() then begin
+                    SIH."Pick Duration in Mins" := RWAH."Pick Duration in Min";
+                    SIH.Modify();
+                end;
+            until SIH.Next() = 0;
+        window.Close();
+    end;
+
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterSalesCrMemoHeaderInsert, '', true, true)]
     local procedure OnAfterSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
     begin

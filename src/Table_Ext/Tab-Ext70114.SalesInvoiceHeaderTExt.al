@@ -24,6 +24,13 @@ tableextension 70114 "Sales Invoice Header TExt" extends "Sales Invoice Header"
             Caption = 'Margin %_New';
             DataClassification = ToBeClassified;
         }
+        field(70150; "Pick Duration in Mins"; Text[50])
+        {
+            Caption = 'Pick Duration in Mins';
+            DataClassification = ToBeClassified;
+
+
+        }
 
 
     }

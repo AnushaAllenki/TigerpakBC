@@ -1,6 +1,7 @@
 namespace ALProject.ALProject;
 
 using Microsoft.Purchases.Document;
+using Microsoft.Inventory.Item;
 
 tableextension 70120 "Purchase Line TExt" extends "Purchase Line"
 {
@@ -12,7 +13,7 @@ tableextension 70120 "Purchase Line TExt" extends "Purchase Line"
             DataClassification = ToBeClassified;
         }
 
-        field(70110; "Item Category Group"; Option)
+        field(70111; "Item Category Group"; Option)
         {
             Caption = 'Item Category Group';
             DataClassification = ToBeClassified;
@@ -20,4 +21,13 @@ tableextension 70120 "Purchase Line TExt" extends "Purchase Line"
 
         }
     }
+
+
+    trigger OnInsert()
+    var
+        Item: Record Item;
+    begin
+        Item.Get(Rec."No.");
+        Rec."Item Category Group" := Item."Item Category Group";
+    end;
 }

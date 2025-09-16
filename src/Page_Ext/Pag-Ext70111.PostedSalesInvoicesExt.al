@@ -39,6 +39,25 @@ pageextension 70111 PostedSalesInvoicesExt extends "Posted Sales Invoices"
 
             }
         }
+
+        addafter("Update ALL NPS")
+        {
+            action("Update Pick Duration")
+            {
+                ApplicationArea = Basic, Suite;
+                Caption = 'Update Pick Duration';
+                Ellipsis = true;
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    EventSub: Codeunit "EventSubscribers1";
+                begin
+                    EventSub.UpdatePickDuration();
+
+                end;
+            }
+        }
     }
 
 }

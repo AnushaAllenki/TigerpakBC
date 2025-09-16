@@ -23,33 +23,15 @@ codeunit 70100 "EventSubscribers1"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Activity-Register", OnAfterRegisteredWhseActivHeaderInsert, '', false, false)]
-    // local procedure OnAfterRegisterWhseActivity(WarehouseActivityHeader: Record "Warehouse Activity Header")
-    // var
-    //     // WarehousActivityHdr2: Record "Warehouse Activity Header";
-    //     WarehouseActivityLine: Record "Warehouse Activity Line";
-    //     registeredWhseActivityHdr2: Record "Registered Whse. Activity hdr.";
-    //     registedWhseActivityLine2: Record "Registered Whse. Activity Line";
-    // begin
-    //     registedWhseActivityLine2.Reset();
-    //     registedWhseActivityLine2.SetRange("No.", registeredWhseActivityHdr2."No.");
-    //     if registedWhseActivityLine2.Findfirst() then begin
-    //         registeredWhseActivityHdr2.Reset();
-    //         //registeredWhseActivityHdr2.SetRange((Type, registeredWhseActivityHdr2.Type::);
-    //         registeredWhseActivityHdr2.setrange(RegisteredWhseActivityHdr2."No.", registedWhseActivityLine2."No.");
-    //         if registeredWhseActivityHdr2.Findfirst() then begin
-    //             registeredWhseActivityHdr2."Source No." := registedWhseActivityLine2."Source No.";
-    //             registeredWhseActivityHdr2.Modify();
-    //         end;
-    //     end;
-    // end;
+
 
     local procedure OnAfterRegisteredWhseActivHeaderInsert(var RegisteredWhseActivityHdr: Record "Registered Whse. Activity Hdr."; WarehouseActivityHeader: Record "Warehouse Activity Header")
 
     var
-        // WarehousActivityHdr2: Record "Warehouse Activity Header";
-        WarehouseActivityLine: Record "Warehouse Activity Line";
-        //registeredWhseActivityHdr2: Record "Registered Whse. Activity hdr.";
-        registedWhseActivityLine2: Record "Registered Whse. Activity Line";
+
+        // WarehouseActivityLine: Record "Warehouse Activity Line";
+
+        registedWhseActivityLine: Record "Registered Whse. Activity Line";
 
         PickDurationMinutes: Text;
 
@@ -65,19 +47,36 @@ codeunit 70100 "EventSubscribers1"
             registeredWhseActivityHdr.Modify();
         end;
 
-        registedWhseActivityLine2.Reset();
-        registedWhseActivityLine2.SetRange("No.", registeredWhseActivityHdr."No.");
-        if registedWhseActivityLine2.Findfirst() then begin
-            // registeredWhseActivityHdr2.Reset();
-            //registeredWhseActivityHdr2.setrange(RegisteredWhseActivityHdr2."No.", registedWhseActivityLine2."No.");
-            // if registeredWhseActivityHdr2.Findfirst() then begin
-            registeredWhseActivityHdr."Source No." := registedWhseActivityLine2."Source No.";
+        // To update the Source No. from Registered Whse. Activity Line to Registered Whse. Activity Header
+        //registedWhseActivityLine.Reset();
+        // registedWhseActivityLine.SetRange("No.", RegisteredWhseActivityHdr."No.");
+        // if registedWhseActivityLine.FindFirst() then begin
+        //     RegisteredWhseActivityHdr."Source No." := registedWhseActivityLine."Source No.";
+        //     RegisteredWhseActivityHdr.Modify();
+        // end;
 
-            registeredWhseActivityHdr.Modify();
 
-        end;
+
     end;
-    // end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Activity-Register", OnAfterRegisteredWhseActivLineInsert, '', false, false)]
+    local procedure OnAfterRegisteredWhseActivLineInsert(var RegisteredWhseActivityLine: Record "Registered Whse. Activity Line"; WarehouseActivityLine: Record "Warehouse Activity Line")
+    var
+        RegisteredWhseActivityHdr: Record "Registered Whse. Activity Hdr.";
+
+    begin
+        // To update the Source No. from Registered Whse. Activity Line to Registered Whse. Activity Header
+        repeat
+            RegisteredWhseActivityHdr.SetRange("No.", RegisteredWhseActivityLine."No.");
+            if RegisteredWhseActivityHdr.FindFirst() then
+                RegisteredWhseActivityHdr."Source No." := RegisteredWhseActivityLine."Source No.";
+            RegisteredWhseActivityHdr.Modify();
+        until RegisteredWhseActivityLine.Next() = 0;
+
+    end;
+
+
+
 
 
 
@@ -183,6 +182,9 @@ codeunit 70100 "EventSubscribers1"
         salesinvoiceheader2: Record "Sales Invoice Header";
         SalesInvoiceline2: Record "Sales Invoice Line";
         salesHeader2: Record "Sales Header";
+
+        SIH: Record "Sales Invoice Header";
+        RWAH: Record "Registered Whse. Activity Hdr.";
     begin
         if SalesCrMemoHeader2.Get(SalesCrMemoHeader."No.") then begin
             SalesCrMemoLine2.SetRange("Document No.", SalesCrMemoHeader."No.");
@@ -217,12 +219,42 @@ codeunit 70100 "EventSubscribers1"
             // salesinvoiceheader2."Margin %_New" := (salesinvoiceheader2."Margin Amount_New" / salesinvoiceheader2.Amount) * 100;
             salesinvoiceheader2.Modify();
         end;
+
+        // To update the Pick Duration in Mins from Registered Whse. Activity Hdr. to Sales Invoice Header
+        if SIH.Get(SalesInvoiceHeader."No.") then begin
+            RWAH.SetRange("Source No.", SIH."Order No.");
+            if RWAH.FindFirst() then begin
+                SIH."Pick Duration in Mins" := RWAH."Pick Duration in Min";
+                SIH.Modify();
+            end;
+        end;
+
+
+
     end;
 
-    local procedure OnAfterReturnRcptHeaderInsert(var ReturnReceiptHeader: Record "Return Receipt Header"; SalesHeader: Record "Sales Header"; SuppressCommit: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
+    procedure UpdatePickDuration()
+    var
+        SIH: Record "Sales Invoice Header";
+        RWAH: Record "Registered Whse. Activity Hdr.";
+        window: Dialog;
     begin
-
+        window.Open('Updating Pick Duration in Mins in Sales Invoice Header from Registered Whse. Activity Hdr.#1');
+        SIH.Reset();
+        SIH.SetRange("Pick Duration in Mins", '');
+        if SIH.FindSet() then
+            repeat
+                window.Update(1, SIH."No.");
+                RWAH.SetRange("Source No.", SIH."Order No.");
+                if RWAH.FindFirst() then begin
+                    SIH."Pick Duration in Mins" := RWAH."Pick Duration in Min";
+                    SIH.Modify();
+                end;
+            until SIH.Next() = 0;
+        window.Close();
     end;
+
+
 
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterSalesCrMemoHeaderInsert, '', true, true)]
     local procedure OnAfterSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
@@ -292,23 +324,8 @@ codeunit 70100 "EventSubscribers1"
     end;
 
 
-    [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterInsertPostedHeaders, '', true, true)]
-    local procedure OnAfterInsertPostedHeaders(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header"; var GenJournalDocumentType: Enum "Gen. Journal Document Type"; var GenJnlLineDocNo: Code[20]; var GenJnlLineExtDocNo: Code[35])
-    var
-        SIH: Record "Sales Invoice Header";
-        RWAH: Record "Registered Whse. Activity Hdr.";
-    begin
-
-        if SIH.Get(SalesInvoiceHeader."No.") then begin
-            RWAH.SetRange("Source No.", SIH."No.");
-            if RWAH.FindFirst() then begin
-                SIH."Pick Duration in Mins" := RWAH."Pick Duration in Min";
-                SIH.Modify();
-            end;
-        end;
-    end;
-
-
+    // [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterInsertPostedHeaders, '', true, true)]
+    // local procedure OnAfterInsertPostedHeaders(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header"; var GenJournalDocumentType: Enum "Gen. Journal Document Type"; var GenJnlLineDocNo: Code[20]; var GenJnlLineExtDocNo: Code[35])
 
 
 

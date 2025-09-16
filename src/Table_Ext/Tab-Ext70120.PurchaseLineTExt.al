@@ -29,7 +29,9 @@ tableextension 70120 "Purchase Line TExt" extends "Purchase Line"
     var
         Item: Record Item;
     begin
-        Item.Get(Rec."No.");
+        if Rec."No." <> '' then
+            if Rec.Type = Rec.Type::Item then
+                Item.Get(Rec."No.");
         Rec."Item Category Group" := Item."Item Category Group";
     end;
 

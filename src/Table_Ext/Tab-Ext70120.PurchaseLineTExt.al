@@ -23,11 +23,14 @@ tableextension 70120 "Purchase Line TExt" extends "Purchase Line"
     }
 
 
-    // trigger OnInsert()
-    // var
-    //     Item: Record Item;
-    // begin
-    //     Item.Get(Rec."No.");
-    //     Rec."Item Category Group" := Item."Item Category Group";
-    // end;
+    trigger OnInsert()
+    var
+        Item: Record Item;
+    begin
+        if Rec."No." <> '' then begin
+
+            if Rec.Type = Rec.Type::Item then
+                Rec."Item Category Group" := Item."Item Category Group";
+        end;
+    end;
 }

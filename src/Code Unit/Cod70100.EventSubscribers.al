@@ -183,6 +183,8 @@ codeunit 70100 "EventSubscribers1"
         salesinvoiceheader2: Record "Sales Invoice Header";
         SalesInvoiceline2: Record "Sales Invoice Line";
         salesHeader2: Record "Sales Header";
+        SIH: Record "Sales Invoice Header";
+        RWAH: Record "Registered Whse. Activity Hdr.";
     begin
         if SalesCrMemoHeader2.Get(SalesCrMemoHeader."No.") then begin
             SalesCrMemoLine2.SetRange("Document No.", SalesCrMemoHeader."No.");
@@ -216,6 +218,15 @@ codeunit 70100 "EventSubscribers1"
             // salesinvoiceheader2."Margin Amount_New" := salesinvoiceheader2.Amount - salesinvoiceheader2."Total Cost_New";
             // salesinvoiceheader2."Margin %_New" := (salesinvoiceheader2."Margin Amount_New" / salesinvoiceheader2.Amount) * 100;
             salesinvoiceheader2.Modify();
+        end;
+
+        // To update the Pick Duration in Mins from Registered Whse. Activity Hdr. to Sales Invoice Header
+        if SIH.Get(SalesInvoiceHeader."No.") then begin
+            RWAH.SetRange("Source No.", SIH."Order No.");
+            if RWAH.FindFirst() then begin
+                SIH."Pick Duration in Mins" := RWAH."Pick Duration in Min";
+                SIH.Modify();
+            end;
         end;
     end;
 

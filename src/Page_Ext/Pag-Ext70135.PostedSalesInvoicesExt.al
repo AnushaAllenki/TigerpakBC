@@ -50,6 +50,28 @@ pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
 
             }
         }
+
+
+
+        addafter("Update Document")
+        {
+            action("Update Pick Duration")
+            {
+                ApplicationArea = Basic, Suite;
+                Caption = 'Update Pick Duration';
+                Ellipsis = true;
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    EventSub: Codeunit "EventSubscribers1";
+                begin
+                    EventSub.UpdatePickDuration();
+
+                end;
+            }
+
+        }
     }
 
 }

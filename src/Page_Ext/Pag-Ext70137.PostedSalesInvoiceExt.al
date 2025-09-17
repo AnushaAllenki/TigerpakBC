@@ -28,4 +28,6 @@ pageextension 70137 "Posted Sales Invoice Ext" extends "Posted Sales Invoice"
 
     //     }
     // }
+
+
 }

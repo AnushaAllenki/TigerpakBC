@@ -75,5 +75,19 @@ page 70102 "TP Sales Invoiced API TS"
 
         }
     }
+
+    trigger OnOpenPage()     // Current month filter applied to the API page
+    var
+        DateFrom: Date;
+        DateTo: Date;
+    begin
+        DateFrom := CalcDate('<-CM>', Today);
+        DateTo := CalcDate('<CM>', Today);
+        Rec.SetFilter("Posting Date", '%1..%2', DateFrom, DateTo);
+        if Rec.FindSet() then;
+    end;
+
+    var
+        Linecount: Integer;
 }
 

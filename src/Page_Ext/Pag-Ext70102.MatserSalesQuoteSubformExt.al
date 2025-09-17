@@ -15,6 +15,24 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
             Enabled = false;
 
         }
+        addafter("Line Discount Amount")
+        {
+            field("TP Unit Cost_New"; Rec."TP Unit Cost_New")
+            {
+                ApplicationArea = All;
+                Caption = 'TP Unit Cost_New';
+                ToolTip = 'The TP Unit Cost_New field shows the new TP unit cost for the sales quote line.';
+            }
+
+            field("TP Profit%_New"; Rec."TP Profit%_New")
+            {
+                ApplicationArea = All;
+                Caption = 'TP Profit%_New';
+                ToolTip = 'The TP Profit%_New field shows the new TP profit percentage for the sales quote line.';
+            }
+        }
+
+
 
     }
     actions
@@ -46,6 +64,28 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
 
 
                 end;
+            }
+
+            action("Update TP Profit%_New")
+            {
+                ApplicationArea = Basic, Suite;
+                Caption = 'Update TP Profit%_New';
+                Ellipsis = true;
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    SKU: Record "Stockkeeping Unit";
+                begin
+                    if Rec."Unit Price" = 0 then
+                        Rec."TP Profit%_New" := 0
+                    else
+                        Rec."TP Profit%_New" := Round(((Rec."Unit Price" - Rec."TP Unit Cost_New") / Rec."Unit Price") * 100, 0.01, '=')
+
+                end;
+
+
+
             }
         }
     }

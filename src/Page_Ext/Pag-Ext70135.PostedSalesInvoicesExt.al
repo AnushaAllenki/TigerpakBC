@@ -22,8 +22,15 @@ pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
                 Caption = 'Margin %_New';
                 ToolTip = 'The Margin %_New field shows the new margin percentage for the posted sales invoice.';
             }
-        }
 
+            field("Pick Duration in Mins"; Rec."Pick Duration in Mins")
+            {
+                ApplicationArea = All;
+                Caption = 'Pick Duration in Mins';
+                ToolTip = 'The Pick Duration field shows the pick duration for the posted sales invoice.';
+            }
+
+        }
     }
 
     actions

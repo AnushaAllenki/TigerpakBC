@@ -13,12 +13,6 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             Caption = 'TP Unit Cost';
             DataClassification = ToBeClassified;
 
-        }
-
-        field(70110; "TP Profit%_New"; Decimal)
-        {
-            Caption = 'TP Profit%_New';
-            DataClassification = ToBeClassified;
             trigger OnValidate()
             begin
                 if "Unit Price" = 0 then
@@ -26,6 +20,14 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
                 else
                     "TP Profit%_New" := Round((("Unit Price" - "TP Unit Cost_New") / "Unit Price") * 100, 0.01, '=')
             end;
+
+        }
+
+        field(70110; "TP Profit%_New"; Decimal)
+        {
+            Caption = 'TP Profit%_New';
+            DataClassification = ToBeClassified;
+
         }
         modify("Unit of Measure Code")
         {
@@ -69,9 +71,9 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             trigger OnAfterValidate()
             begin
                 if "Unit Price" = 0 then
-                    "TP Profit %" := 0
+                    "TP Profit%_New" := 0
                 else
-                    "TP Profit %" := Round((("Unit Price" - "TP Unit Cost") / "Unit Price") * 100, 0.01, '=')
+                    "TP Profit%_New" := Round((("Unit Price" - "TP Unit Cost_New") / "Unit Price") * 100, 0.01, '=')
             end;
         }
         modify("Unit Cost (LCY)")
@@ -79,9 +81,9 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             trigger OnAfterValidate()
             begin
                 if "Unit Price" = 0 then
-                    "TP Profit %" := 0
+                    "TP Profit%_New" := 0
                 else
-                    "TP Profit %" := Round((("Unit Price" - "TP Unit Cost") / "Unit Price") * 100, 0.01, '=')
+                    "TP Profit%_New" := Round((("Unit Price" - "TP Unit Cost_New") / "Unit Price") * 100, 0.01, '=')
             end;
         }
 

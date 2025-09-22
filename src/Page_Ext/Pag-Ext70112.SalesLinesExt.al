@@ -129,8 +129,8 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                 begin
                     repeat
                         salesLine.SetRange("Type", salesLine."Type"::Item);
-                        salesLine.SetFilter(Quantity, '<>0');
-                        salesLine.SetFilter("Unit Price", '<>0');
+                        //salesLine.SetFilter(Quantity, '<>0');
+                        //salesLine.SetFilter("Unit Price", '<>0');
                         if salesLine.FindSet() then begin
 
                             if salesLine."Unit Price" = 0 then

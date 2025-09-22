@@ -66,27 +66,11 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
                 end;
             }
 
-            action("Update TP Profit%_New")
-            {
-                ApplicationArea = Basic, Suite;
-                Caption = 'Update TP Profit%_New';
-                Ellipsis = true;
-                Image = Action;
-
-                trigger OnAction()
-                var
-                    SKU: Record "Stockkeeping Unit";
-                begin
-                    if Rec."Unit Price" = 0 then
-                        Rec."TP Profit%_New" := 0
-                    else
-                        Rec."TP Profit%_New" := Round(((Rec."Unit Price" - Rec."TP Unit Cost_New") / Rec."Unit Price") * 100, 0.01, '=')
-
-                end;
 
 
 
-            }
+
         }
     }
 }
+

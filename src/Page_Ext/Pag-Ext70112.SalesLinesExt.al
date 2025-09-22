@@ -12,9 +12,13 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                 ToolTip = 'TP Unit Cost_New';
                 Editable = true;
 
-
-
-
+            }
+            field("TP Profit%_New"; Rec."TP Profit%_New")
+            {
+                ApplicationArea = All;
+                Caption = 'TP Profit%_New';
+                ToolTip = 'TP Profit%_New';
+                Editable = true;
 
             }
         }
@@ -113,8 +117,35 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                 end;
 
             }
+            action("Update TP Profit %_New")
+            {
+                ApplicationArea = All;
+                Caption = 'Update All Tp Profit %_New';
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    salesLine: Record "Sales Line";
+                begin
+                    repeat
+                        salesLine.SetRange("Type", salesLine."Type"::Item);
+                        salesLine.SetFilter(Quantity, '<>0');
+                        salesLine.SetFilter("Unit Price", '<>0');
+                        if salesLine.FindSet() then begin
+
+                            if salesLine."Unit Price" = 0 then
+                                salesLine."TP Profit%_New" := 0
+                            else
+                                salesLine."TP Profit%_New" := Round(((salesLine."Unit Price" - salesLine."TP Unit Cost_New") / salesLine."Unit Price") * 100, 0.01, '=');
+                            salesLine.Modify();
+
+                        end;
+                    until salesLine.next = 0;
+                end;
+            }
+
+
+
         }
-
-
     }
 }

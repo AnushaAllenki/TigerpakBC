@@ -87,31 +87,20 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
         }
 
 
+
+
+        modify("Ship-to Address")
+        {
+            trigger OnAfterValidate()
+            begin
+                if rec."Ship-to Address" <> rec."Sell-to Address" then
+                    rec."Alt Address" := 'Alternate Address'
+                else
+                    rec."Alt Address" := '';
+            end;
+        }
     }
 
-    // trigger OnafterInsert()
-    // begin
-    //     if "Ship-to Code" <> '' then begin
-    //         "Alt Address" := "Ship-to Address";
-    //     end else begin
-    //         "Alt Address" := '';
-    //     end;
-
-    // end;
-
-    // modify("Ship-to Code")
-    // {
-    //     trigger OnAfterValidate()
-    //     var
-    //         ShipTo: Record "Ship-to Address";
-    //     begin
-    //         if ShipTo.Get("Sell-to Customer No.", "Ship-to Code") then begin
-    //             "Alt Address" := ShipTo."Address";
-    //         end else begin
-    //             "Alt Address" := '';
-    //         end;
-    //     end;
-    // }
 
 }
 

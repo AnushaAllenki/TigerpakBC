@@ -89,7 +89,7 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
 
 
 
-        modify("Ship-to Address")
+        modify("Ship-to Address")     //Alternate Shipping Address from Weborders when different from Sell-to Address
         {
             trigger OnAfterValidate()
             begin

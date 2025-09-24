@@ -31,8 +31,16 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
                 ToolTip = 'The TP Profit%_New field shows the new TP profit percentage for the sales quote line.';
             }
         }
-
-
+        modify("TP Unit Cost")
+        {
+            Visible = false;
+            Enabled = false;
+        }
+        modify("TP Profit %")
+        {
+            Visible = false;
+            Enabled = false;
+        }
 
     }
     actions
@@ -70,7 +78,9 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
 
 
 
+
         }
+
     }
 }
 

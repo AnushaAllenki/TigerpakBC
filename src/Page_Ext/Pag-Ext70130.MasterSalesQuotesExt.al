@@ -1,5 +1,7 @@
 namespace ALProject.ALProject;
 using Microsoft.Sales.Customer;
+using Microsoft.Sales.Document;
+using Microsoft.CRM.Contact;
 
 pageextension 70130 "Master Sales Quotes Ext" extends "Master Sales Quotes"
 {
@@ -43,6 +45,34 @@ pageextension 70130 "Master Sales Quotes Ext" extends "Master Sales Quotes"
 
 
             }
+            action(UpdateTPCostNew)
+            {
+                AccessByPermission = TableData Contact = R;
+                ApplicationArea = Basic, Suite;
+                Caption = 'UpdateTPCostNew';
+
+                //Enabled = ContactSelected;
+                Image = UpdateUnitCost;
+                ToolTip = 'Run the task to update TP unit cost and TP profit %';
+                trigger OnAction()
+                var
+                    SalesHeader: Record "Sales Header";
+                    Updated: Boolean;
+                begin
+                    SalesHeader := Rec;
+                    CurrPage.SetSelectionFilter(SalesHeader);
+                    if SalesHeader.FindFirst() then
+                        repeat
+                            Updated := SalesHeader.UpdateTPUnitCostNew()
+                        until SalesHeader.Next() = 0;
+                    if Updated then
+                        Message('TP Unit cost_New and TP Profit%_New Updated!');
+                end;
+            }
+        }
+        modify(UpdateTPCost)
+        {
+            Visible = false;
         }
     }
 }

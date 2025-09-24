@@ -30,6 +30,17 @@ pageextension 70105 "Sales Quote Subform_Ext" extends "Sales Quote Subform"
                 Caption = 'TP Profit%_New';
                 ToolTip = 'The TP Profit%_New field shows the new TP profit percentage for the sales quote line.';
             }
+
+        }
+        modify("TP Unit Cost")
+        {
+            Visible = false;
+            Enabled = false;
+        }
+        modify("TP Profit %")
+        {
+            Visible = false;
+            Enabled = false;
         }
     }
 }

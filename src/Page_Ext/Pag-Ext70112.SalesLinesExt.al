@@ -128,9 +128,11 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                     salesLine: Record "Sales Line";
                 begin
                     repeat
+                        salesLine.reset();
+                        salesLine.SetRange("Document Type", salesLine."Document Type"::Quote);
+                        salesLine.SetRange("TP Profit%_New", 0);
                         salesLine.SetRange("Type", salesLine."Type"::Item);
-                        //salesLine.SetFilter(Quantity, '<>0');
-                        //salesLine.SetFilter("Unit Price", '<>0');
+
                         if salesLine.FindSet() then begin
 
                             if salesLine."Unit Price" = 0 then

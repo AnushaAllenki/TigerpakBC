@@ -100,6 +100,35 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             end;
         }
     }
+    procedure UpdateTPUnitCostNew(): Boolean
+    var
+        SalesHeader: Record "Sales Header";
+        salesLine: Record "Sales Line";
+        SKUrec: Record "Stockkeeping Unit";
+        Confirm: Boolean;
+    begin
+        SalesHeader.Reset();
+        SalesHeader.SetRange("Document Type", Rec."Document Type");
+        SalesHeader.SetRange("No.", Rec."No.");
+        if SalesHeader.FindFirst() then begin
+            salesLine.reset;
+            salesLine.SetRange("Document Type", SalesHeader."Document Type");
+            salesLine.SetRange("Document No.", SalesHeader."No.");
+            if salesLine.findset() Then
+                repeat
+                    SKUrec.Reset();
+                    SKUrec.SetRange("Item No.", salesLine."No.");
+                    SKUrec.SetRange("Location Code", salesLine."Location Code");
+                    if SKUrec.FindFirst() then
+                        salesLine.Validate("TP Unit Cost_New", SKUrec."TP Unit Cost_New" * salesLine."Qty. per Unit of Measure")
+                    else
+                        salesLine.Validate("TP Unit Cost_New", salesLine."Unit Cost");
+                    Confirm := salesLine.Modify();
+                until salesline.Next() = 0;
+
+        end;
+        exit(confirm);
+    end;
 
 
 }

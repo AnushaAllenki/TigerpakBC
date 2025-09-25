@@ -2,6 +2,27 @@ pageextension 70103 "Sales Order Subform_Ext" extends "Sales Order Subform"
 {
     layout
     {
+        addafter("Line Discount Amount")
+        {
+            field("TP Unit Cost_New"; Rec."TP Unit Cost_New")
+            {
+                ApplicationArea = All;
+                Caption = 'TP Unit Cost_New';
+                ToolTip = 'The TP Unit Cost field shows the TP unit cost for the sales order line.';
+            }
+            field("TP Profit%_New"; Rec."TP Profit%_New")
+            {
+                ApplicationArea = All;
+                Caption = 'TP Profit%_New';
+                ToolTip = 'The TP Profit%_New field shows the new TP profit percentage for the sales order line.';
+            }
+        }
+
+        modify("TP Profit %")
+        {
+            Visible = false;
+            Enabled = false;
+        }
         modify("Line Discount %")
         {
             Visible = false;
@@ -18,9 +39,9 @@ pageextension 70103 "Sales Order Subform_Ext" extends "Sales Order Subform"
 
         modify("TP Unit Cost")
         {
-            Visible = true;
-            Editable = true;
-            Enabled = true;
+            Visible = false;
+            Editable = false;
+            Enabled = false;
 
             trigger OnAfterValidate()
 

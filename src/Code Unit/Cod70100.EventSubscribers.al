@@ -228,6 +228,14 @@ codeunit 70100 "EventSubscribers1"
                 SIH.Modify();
             end;
         end;
+
+        SalesInvoiceline2.SetRange("Document No.", SalesInvoiceHeader."No.");  // #290 Posted Sales Invoice Lines - External Document No. field update from Sales Invoice Header
+        if SalesInvoiceline2.FindSet() then
+            repeat
+                SalesInvoiceline2."External Document No." := SalesInvoiceHeader."External Document No.";
+                SalesInvoiceline2.Modify();
+            until SalesInvoiceline2.Next() = 0;
+
     end;
 
     local procedure OnAfterReturnRcptHeaderInsert(var ReturnReceiptHeader: Record "Return Receipt Header"; SalesHeader: Record "Sales Header"; SuppressCommit: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
@@ -566,6 +574,24 @@ codeunit 70100 "EventSubscribers1"
 
 
     end;
+
+    procedure UpdateExternalDocNo()       // #290 Posted Sales Invoice Lines - External Document No. field update from Sales Invoice Header
+    var
+        SIH: Record "Sales Invoice Header";
+        SIL: Record "Sales Invoice Line";
+    begin
+        SIL.Reset();
+        SIL.SetRange("External Document No.", '');
+        if SIL.FindSet() then
+            repeat
+                if SIH.Get(SIL."Document No.") then begin
+                    SIL."External Document No." := SIH."External Document No.";
+                    SIL.Modify();
+                end;
+            until SIL.Next() = 0;
+    end;
+
+
 
     // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Templ. Mgt.", OnApplyItemTemplateOnBeforeItemGet, '', false, false)]
     // local procedure OnApplyItemTemplateOnBeforeItemGet(var Item: Record Item; ItemTempl: Record "Item Templ."; UpdateExistingValues: Boolean)

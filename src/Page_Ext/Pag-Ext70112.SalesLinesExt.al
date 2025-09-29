@@ -113,32 +113,32 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                 end;
 
             }
-            action("Update TP Profit %_New")
-            {
-                ApplicationArea = All;
-                Caption = 'Update All Tp Profit %_New';
-                Image = Action;
+            //     action("Update TP Profit %_New")  //#246-Customer ledger Entry Field
+            //     {
+            //         ApplicationArea = All;
+            //         Caption = 'Update All Tp Profit %_New';
+            //         Image = Action;
 
-                trigger OnAction()
-                var
-                    salesLine: Record "Sales Line";
-                begin
-                    repeat
-                        salesLine.reset();
-                        salesLine.SetRange("TP Profit%_New", 0);
-                        salesLine.SetRange("Type", salesLine."Type"::Item);
-                        if salesLine.FindSet() then begin
+            //         trigger OnAction()
+            //         var
+            //             salesLine: Record "Sales Line";
+            //         begin
+            //             repeat
+            //                 salesLine.reset();
+            //                 salesLine.SetRange("TP Profit%_New", 0);
+            //                 salesLine.SetRange("Type", salesLine."Type"::Item);
+            //                 if salesLine.FindSet() then begin
 
-                            if salesLine."Unit Price" = 0 then
-                                salesLine."TP Profit%_New" := 0
-                            else
-                                salesLine."TP Profit%_New" := Round(((salesLine."Unit Price" - salesLine."TP Unit Cost_New") / salesLine."Unit Price") * 100, 0.01, '=');
-                            salesLine.Modify();
+            //                     if salesLine."Unit Price" = 0 then
+            //                         salesLine."TP Profit%_New" := 0
+            //                     else
+            //                         salesLine."TP Profit%_New" := Round(((salesLine."Unit Price" - salesLine."TP Unit Cost_New") / salesLine."Unit Price") * 100, 0.01, '=');
+            //                     salesLine.Modify();
 
-                        end;
-                    until salesLine.next = 0;
-                end;
-            }
+            //                 end;
+            //             until salesLine.next = 0;
+            //         end;
+            //     }
 
 
 

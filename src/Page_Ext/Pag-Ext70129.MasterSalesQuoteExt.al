@@ -40,36 +40,37 @@ pageextension 70129 "Master Sales Quote Ext" extends "Master Sales Quote"
 
         // }
     }
-    actions
-    {
-        addafter("Archive Document")
-        {
-            action(UpdateTPUnitCost_New)
+    // actions    // #246-Customer ledger Entry Field
+    // {
+    //     addafter("Archive Document")
+    //     {
+    //         action(UpdateTPUnitCost_New)
 
-            {
-                AccessByPermission = TableData Contact = R;
-                ApplicationArea = Basic, Suite;
-                Caption = 'UpdateTPCostNew';
+    //         {
+    //             AccessByPermission = TableData Contact = R;
+    //             ApplicationArea = Basic, Suite;
+    //             Caption = 'UpdateTPCostNew';
 
-                //Enabled = ContactSelected;
-                Image = UpdateUnitCost;
-                ToolTip = 'Run the task to update TP unit cost_New and TP profit%_New';
-                trigger OnAction()
-                var
-                    Updated: Boolean;
-                begin
-                    Updated := Rec.UpdateTPUnitCostNew();
-                    if Updated then
-                        Message('TP Unit cost_New and TP Profit%_New Updated!');
-                end;
-            }
-        }
-        modify(UpdateTPCost)
-        {
-            Visible = false;
-        }
+    //             //Enabled = ContactSelected;
+    //             Image = UpdateUnitCost;
+    //             ToolTip = 'Run the task to update TP unit cost_New and TP profit%_New';
+    //             trigger OnAction()
+    //             var
+    //                 Updated: Boolean;
+    //             begin
+    //                 Updated := Rec.UpdateTPUnitCostNew();
+    //                 if Updated then
+    //                     Message('TP Unit cost_New and TP Profit%_New Updated!');
+    //             end;
+    //         }
+    //     }
+    // modify(UpdateTPCost)   // #246-Customer ledger Entry Field
+    // {
+    //     Visible = false;
+    // }
 
 
-    }
+    //}
 }
+
 

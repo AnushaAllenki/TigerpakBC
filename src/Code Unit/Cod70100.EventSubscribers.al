@@ -268,7 +268,7 @@ codeunit 70100 "EventSubscribers1"
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterSalesCrMemoHeaderInsert, '', true, true)]
     local procedure OnAfterSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
     begin
-        SalesCrMemoHeader.SetRange("Pre-Assigned No.", SalesHeader."No.");
+        SalesCrMemoHeader.SetRange("Pre-Assigned No.", SalesHeader."No.");       // #254 Credit Returns - Aotomatic Email to Customer on Posting CR and SRO
         if SalesCrMemoHeader.findfirst() then begin
             if SalesCrMemoHeader."Auto Email - Post" then begin
                 SalesCrMemoHeader.SetRecFilter();

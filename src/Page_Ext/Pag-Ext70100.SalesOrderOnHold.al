@@ -31,12 +31,28 @@ pageextension 70100 SalesHeader_OnHold extends "Sales Order"
                     rec."Alt Address" := '';
             end;
         }
+        // modify("Sell-to Contact No.")
+        // {
+        //     // trigger OnLookup(var Text: Text): Boolean
+        //     // var
+        //     //     ContactRec: Record Contact;
+        //     // begin
+        //     //     if ContactRec.get(Rec."Sell-to Contact No.") then begin
+        //     //         if ContactRec."Inactive" then
+        //     //             Error('This contact is inactive');
+        //     //     end;
+        //     // end;
+
+
+
+        // }
 
 
     }
-
-
-
-
 }
+
+
+
+
+
 

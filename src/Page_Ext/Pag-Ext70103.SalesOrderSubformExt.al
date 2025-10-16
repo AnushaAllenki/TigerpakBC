@@ -16,6 +16,9 @@ pageextension 70103 "Sales Order Subform_Ext" extends "Sales Order Subform"
                 Caption = 'TP Profit%_New';
                 ToolTip = 'The TP Profit%_New field shows the new TP profit percentage for the sales order line.';
             }
+
+
+
         }
 
         modify("TP Profit %")
@@ -82,6 +85,25 @@ pageextension 70103 "Sales Order Subform_Ext" extends "Sales Order Subform"
 
 
     }
+
+    actions
+    {
+        addafter(Lot)
+        {
+            action("&Bin Contents")    //#294 Bin Contents button in Sales Orders Line
+            {
+                ApplicationArea = Warehouse;
+                Caption = '&Bin Contents';
+                Image = BinContent;
+                RunObject = Page "Bin Content";
+                RunPageLink = "Item No." = field("No.");
+                RunPageView = sorting("Item No.");
+                ToolTip = 'View the quantities of the item in each bin where it exists. You can see all the important parameters relating to bin content, and you can modify certain bin content parameters in this window.';
+            }
+        }
+    }
+
+
 
 
 }

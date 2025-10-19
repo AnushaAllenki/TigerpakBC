@@ -86,9 +86,6 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
 
         }
 
-
-
-
         modify("Ship-to Address")     //Alternate Shipping Address from Weborders when different from Sell-to Address
         {
             trigger OnAfterValidate()
@@ -97,6 +94,22 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
                     rec."Alt Address" := 'Alternate Address'
                 else
                     rec."Alt Address" := '';
+            end;
+        }
+
+        modify("Sell-to Contact No.")   // #286 - Inactive Contact - To prevent selection of inactive contact in Customer Card
+        {
+            TableRelation = Contact Where("No." = field("Sell-to Contact No."), Inactive = const(false));
+
+
+            trigger OnAfterValidate()
+            var
+                ContactRec: Record Contact;
+            begin
+                if ContactRec.get(Rec."Sell-to Contact No.") then begin
+                    if ContactRec."Inactive" then
+                        Error('This contact is inactive');
+                end;
             end;
         }
     }

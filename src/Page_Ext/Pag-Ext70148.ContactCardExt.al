@@ -6,13 +6,13 @@ pageextension 70148 "Contact Card Ext" extends "Contact Card"
 {
     layout
     {
-        addafter(Minor)
-        {
-            field("Inactive"; Rec."Inactive")
-            {
-                ApplicationArea = All;
-                Caption = 'Inactive';
-            }
-        }
+        // addafter(Minor)
+        // {
+        //     field("Inactive"; Rec."Inactive")
+        //     {
+        //         ApplicationArea = All;
+        //         Caption = 'Inactive';
+        //     }
+        // }
     }
 }

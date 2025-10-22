@@ -8,13 +8,13 @@ pageextension 70149 "Contact List Ext" extends "Contact List"
     // {
     //     addafter(Name)
     //     {
-    //         field("Inactive"; Rec."Inactive")  // #286 - Inactive Contact - To prevent selection of inactive contact in Customer Card
+    //         field(Status; Rec.Status)  // #286 - Inactive Contact - To prevent selection of inactive contact in Customer Card
     //         {
     //             ApplicationArea = All;
-    //             Caption = 'Inactive';
+    //             Caption = 'Status';
     //             trigger OnValidate()
     //             begin
-    //                 if Rec."Inactive" then
+    //                 if Rec.Status = Rec.Status::Inactive then
     //                     Message('This contact is inactive');
 
     //             end;

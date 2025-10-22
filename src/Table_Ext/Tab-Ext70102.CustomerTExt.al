@@ -10,15 +10,17 @@ tableextension 70102 Customer_TExt extends Customer
 
         modify("Primary Contact No.")  // #286 - Inactive Contact - To prevent selection of inactive contact in Customer Card
         {
-            TableRelation = Contact where("No." = field("Primary Contact No."), Status = const(Active));
+            TableRelation = Contact where("No." = field("Primary Contact No."), Inactive = const(false));
 
             trigger OnAfterValidate()
             var
                 ContactRec: Record Contact;
             begin
-                if ContactRec.get(Rec."Primary Contact No.") then begin
-                    if ContactRec.Status = ContactRec.Status::Inactive then
-                        Error('This contact is inactive');
+                if "Primary Contact No." <> '' then begin
+                    if ContactRec.get(Rec."Primary Contact No.") then begin
+                        if ContactRec.Inactive then
+                            Error('This contact is inactive');
+                    end;
                 end;
             end;
         }

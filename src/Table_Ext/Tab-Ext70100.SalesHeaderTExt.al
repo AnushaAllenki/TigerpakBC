@@ -97,21 +97,21 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             end;
         }
 
-        // modify("Sell-to Contact No.")   // #286 - Inactive Contact - To prevent selection of inactive contact in Customer Card
-        // {
-        //     TableRelation = Contact Where("No." = field("Sell-to Contact No."), Status = const(Active));
+        modify("Sell-to Contact No.")   // #286 - Inactive Contact - To prevent selection of inactive contact in Customer Card
+        {
+            TableRelation = Contact Where("No." = field("Sell-to Contact No."), Inactive = const(False));
 
 
-        //     trigger OnAfterValidate()
-        //     var
-        //         ContactRec: Record Contact;
-        //     begin
-        //         if ContactRec.get(Rec."Sell-to Contact No.") then begin
-        //             if ContactRec.Status = ContactRec.Status::Inactive then
-        //                 Error('This contact is inactive');
-        //         end;
-        //     end;
-        // }
+            trigger OnAfterValidate()
+            var
+                ContactRec: Record Contact;
+            begin
+                if ContactRec.get(Rec."Sell-to Contact No.") then begin
+                    if ContactRec.Inactive then
+                        Error('This contact is inactive');
+                end;
+            end;
+        }
     }
     procedure UpdateTPUnitCostNew(): Boolean
     var

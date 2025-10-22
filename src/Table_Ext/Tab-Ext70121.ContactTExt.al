@@ -6,7 +6,7 @@ tableextension 70121 "Contact TExt" extends Contact
 {
     fields
     {
-        field(70100; Inactive; Boolean)   // #286 - Inactive Contact - To prevent selection of inactive contact in Customer Card
+        field(70110; Inactive; Boolean)   // #286 - Inactive Contact - To prevent selection of inactive contact in Customer Card
         {
             Caption = 'Inactive';
             DataClassification = CustomerContent;

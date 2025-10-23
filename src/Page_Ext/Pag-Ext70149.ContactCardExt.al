@@ -8,10 +8,10 @@ pageextension 70149 "Contact Card Ext" extends "Contact Card"
     {
         addafter(Minor)
         {
-            field(Status; Rec.Inactive)  // #286 - Inactive Contact - To prevent selection of inactive contact in Customer Card
+            field(Status; Rec.Status)  // #286 - Inactive Contact - To prevent selection of inactive contact in Customer Card
             {
                 ApplicationArea = All;
-                Caption = 'Inavtive';
+                Caption = 'Status';
             }
         }
     }

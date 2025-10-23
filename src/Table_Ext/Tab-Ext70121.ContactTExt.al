@@ -10,7 +10,7 @@ tableextension 70121 ContactTExt extends Contact
         {
             Caption = 'Status';
             DataClassification = CustomerContent;
-            OptionMembers = Active,Inactive;
+            OptionMembers = " ",Active,Inactive;
 
         }
     }

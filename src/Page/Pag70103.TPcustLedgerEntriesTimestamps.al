@@ -13,7 +13,7 @@ page 70103 TPcustLedgerEntriesTimestamps
     {
         area(Content)
         {
-            group(General)
+            repeater(General)
             {
                 Caption = 'General';
                 field("Entry No."; Rec."Entry No.")

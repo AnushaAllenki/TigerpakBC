@@ -6,16 +6,15 @@ page 70101 TPCustomerledgerentryTS
 {
     ApplicationArea = All;
     Caption = 'TPCustomerledgerentryTS';
-    PageType = Card;
+    PageType = List;
     SourceTable = "Cust. Ledger Entry";
 
     layout
     {
         area(Content)
         {
-            group(General)
+            repeater(General)
             {
-                Caption = 'General';
                 field("Entry No."; Rec."Entry No.")
                 {
                     ApplicationArea = All;
@@ -130,5 +129,4 @@ page 70101 TPCustomerledgerentryTS
         Rec.SetFilter("Document Type", '%1|%2', Rec."Document Type"::Invoice, Rec."Document Type"::"Credit Memo");
         if Rec.FindSet() then;
     end;
-
 }

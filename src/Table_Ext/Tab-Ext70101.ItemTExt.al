@@ -158,12 +158,16 @@ tableextension 70101 "Item_T-Ext" extends Item
             trigger OnValidate()
             var
                 SKU: Record "Stockkeeping Unit";
+                location: Record "Location";
+                TPCost: Decimal;
             begin
                 SKU.SetRange("item No.", Rec."No.");
 
                 if SKU.FindFirst() then begin
                     repeat
-                        SKU."TP Unit Cost_New" := SKU."TP Unit Cost" - (SKU."TP Unit Cost") * Rec."Provisional Cost%" / 100;
+                        //SKU."TP Unit Cost_New" := SKU."TP Unit Cost" - (SKU."TP Unit Cost") * Rec."Provisional Cost%" / 100;
+                        TPCost := SKU."Unit Cost" + (SKU."Unit Cost" * location."Inflated cost %") / 100;
+                        SKU."TP Unit Cost_New" := TPCost - (TPCost) * Rec."Provisional Cost%" / 100;
                         SKU.Modify();
                     until SKU.Next() = 0;
 

@@ -180,14 +180,6 @@ tableextension 70101 "Item_T-Ext" extends Item
 
         }
 
-
-
-
-
-
-
-
-
     }
     trigger OnInsert()
     var
@@ -197,6 +189,7 @@ tableextension 70101 "Item_T-Ext" extends Item
         BinContent.SetRange("Item No.", Rec."No.");
         if BinContent.Findset() then begin
             BinContent.Blocked_Item := Rec."Blocked";
+            BinContent."HACCP Item" := Rec."HACCP Item";   //#288 HACCP Item added to Bincontents
             BinContent.Modify();
 
         end;

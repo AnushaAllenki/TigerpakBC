@@ -13,5 +13,13 @@ tableextension 70119 "Bin Content TExt" extends "Bin Content"
 
 
         }
+        field(70110; "HACCP Item"; Boolean)   //#288 HACCP Item added to Bincontents
+        {
+            Caption = 'HACCP Item';
+            DataClassification = ToBeClassified;
+            Editable = false;
+
+        }
+
     }
 }

@@ -1,6 +1,6 @@
 codeunit 70100 "EventSubscribers1"
 {
-    Permissions = tabledata 110 = RMID, tabledata 121 = RMID, tabledata 112 = RIMD, tabledata 114 = rmid, tabledata 21 = rmid, tabledata 113 = rmid, tabledata 5772 = rmid;
+    Permissions = tabledata 110 = RMID, tabledata 112 = RIMD, tabledata 114 = rmid, tabledata 21 = rmid, tabledata 113 = rmid, tabledata 5772 = rmid;
 
 
 
@@ -23,33 +23,15 @@ codeunit 70100 "EventSubscribers1"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Activity-Register", OnAfterRegisteredWhseActivHeaderInsert, '', false, false)]
-    // local procedure OnAfterRegisterWhseActivity(WarehouseActivityHeader: Record "Warehouse Activity Header")
-    // var
-    //     // WarehousActivityHdr2: Record "Warehouse Activity Header";
-    //     WarehouseActivityLine: Record "Warehouse Activity Line";
-    //     registeredWhseActivityHdr2: Record "Registered Whse. Activity hdr.";
-    //     registedWhseActivityLine2: Record "Registered Whse. Activity Line";
-    // begin
-    //     registedWhseActivityLine2.Reset();
-    //     registedWhseActivityLine2.SetRange("No.", registeredWhseActivityHdr2."No.");
-    //     if registedWhseActivityLine2.Findfirst() then begin
-    //         registeredWhseActivityHdr2.Reset();
-    //         //registeredWhseActivityHdr2.SetRange((Type, registeredWhseActivityHdr2.Type::);
-    //         registeredWhseActivityHdr2.setrange(RegisteredWhseActivityHdr2."No.", registedWhseActivityLine2."No.");
-    //         if registeredWhseActivityHdr2.Findfirst() then begin
-    //             registeredWhseActivityHdr2."Source No." := registedWhseActivityLine2."Source No.";
-    //             registeredWhseActivityHdr2.Modify();
-    //         end;
-    //     end;
-    // end;
+
 
     local procedure OnAfterRegisteredWhseActivHeaderInsert(var RegisteredWhseActivityHdr: Record "Registered Whse. Activity Hdr."; WarehouseActivityHeader: Record "Warehouse Activity Header")
 
     var
-        // WarehousActivityHdr2: Record "Warehouse Activity Header";
-        WarehouseActivityLine: Record "Warehouse Activity Line";
-        registeredWhseActivityHdr2: Record "Registered Whse. Activity hdr.";
-        registedWhseActivityLine2: Record "Registered Whse. Activity Line";
+
+        // WarehouseActivityLine: Record "Warehouse Activity Line";
+
+        registedWhseActivityLine: Record "Registered Whse. Activity Line";
 
         PickDurationMinutes: Text;
 
@@ -64,22 +46,39 @@ codeunit 70100 "EventSubscribers1"
 
             registeredWhseActivityHdr.Modify();
         end;
-        //RegisteredWhseActivityHdr2."Pick Duration" := RegisteredWhseActivityHdr2."Pick Completed Date time" - RegisteredWhseActivityHdr2."Pick Created Date time";
 
-        registedWhseActivityLine2.Reset();
-        registedWhseActivityLine2.SetRange("No.", registeredWhseActivityHdr2."No.");
-        if registedWhseActivityLine2.Findfirst() then begin
-            registeredWhseActivityHdr2.Reset();
-            registeredWhseActivityHdr2.setrange(RegisteredWhseActivityHdr2."No.", registedWhseActivityLine2."No.");
-            if registeredWhseActivityHdr2.Findfirst() then begin
-                registeredWhseActivityHdr2."Source No." := registedWhseActivityLine2."Source No.";
+        // To update the Source No. from Registered Whse. Activity Line to Registered Whse. Activity Header
+        //registedWhseActivityLine.Reset();
+        // registedWhseActivityLine.SetRange("No.", RegisteredWhseActivityHdr."No.");
+        // if registedWhseActivityLine.FindFirst() then begin
+        //     RegisteredWhseActivityHdr."Source No." := registedWhseActivityLine."Source No.";
+        //     RegisteredWhseActivityHdr.Modify();
+        // end;
 
-                registeredWhseActivityHdr2.Modify();
 
-            end;
-        end;
 
     end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Activity-Register", OnAfterRegisteredWhseActivLineInsert, '', false, false)]
+    local procedure OnAfterRegisteredWhseActivLineInsert(var RegisteredWhseActivityLine: Record "Registered Whse. Activity Line"; WarehouseActivityLine: Record "Warehouse Activity Line")
+    var
+        RegisteredWhseActivityHdr: Record "Registered Whse. Activity Hdr.";
+
+    begin
+        // To update the Source No. from Registered Whse. Activity Line to Registered Whse. Activity Header
+        repeat
+            RegisteredWhseActivityHdr.SetRange("No.", RegisteredWhseActivityLine."No.");
+            if RegisteredWhseActivityHdr.FindFirst() then
+                RegisteredWhseActivityHdr."Source No." := RegisteredWhseActivityLine."Source No.";
+            RegisteredWhseActivityHdr.Modify();
+        until RegisteredWhseActivityLine.Next() = 0;
+
+    end;
+
+
+
+
+
 
     procedure UpdateAllSN()
     var
@@ -183,6 +182,7 @@ codeunit 70100 "EventSubscribers1"
         salesinvoiceheader2: Record "Sales Invoice Header";
         SalesInvoiceline2: Record "Sales Invoice Line";
         salesHeader2: Record "Sales Header";
+
         SIH: Record "Sales Invoice Header";
         RWAH: Record "Registered Whse. Activity Hdr.";
     begin
@@ -236,10 +236,7 @@ codeunit 70100 "EventSubscribers1"
                 SalesInvoiceline2.Modify();
             until SalesInvoiceline2.Next() = 0;
 
-    end;
 
-    local procedure OnAfterReturnRcptHeaderInsert(var ReturnReceiptHeader: Record "Return Receipt Header"; SalesHeader: Record "Sales Header"; SuppressCommit: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
-    begin
 
     end;
 
@@ -249,7 +246,6 @@ codeunit 70100 "EventSubscribers1"
         RWAH: Record "Registered Whse. Activity Hdr.";
         window: Dialog;
     begin
-
         window.Open('Updating Pick Duration in Mins in Sales Invoice Header from Registered Whse. Activity Hdr.#1');
         SIH.Reset();
         SIH.SetRange("Pick Duration in Mins", '');
@@ -265,19 +261,21 @@ codeunit 70100 "EventSubscribers1"
         window.Close();
     end;
 
+
+
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterSalesCrMemoHeaderInsert, '', true, true)]
     local procedure OnAfterSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
     begin
-        SalesCrMemoHeader.SetRange("Pre-Assigned No.", SalesHeader."No.");       // #254 Credit Returns - Aotomatic Email to Customer on Posting CR and SRO
-        if SalesCrMemoHeader.findfirst() then begin
-            if SalesCrMemoHeader."Auto Email - Post" then begin
-                SalesCrMemoHeader.SetRecFilter();
-                salesCrMemoHeader.EmailRecords(false);
-            end;
+        //SalesCrMemoHeader.SetRange("Pre-Assigned No.", SalesHeader."No.");
+        //if SalesCrMemoHeader.findfirst() then begin
+        if SalesCrMemoHeader."Auto Email - Post" then begin
+            SalesCrMemoHeader.SetRecFilter();
+            salesCrMemoHeader.EmailRecords(false);
         end;
-
-
     end;
+
+
+    //end;
 
 
 
@@ -331,6 +329,11 @@ codeunit 70100 "EventSubscribers1"
             until SalesinvLine.Next() = 0;
 
     end;
+
+
+    // [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterInsertPostedHeaders, '', true, true)]
+    // local procedure OnAfterInsertPostedHeaders(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header"; var GenJournalDocumentType: Enum "Gen. Journal Document Type"; var GenJnlLineDocNo: Code[20]; var GenJnlLineExtDocNo: Code[35])
+
 
 
 
@@ -557,20 +560,15 @@ codeunit 70100 "EventSubscribers1"
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterInsertEvent', '', true, true)]
+
     local procedure OnAfterInsertEvent1(var Rec: Record "Sales Header"; RunTrigger: Boolean)
     begin
 
-        // if rec."Ship-to Code" <> '' then
-        //     rec."Alt Address" := 'Alternative Address'
-
-        // else
-        //     rec."Alt Address" := '';
-        // rec.Modify();
-        if rec."Ship-to Address" <> Rec."Sell-to Address" then
-            rec."Alt Address" := 'Alternative Address'
+        if Rec."Ship-to Address" <> Rec."Sell-to Address" then
+            Rec."Alt Address" := 'Alternative Address'
         else
             Rec."Alt Address" := '';
-        rec.Modify();
+        Rec.Modify();
 
 
     end;
@@ -592,39 +590,38 @@ codeunit 70100 "EventSubscribers1"
     end;
 
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Templ. Mgt.", OnApplyItemTemplateOnBeforeItemGet, '', false, false)]
+    local procedure OnApplyItemTemplateOnBeforeItemGet(var Item: Record Item; ItemTempl: Record "Item Templ."; UpdateExistingValues: Boolean)
+    var
+        ExtTextheader: Record "Extended Text Header";
+        ExtTextLine: Record "Extended Text Line";
+        ExtTextheader1: Record "Extended Text Header";
+        ExtTextLine1: Record "Extended Text Line";
+    begin
+        ExtTextheader.Reset();
+        ExtTextheader.SetRange(ExtTextheader."Table Name", ExtTextheader."Table Name"::"Item Templ.");
+        ExtTextheader.SetRange("No.", ItemTempl.Code);
+        if ExtTextheader.FindFirst() then begin
+            ExtTextheader1.Init();
+            ExtTextheader1 := ExtTextheader;
+            ExtTextheader1."Table Name" := ExtTextheader1."Table Name"::Item;
+            ExtTextheader1."No." := Item."No.";
+            ExtTextheader1.Insert(true);
 
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Templ. Mgt.", OnApplyItemTemplateOnBeforeItemGet, '', false, false)]
-    // local procedure OnApplyItemTemplateOnBeforeItemGet(var Item: Record Item; ItemTempl: Record "Item Templ."; UpdateExistingValues: Boolean)
-    // var
-    //     ExtTextheader: Record "Extended Text Header";
-    //     ExtTextLine: Record "Extended Text Line";
-    //     ExtTextheader1: Record "Extended Text Header";
-    //     ExtTextLine1: Record "Extended Text Line";
-    // begin
-    //     ExtTextheader.Reset();
-    //     ExtTextheader.SetRange(ExtTextheader."Table Name", ExtTextheader."Table Name"::"Item Templ.");
-    //     ExtTextheader.SetRange("No.", ItemTempl.Code);
-    //     if ExtTextheader.FindFirst() then begin
-    //         ExtTextheader1.Init();
-    //         ExtTextheader1 := ExtTextheader;
-    //         ExtTextheader1."Table Name" := ExtTextheader1."Table Name"::Item;
-    //         ExtTextheader1."No." := Item."No.";
-    //         ExtTextheader1.Insert(true);
+            ExtTextLine.SetRange("Table Name", ExtTextLine."Table Name"::"Item Templ.");
+            ExtTextLine.SetRange("No.", ItemTempl.Code);
+            if ExtTextLine.FindFirst() then begin
+                repeat
+                    ExtTextLine1.Init();
+                    ExtTextLine1 := ExtTextLine;
+                    ExtTextLine1."Table Name" := ExtTextLine1."Table Name"::Item;
+                    ExtTextLine1."No." := Item."No.";
+                    ExtTextLine1.Insert(true);
+                until ExtTextLine.Next() = 0;
+            end;
+        end;
 
-    //         ExtTextLine.SetRange("Table Name", ExtTextLine."Table Name"::"Item Templ.");
-    //         ExtTextLine.SetRange("No.", ItemTempl.Code);
-    //         if ExtTextLine.FindFirst() then begin
-    //             repeat
-    //                 ExtTextLine1.Init();
-    //                 ExtTextLine1 := ExtTextLine;
-    //                 ExtTextLine1."Table Name" := ExtTextLine1."Table Name"::Item;
-    //                 ExtTextLine1."No." := Item."No.";
-    //                 ExtTextLine1.Insert(true);
-    //             until ExtTextLine.Next() = 0;
-    //         end;
-    //     end;
-
-    // end; // #275: Item Template- Extended Text. Need to uncomment and deploy upon Justin's confirmation
+    end; // #275: Item Template- Extended Text. Need to uncomment and deploy upon Justin's confirmation
 
     procedure UpdatedEmailSent()
     var
@@ -650,8 +647,7 @@ codeunit 70100 "EventSubscribers1"
     //         if SalesHeader."Quote Type" = SalesHeader."Quote Type"::" " then
     //             Error('Please select Quote Type before releasing the Quote');
 
-    //         if SalesHeader."Quote Status" = SalesHeader."Quote Status"::" " then
-    //             Error('Please select Quote Status before releasing the Quote');
+
     //     end;
     // end;  // Support ticket from outlook from Justin, need to uncomment and deploy upon Justin's confirmation
 

@@ -47,34 +47,8 @@ codeunit 70100 "EventSubscribers1"
             registeredWhseActivityHdr.Modify();
         end;
 
-        // To update the Source No. from Registered Whse. Activity Line to Registered Whse. Activity Header
-        //registedWhseActivityLine.Reset();
-        // registedWhseActivityLine.SetRange("No.", RegisteredWhseActivityHdr."No.");
-        // if registedWhseActivityLine.FindFirst() then begin
-        //     RegisteredWhseActivityHdr."Source No." := registedWhseActivityLine."Source No.";
-        //     RegisteredWhseActivityHdr.Modify();
-        // end;
-
-
-
     end;
 
-    //  Commented because of the issue in live. Warehouse putavay stopped on 30/10/2025 because of this. Need to investigate further.
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Activity-Register", OnAfterRegisteredWhseActivLineInsert, '', false, false)]
-    // local procedure OnAfterRegisteredWhseActivLineInsert(var RegisteredWhseActivityLine: Record "Registered Whse. Activity Line"; WarehouseActivityLine: Record "Warehouse Activity Line")
-    // var
-    //     RegisteredWhseActivityHdr: Record "Registered Whse. Activity Hdr.";
-
-    // begin
-    //     // To update the Source No. from Registered Whse. Activity Line to Registered Whse. Activity Header
-    //     repeat
-    //         RegisteredWhseActivityHdr.SetRange("No.", RegisteredWhseActivityLine."No.");
-    //         if RegisteredWhseActivityHdr.FindFirst() then
-    //             RegisteredWhseActivityHdr."Source No." := RegisteredWhseActivityLine."Source No.";
-    //         RegisteredWhseActivityHdr.Modify();
-    //     until RegisteredWhseActivityLine.Next() = 0;
-
-    // end;  // # Commented because of the issue in live. Warehouse putavay stopped on 30/10/2025 because of this. Need to investigate further.
 
 
 

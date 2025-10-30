@@ -1,6 +1,6 @@
 codeunit 70100 "EventSubscribers1"
 {
-    Permissions = tabledata 110 = RMID, tabledata 112 = RIMD, tabledata 114 = rmid, tabledata 21 = rmid, tabledata 113 = rmid, tabledata 5772 = rmid;
+    Permissions = tabledata 110 = RMID, tabledata 121 = RMID, tabledata 112 = RIMD, tabledata 114 = rmid, tabledata 21 = rmid, tabledata 113 = rmid, tabledata 5772 = rmid;
 
 
 
@@ -59,21 +59,22 @@ codeunit 70100 "EventSubscribers1"
 
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Activity-Register", OnAfterRegisteredWhseActivLineInsert, '', false, false)]
-    local procedure OnAfterRegisteredWhseActivLineInsert(var RegisteredWhseActivityLine: Record "Registered Whse. Activity Line"; WarehouseActivityLine: Record "Warehouse Activity Line")
-    var
-        RegisteredWhseActivityHdr: Record "Registered Whse. Activity Hdr.";
+    //  Commented because of the issue in live. Warehouse putavay stopped on 30/10/2025 because of this. Need to investigate further.
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Activity-Register", OnAfterRegisteredWhseActivLineInsert, '', false, false)]
+    // local procedure OnAfterRegisteredWhseActivLineInsert(var RegisteredWhseActivityLine: Record "Registered Whse. Activity Line"; WarehouseActivityLine: Record "Warehouse Activity Line")
+    // var
+    //     RegisteredWhseActivityHdr: Record "Registered Whse. Activity Hdr.";
 
-    begin
-        // To update the Source No. from Registered Whse. Activity Line to Registered Whse. Activity Header
-        repeat
-            RegisteredWhseActivityHdr.SetRange("No.", RegisteredWhseActivityLine."No.");
-            if RegisteredWhseActivityHdr.FindFirst() then
-                RegisteredWhseActivityHdr."Source No." := RegisteredWhseActivityLine."Source No.";
-            RegisteredWhseActivityHdr.Modify();
-        until RegisteredWhseActivityLine.Next() = 0;
+    // begin
+    //     // To update the Source No. from Registered Whse. Activity Line to Registered Whse. Activity Header
+    //     repeat
+    //         RegisteredWhseActivityHdr.SetRange("No.", RegisteredWhseActivityLine."No.");
+    //         if RegisteredWhseActivityHdr.FindFirst() then
+    //             RegisteredWhseActivityHdr."Source No." := RegisteredWhseActivityLine."Source No.";
+    //         RegisteredWhseActivityHdr.Modify();
+    //     until RegisteredWhseActivityLine.Next() = 0;
 
-    end;
+    // end;  // # Commented because of the issue in live. Warehouse putavay stopped on 30/10/2025 because of this. Need to investigate further.
 
 
 

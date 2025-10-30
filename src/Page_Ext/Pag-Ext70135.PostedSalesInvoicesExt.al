@@ -22,8 +22,26 @@ pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
                 Caption = 'Margin %_New';
                 ToolTip = 'The Margin %_New field shows the new margin percentage for the posted sales invoice.';
             }
-        }
+            field("Created By"; Rec."Created By")
+            {
+                ApplicationArea = All;
+                Caption = 'Created By';
+                ToolTip = 'Specifies the user that created the posted sales invoice.';
+            }
+            field("Picked By"; Rec."Picked By")
+            {
+                ApplicationArea = All;
+                Caption = 'Picked By';
+                ToolTip = 'Specifies the user that created the pick for the posted sales invoice.';
+            }
+            field("Packed By"; Rec."Packed By")
+            {
+                ApplicationArea = All;
+                Caption = 'Packed By';
+                ToolTip = 'Specifies the user that created the pack for the posted sales invoice.';
+            }
 
+        }
     }
 
     actions

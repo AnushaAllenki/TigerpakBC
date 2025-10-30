@@ -30,6 +30,26 @@ pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
                 ToolTip = 'The Pick Duration field shows the pick duration for the posted sales invoice.';
             }
 
+            field("Created By"; Rec."Created By")
+            {
+                ApplicationArea = All;
+                Caption = 'Created By';
+                ToolTip = 'The Created By field shows who created the posted sales invoice.';
+            }
+            field("Picked By"; Rec."Picked By")
+            {
+                ApplicationArea = All;
+                Caption = 'Picked By';
+                ToolTip = 'The Picked By field shows who picked the posted sales invoice.';
+            }
+
+            field("Packed By"; Rec."Packed By")
+            {
+                ApplicationArea = All;
+                Caption = 'Packed By';
+                ToolTip = 'The Packed By field shows who packed the posted sales invoice.';
+            }
+
         }
     }
 

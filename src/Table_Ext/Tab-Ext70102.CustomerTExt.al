@@ -25,6 +25,12 @@ tableextension 70102 Customer_TExt extends Customer
             end;
         }
 
+        field(70102; Industry; Text[50])
+        {
+            Caption = 'Industry';
+            DataClassification = ToBeClassified;
+        }
+
 
     }
 

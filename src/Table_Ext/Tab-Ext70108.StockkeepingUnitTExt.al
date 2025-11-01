@@ -58,12 +58,17 @@ tableextension 70108 "Stockkeeping Unit TExt" extends "Stockkeeping Unit"
     var
 
         item: Record Item;
+        "TPCost": Decimal;
 
 
-    //Location: Record "Location";
+        Location: Record "Location";
     begin
         if item.get(Rec."Item No.") then begin
-            Rec."TP Unit Cost_New" := Rec."TP Unit Cost" - (Rec."TP Unit Cost") * item."Provisional Cost%" / 100;
+            if Location.Get(Rec."Location Code") then begin
+                TPCost := Rec."Unit Cost" + (Rec."Unit Cost" * Location."Inflated cost %") / 100;
+                //Rec."TP Unit Cost_New" := Rec."TP Unit Cost" - (Rec."TP Unit Cost") * item."Provisional Cost%" / 100;
+                Rec."TP Unit Cost_New" := TPCost - (TPCost) * item."Provisional Cost%" / 100;
+            end;
 
         end;
     end;

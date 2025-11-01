@@ -40,13 +40,19 @@ pageextension 70124 "Stockkeeping Unit List Ext" extends "Stockkeeping Unit List
                     //location: Record location;
                     item: Record Item;
                     SKU: Record "Stockkeeping Unit";
+                    location: Record "Location";
+                    TPcost: Decimal;
                 begin
                     if SKU.FindFirst() then
                         repeat
                             if item.get(SKU."Item No.") then begin
-                                SKU."TP Unit Cost_New" := SKU."TP Unit Cost" - (SKU."TP Unit Cost") * item."Provisional Cost%" / 100;
+                                if location.Get(SKU."Location Code") then begin
+                                    // SKU."TP Unit Cost_New" := SKU."TP Unit Cost" - (SKU."TP Unit Cost") * item."Provisional Cost%" / 100;
+                                    TPcost := SKU."Unit Cost" + (SKU."Unit Cost" * location."Inflated cost %") / 100;
+                                    SKU."TP Unit Cost_New" := TPcost - (TPcost * item."Provisional Cost%") / 100;
 
-                                SKU.Modify();
+                                    SKU.Modify();
+                                end;
                             end;
                         until SKU.Next() = 0;
 

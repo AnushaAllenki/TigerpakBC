@@ -96,19 +96,33 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
 
                 trigger OnAction()
                 var
+                    salesLine: Record "Sales Line";
                     SKU: Record "Stockkeeping Unit";
-                begin
-                    repeat
-                        //Rec.SetRange("Document Type", Rec."Document Type"::Invoice);
-                        //Rec.SetRange("Type", Rec."Type"::Item);
-                        rec.SetRange("No.", SKU."Item No.");
-                        Rec.SetRange("Location Code", SKU."Location Code");
-                        if Rec.FindFirst() then begin
 
-                            rec."TP Unit Cost_New" := SKU."TP Unit Cost_New";
-                            rec.Modify();
-                        end;
-                    until Rec.Next() = 0;
+                begin
+
+                    //Rec.SetRange("Document Type", Rec."Document Type"::Invoice);
+                    //Rec.SetRange("Type", Rec."Type"::Item);
+                    // rec.SetRange("No.", SKU."Item No.");
+                    // Rec.SetRange("Location Code", SKU."Location Code");
+                    // if Rec.FindFirst() then begin
+
+                    //     rec."TP Unit Cost_New" := SKU."TP Unit Cost_New";
+                    //     rec.Modify();
+                    // end;
+                    salesLine.reset();
+                    salesLine.SetRange("Document Type", salesLine."Document Type"::Quote);
+                    salesLine.SetRange("Type", salesLine."Type"::Item);
+                    if salesLine.FindSet() then
+                        repeat
+                            SKU.Reset();
+                            SKU.SetRange("Item No.", salesLine."No.");
+                            SKU.SetRange("Location Code", salesLine."Location Code");
+                            if SKU.FindFirst() then begin
+                                salesLine.Validate("TP Unit Cost_New", SKU."Tp Unit Cost_New");
+                                salesLine.Modify();
+                            end;
+                        until salesLine.next = 0;
 
                 end;
 

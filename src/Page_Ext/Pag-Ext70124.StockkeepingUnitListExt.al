@@ -50,15 +50,11 @@ pageextension 70124 "Stockkeeping Unit List Ext" extends "Stockkeeping Unit List
                                     // SKU."TP Unit Cost_New" := SKU."TP Unit Cost" - (SKU."TP Unit Cost") * item."Provisional Cost%" / 100;
                                     TPcost := SKU."Unit Cost" + (SKU."Unit Cost" * location."Inflated cost %") / 100;
                                     SKU."TP Unit Cost_New" := TPcost - (TPcost * item."Provisional Cost%") / 100;
-
                                     SKU.Modify();
                                 end;
                             end;
                         until SKU.Next() = 0;
-
-
                 end;
-
             }
 
         }

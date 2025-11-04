@@ -290,7 +290,7 @@ codeunit 70100 "EventSubscribers1"
         //Salesinvline.SetRange("No.", ;
         //Salesinvline.SetRange("Location Code", sku."Location Code");
         salesinvline.setrange(type, salesinvline.type::Item);
-        Salesinvline.SetFilter("TP Unit Cost_New", '=1%', 0);
+        Salesinvline.SetFilter("TP Unit Cost_New", '=%1', 0);
         if SalesinvLine.FindSet() then
             repeat
                 SKU.Reset();

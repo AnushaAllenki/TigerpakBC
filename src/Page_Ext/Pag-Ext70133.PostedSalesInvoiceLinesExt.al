@@ -46,6 +46,20 @@ pageextension 70133 "Posted Sales Invoice Lines Ext" extends "Posted Sales Invoi
 
                 end;
             }
+            action("Update TP Unit Cost_New")
+            {
+                ApplicationArea = All;
+                Caption = 'Update "TP Unit Cost_New"';
+                ToolTip = 'Update "TP Unit Cost_New"';
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    EventSub: Codeunit "EventSubscribers1";
+                begin
+                    EventSub.UpdateAllTPUnitCostNew();
+                end;
+            }
         }
     }
     var
@@ -56,19 +70,7 @@ pageextension 70133 "Posted Sales Invoice Lines Ext" extends "Posted Sales Invoi
     // {
     //     addafter("Show Document")
     //     {
-    //         action("Update TP Unit Cost_New")
-    //         {
-    //             ApplicationArea = All;
-    //             Caption = 'Update "TP Unit Cost_New"';
-    //             ToolTip = 'Update "TP Unit Cost_New"';
-    //             Image = Action;
-
-    //             trigger OnAction()
-    //             var
-    //                 EventSub: Codeunit "EventSubscribers1";
-    //             begin
-    //                 EventSub.UpdateAllTPUnitCostNew();
-    //             end;
+    //        
     //         }
     // }
 }

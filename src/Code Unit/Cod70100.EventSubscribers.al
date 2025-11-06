@@ -291,6 +291,7 @@ codeunit 70100 "EventSubscribers1"
         //Salesinvline.SetRange("Location Code", sku."Location Code");
         salesinvline.setrange(type, salesinvline.type::Item);
         Salesinvline.SetFilter("TP Unit Cost_New", '=%1', 0);
+        Salesinvline.SETFILTER("Posting Date", '01/10/25..31/10/25');  // Filter on the records to update only october month lines
         if SalesinvLine.FindSet() then
             repeat
                 SKU.Reset();

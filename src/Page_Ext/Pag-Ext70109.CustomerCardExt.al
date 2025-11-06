@@ -49,10 +49,17 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
 
         addafter("Format Region")
         {
-            field(Industry; Rec.Industry)
+            //     field(Industry; Rec.Industry)
+            //     {
+            //         ApplicationArea = All;
+            //         Caption = 'Industry';
+            //     }
+            // }
+
+            field(Reseller; Rec.Reseller)
             {
                 ApplicationArea = All;
-                Caption = 'Industry';
+                Caption = 'Reseller';
             }
         }
     }

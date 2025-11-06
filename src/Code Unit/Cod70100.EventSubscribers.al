@@ -599,7 +599,7 @@ codeunit 70100 "EventSubscribers1"
 
     end; // #275: Item Template- Extended Text. Need to uncomment and deploy upon Justin's confirmation
 
-    procedure UpdatedEmailSent()
+    procedure UpdatedEmailSent()    // #254 Credit returns - email sent upon posting SRO and Credit memo
     var
         SIH: Record "Sales Invoice Header";
     begin

@@ -23,7 +23,7 @@ tableextension 70102 Customer_TExt extends Customer
                 end;
             end;
         }
-        field(70110; Reseller; Boolean)
+        field(70115; Reseller; Boolean)
         {
             Caption = 'Reseller';
             DataClassification = ToBeClassified;

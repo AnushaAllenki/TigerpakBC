@@ -291,7 +291,7 @@ codeunit 70100 "EventSubscribers1"
         //Salesinvline.SetRange("Location Code", sku."Location Code");
         salesinvline.setrange(type, salesinvline.type::Item);
         Salesinvline.SetFilter("TP Unit Cost_New", '=%1', 0);
-        Salesinvline.SETFILTER("Posting Date", '01/10/25..31/10/25');  // Filter on the records to update only october month lines
+        //Salesinvline.SETFILTER("Posting Date", '01/10/25..31/10/25');  // Filter on the records to update only october month lines
         if SalesinvLine.FindSet() then
             repeat
                 SKU.Reset();
@@ -381,7 +381,8 @@ codeunit 70100 "EventSubscribers1"
         SIL: Record "Sales Invoice Line";
         TotalCost: Decimal;
     begin
-        SIH.SetRange("Margin Amount_New", 0);
+        SIH.SetRange("Posting Date", DMY2Date(1, 10, 2025), DMY2Date(31, 10, 2025)); // Filter on the records to update only october,2025 month invoices
+        //SIH.SetRange("Margin Amount_New", 0);
         if SIH.Findfirst() then
             repeat
                 Clear(TotalCost);
@@ -428,6 +429,7 @@ codeunit 70100 "EventSubscribers1"
     begin
         CLE.Reset();
         CLE.SetRange("Document Type", CLE."Document Type"::Invoice);
+        // CLE.SetRange("Posting Date", DMY2Date(1, 10, 2025), DMY2Date(31, 10, 2025)); // Filter on the records to update only october,2025 month invoices
         CLE.SetRange("Inv Margin Amount_New", 0);
         if CLE.FindFirst() then
             repeat
@@ -600,8 +602,7 @@ codeunit 70100 "EventSubscribers1"
 
     end; // #275: Item Template- Extended Text. Need to uncomment and deploy upon Justin's confirmation
 
-    procedure UpdatedEmailSent()    // #254 Credit returns - email sent upon posting SRO and Credit memo
-    var
+    procedure UpdatedEmailSent()    // To make Emial sent field true for all sales invoices those are false to turn on job queue for sending emails
         SIH: Record "Sales Invoice Header";
     begin
         SIH.Reset();

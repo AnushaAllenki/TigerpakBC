@@ -2,7 +2,7 @@
   "id": "2cc9585b-d11d-4b9c-b39e-b8558554e040",
   "name": "Tigerpak-BC",
   "publisher": "Tigerpak",
-  "version": "25.11.12.00",
+  "version": "25.11.12.01",
   "brief": "",
   "target": "Cloud",
   "description": "",
@@ -15,14 +15,14 @@
     {
     "id" : "c4bae218-fc58-4850-a39e-60a59373688f",
     "name" : "Tigerpak-Base",
-    "version" : "2025.10.24.1",
+    "version" : "2025.10.23.6",
 
     "publisher" : "Wild-Tech"
     },
     {
       "id" : "754368ed-2446-4ced-afb2-c693c70dc5cb",
       "name" : "TigerPak - Email Processor",
-      "version" : "25.10.6.0",
+      "version" : "25.3.24.1",
       "publisher" : "Wild-Tech"
       }
       ,

@@ -21,6 +21,16 @@ pageextension 70100 SalesHeader_OnHold extends "Sales Order"
 
 
         }
+        addafter("Delivery/Despatch Instructions")
+        {
+            field("WHSE Shipment Created By"; Rec."WHSE Shipment Created By")
+            {
+                ApplicationArea = All;
+                Caption = 'WHSE Shipment Created By';
+                Editable = false;
+            }
+        }
+
         modify("Ship-to Address")
         {
             trigger OnAfterValidate()

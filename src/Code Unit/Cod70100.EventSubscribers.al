@@ -565,9 +565,10 @@ codeunit 70100 "EventSubscribers1"
     begin
 
         if Rec."Ship-to Address" <> Rec."Sell-to Address" then
-            Rec."Alt Address" := 'Alternative Address'
-        else
-            Rec."Alt Address" := '';
+            if Rec."Ship-to County" <> Rec."Sell-to County" then
+                Rec."Alt Address" := 'Alternative Address'
+            else
+                Rec."Alt Address" := '';
         Rec.Modify();
 
 

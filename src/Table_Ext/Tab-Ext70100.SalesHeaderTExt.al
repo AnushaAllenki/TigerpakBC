@@ -89,9 +89,10 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             trigger OnAfterValidate()
             begin
                 if rec."Ship-to Address" <> rec."Sell-to Address" then
-                    rec."Alt Address" := 'Alternate Address'
-                else
-                    rec."Alt Address" := '';
+                    if Rec."Ship-to County" <> Rec."Sell-to County" then
+                        rec."Alt Address" := 'Alternate Address'
+                    else
+                        rec."Alt Address" := '';
             end;
         }
 

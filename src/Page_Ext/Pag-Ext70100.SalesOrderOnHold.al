@@ -23,7 +23,7 @@ pageextension 70100 SalesHeader_OnHold extends "Sales Order"
         }
         addafter("Delivery/Despatch Instructions")
         {
-            field("WHSE Shipment Created By"; Rec."WHSE Shipment Created By")
+            field("WHSE Shipment Created By"; Rec."WHSE Shipment Created By")   //#298 - Sales Order/New field - Web Tracking
             {
                 ApplicationArea = All;
                 Caption = 'WHSE Shipment Created By';

@@ -111,7 +111,7 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
                 end;
             end;
         }
-        field(70400; "WHSE Shipment Created By"; Text[100])
+        field(70400; "WHSE Shipment Created By"; Text[100])   //#298 - Sales Order/New field - Web Tracking
         {
             Caption = 'WHSE Shipment Created By';
             DataClassification = CustomerContent;

@@ -577,11 +577,13 @@ codeunit 70100 "EventSubscribers1"
     local procedure OnAfterInsertEvent1(var Rec: Record "Sales Header"; RunTrigger: Boolean)
     begin
 
-        if Rec."Ship-to Address" <> Rec."Sell-to Address" then
+        if rec."Ship-to Address" <> rec."Sell-to Address" then
+            rec."Alt Address" := 'Alternate Address'
+        else
             if Rec."Ship-to County" <> Rec."Sell-to County" then
-                Rec."Alt Address" := 'Alternative Address'
+                rec."Alt Address" := 'Alternate Address'
             else
-                Rec."Alt Address" := '';
+                rec."Alt Address" := '';
         Rec.Modify();
 
 

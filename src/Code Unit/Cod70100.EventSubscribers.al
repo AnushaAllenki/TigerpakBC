@@ -147,6 +147,14 @@ codeunit 70100 "EventSubscribers1"
         end;
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Get Source Doc. Outbound", 'OnBeforeCreateFromSalesOrder', '', false, false)]
+    local procedure OnBeforeCreateFromSalesOrder(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean)
+    begin
+        SalesHeader.Validate("WHSE Shipment Created By", UserId());   //#298 - Sales Order/New field - Web Tracking
+        SalesHeader.Modify(true);
+    end;
+
+
 
 
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterFinalizePosting, '', true, true)]

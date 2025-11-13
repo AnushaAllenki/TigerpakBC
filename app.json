@@ -2,7 +2,7 @@
   "id": "2cc9585b-d11d-4b9c-b39e-b8558554e040",
   "name": "Tigerpak-BC",
   "publisher": "Tigerpak",
-  "version": "25.11.10.00",
+  "version": "25.11.12.05",
   "brief": "",
   "target": "Cloud",
   "description": "",
@@ -24,7 +24,7 @@
       "name" : "TigerPak - Email Processor",
       "version" : "25.3.24.1",
       "publisher" : "Wild-Tech"
-      }
+      }  
       ,
     {
       "id" : "d36f1fab-93da-4ce2-8393-f683804f236d",
@@ -39,6 +39,7 @@
       "version" : "26.0.2.200769",
       "publisher" : "Continia Software"
       }
+  
 
   ],
   "screenshots": [],
@@ -47,7 +48,7 @@
   "idRanges": [
     {
       "from": 70100,
-      "to": 70170
+      "to": 70179
     }
   ],
   "resourceExposurePolicy": {

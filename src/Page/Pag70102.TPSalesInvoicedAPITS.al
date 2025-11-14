@@ -35,6 +35,11 @@ page 70102 "TP Sales Invoiced API TS"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the user the created that created the invoice';
                 }
+                field("WHSE Shipment Created By"; rec."WHSE Shipment Created By")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the user that created the warehouse shipment for the invoice.';
+                }
                 field("ModifiedBy"; rec."Modified By")
                 {
                     ApplicationArea = All;
@@ -70,6 +75,7 @@ page 70102 "TP Sales Invoiced API TS"
                 {
                     ApplicationArea = all;
                 }
+
             }
         }
     }

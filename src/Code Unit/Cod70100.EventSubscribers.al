@@ -151,7 +151,7 @@ codeunit 70100 "EventSubscribers1"
     local procedure OnBeforeCreateFromSalesOrder(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean)
     begin
         SalesHeader.Validate("WHSE Shipment Created By", UserId());   //#298 - Sales Order/New field - Web Tracking
-        SalesHeader.Modify(true);
+        SalesHeader.Modify();
     end;
 
 

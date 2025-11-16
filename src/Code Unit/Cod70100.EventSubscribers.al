@@ -173,12 +173,33 @@ codeunit 70100 "EventSubscribers1"
     end;
 
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Get Source Doc. Outbound", 'OnBeforeCreateFromSalesOrder', '', false, false)]
-    local procedure OnBeforeCreateFromSalesOrder(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean)
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Get Source Doc. Outbound", 'OnAfterCreateWhseShipmentHeaderFromWhseRequest', '', false, false)]
+    local procedure OnAfterCreateWhseShipmentHeaderFromWhseRequest(var WarehouseRequest: Record "Warehouse Request"; var WhseShptHeader: Record "Warehouse Shipment Header")
+    var
+
+        SH: Record "Sales Header";
+        WHSELine: Record "Warehouse Shipment Line";
     begin
-        SalesHeader.Validate("WHSE Shipment Created By", UserId());   //#298 - Sales Order/New field - Web Tracking
-        SalesHeader.Modify();
+        WHSELine.Reset();
+        WHSELine.SetRange("No.", WhseShptHeader."No.");
+        if WHSELine.FindFirst() then begin
+            if SH.Get(SH."Document Type"::Order, WHSELine."Source No.") then begin
+                SH.Reset();
+                SH.SetRange("No.", WHSELine."Source No.");
+                if SH.FindFirst() then begin
+                    SH.Validate("WHSE Shipment Created By", UserId());   //#298 - Sales Order/New field - Web Tracking
+                    SH.Modify();
+                end;
+
+            end;
+        end;
     end;
+
+    // local procedure OnBeforeCreateFromSalesOrder(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean)
+    // begin
+    //     SalesHeader.Validate("WHSE Shipment Created By", UserId());   //#298 - Sales Order/New field - Web Tracking
+    //     SalesHeader.Modify();
+    // end;
 
 
 

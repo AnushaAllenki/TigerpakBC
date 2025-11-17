@@ -112,7 +112,7 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                     // end;
                     salesLine.reset();
                     salesLine.SetRange("Document Type", salesLine."Document Type"::Quote);
-                    salesLine.SetFilter("Document No.", 'MSQ-N*');   // To update TP Unit Cost_new for only MSQ-N* sales quotes
+                    salesLine.SetFilter("Document No.", 'MSQ*');   // To update TP Unit Cost_new for only MSQ-N*/ MSQ*sales quotes
                     salesLine.SetRange("Type", salesLine."Type"::Item);
                     if salesLine.FindSet() then
                         repeat

@@ -300,21 +300,12 @@ codeunit 70100 "EventSubscribers1"
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterSalesCrMemoHeaderInsert, '', true, true)]
     local procedure OnAfterSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
     begin
-        //SalesCrMemoHeader.SetRange("Pre-Assigned No.", SalesHeader."No.");
-        //if SalesCrMemoHeader.findfirst() then begin
+
         if SalesCrMemoHeader."Auto Email - Post" then begin
             SalesCrMemoHeader.SetRecFilter();
             salesCrMemoHeader.EmailRecords(false);
         end;
     end;
-
-
-    //end;
-
-
-
-
-
 
 
 
@@ -601,16 +592,27 @@ codeunit 70100 "EventSubscribers1"
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterInsertEvent', '', true, true)]
 
     local procedure OnAfterInsertEvent1(var Rec: Record "Sales Header"; RunTrigger: Boolean)
+    var
+        Postcodes: Record "Post Code";
     begin
-        if Rec."Ship-to County" <> Rec."Sell-to County" then
-            //if rec."Ship-to Address" <> rec."Sell-to Address" then
-            rec."Alt Address" := 'Alternate Address'
-        // else
+        Postcodes.SetRange("Code", Rec."Ship-to Post Code");
+        if Postcodes.FindFirst() then begin
+            if rec."Ship-to County" <> Rec."Sell-to County" then
+                rec."Alt Address" := 'Alternate Address'
+            else
+                rec."Alt Address" := '';
+        end;
+        // if Rec."Ship-to City" <> Rec."Sell-to City" then
+        //     //if rec."Ship-to Address" <> rec."Sell-to Address" then
+        //     rec."Alt Address" := 'Alternate Address'
+        // // else
 
-        //         rec."Alt Address" := 'Alternate Address'
-        else
-            rec."Alt Address" := '';
-        Rec.Modify();
+        // //         rec."Alt Address" := 'Alternate Address'
+        // else
+        //     rec."Alt Address" := '';
+        // Rec.Modify();
+
+
 
 
     end;

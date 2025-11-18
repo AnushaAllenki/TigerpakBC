@@ -49,6 +49,12 @@ pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
                 Caption = 'Packed By';
                 ToolTip = 'The Packed By field shows who packed the posted sales invoice.';
             }
+            field("Your Reference"; Rec."Your Reference")
+            {
+                ApplicationArea = All;
+                Caption = 'Your Reference';
+                ToolTip = 'The Your Reference field shows your reference for the posted sales invoice.';
+            }
 
         }
     }

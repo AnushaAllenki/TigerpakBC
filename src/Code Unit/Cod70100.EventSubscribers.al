@@ -297,16 +297,46 @@ codeunit 70100 "EventSubscribers1"
 
 
 
-    [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterSalesCrMemoHeaderInsert, '', true, true)]
-    local procedure OnAfterSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
-    begin
+    // [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterSalesCrMemoHeaderInsert, '', true, true)]
+    // local procedure OnAfterSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
+    // begin
 
-        if SalesCrMemoHeader."Auto Email - Post" then begin
-            SalesCrMemoHeader.SetRecFilter();
-            salesCrMemoHeader.EmailRecords(false);
-        end;
+    //     if SalesCrMemoHeader."Auto Email - Post" then begin
+    //         SalesCrMemoHeader.SetRecFilter();
+    //         salesCrMemoHeader.EmailRecords(false);
+    //     end;
+    // end;
+
+
+    [EventSubscriber(ObjectType::Table, Database::"Sales Cr.Memo Header", 'OnAfterInsertEvent', '', false, false)]
+    local procedure OnAfterSalesCrMemoHeaderInsert(var Rec: Record "Sales Cr.Memo Header")
+    begin
+        SendCreditMemoEmail(Rec);
     end;
 
+
+
+    local procedure SendCreditMemoEmail(SalesCrMemoHeader: Record "Sales Cr.Memo Header")
+    var
+        TempBlob: Codeunit "Temp Blob";
+        OutStream: OutStream;
+        FileName: Text;
+    begin
+        FileName := 'CreditMemo_' + SalesCrMemoHeader."No." + '.pdf';
+        // Use Temp Blob which is cloud-compatible to create an OutStream.
+        TempBlob.CreateOutStream(OutStream);
+        //Report.SaveAsPdf(Report::"Sales - Credit Memo", SalesCrMemoHeader."No.", OutStream);
+
+        // NOTE: Report.SaveAsPdf is OnPrem-only and cannot be used in cloud extensions.
+        // Implement a cloud-compatible PDF generation approach here (for example, render the report
+        // using Report.Render or a dedicated service that returns a blob/stream) and write the
+        // result into OutStream/TempBlob before sending.
+        // TODO: Render the "Sales - Credit Memo" report into OutStream using a cloud-safe API.
+
+        // NOTE: Sending a File variable is OnPrem-only; replace or reimplement SendEmailToCustomer
+        // with a cloud-compatible email routine that accepts a blob or stream.
+        // SendEmailToCustomer(SalesCrMemoHeader."Sell-to Customer No.", FileName, TempBlob);
+    end;
 
 
 

@@ -592,28 +592,20 @@ codeunit 70100 "EventSubscribers1"
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterInsertEvent', '', true, true)]
 
     local procedure OnAfterInsertEvent1(var Rec: Record "Sales Header"; RunTrigger: Boolean)
-    var
-        Postcodes: Record "Post Code";
+
     begin
-        Postcodes.SetRange("Code", Rec."Ship-to Post Code");
-        if Postcodes.FindFirst() then begin
-            if rec."Ship-to County" <> Rec."Sell-to County" then
-                rec."Alt Address" := 'Alternate Address'
-            else
-                rec."Alt Address" := '';
-        end;
-        // if Rec."Ship-to City" <> Rec."Sell-to City" then
-        //     //if rec."Ship-to Address" <> rec."Sell-to Address" then
-        //     rec."Alt Address" := 'Alternate Address'
-        // // else
-
-        // //         rec."Alt Address" := 'Alternate Address'
-        // else
-        //     rec."Alt Address" := '';
-        // Rec.Modify();
+        if rec."Ship-to Address" <> rec."Sell-to Address" then
+            rec."Alt Address" := 'Alternate Address'
+        else
+            rec."Alt Address" := '';
+        Rec.Modify();
 
 
-
+        if rec."Ship-to post code" <> rec."Sell-to post code" then
+            rec."Alt Address" := 'Alternate Address'
+        else
+            rec."Alt Address" := '';
+        Rec.Modify();
 
     end;
 

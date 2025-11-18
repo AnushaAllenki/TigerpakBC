@@ -84,11 +84,11 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             OptionMembers = " ","Won","Lost";
 
         }
-        modify("Ship-to Address")    //Alternate Shipping Address from Weborders when different from Sell-to Address
+        modify("Ship-to post code")    //Alternate Shipping Address from Weborders when different from Sell-to Address
         {
             trigger OnAfterValidate()
             begin
-                if Rec."Ship-to City" <> Rec."Sell-to City" then
+                if Rec."Ship-to post code" <> Rec."Sell-to post code" then
                     //if rec."Ship-to Address" <> rec."Sell-to Address" then
                     rec."Alt Address" := 'Alternate Address'
                 // else
@@ -96,6 +96,35 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
                 //         rec."Alt Address" := 'Alternate Address'
                 else
                     rec."Alt Address" := '';
+                Rec.Modify();
+
+                if rec."Ship-to Address" <> rec."Sell-to Address" then
+                    rec."Alt Address" := 'Alternate Address'
+
+                else
+                    rec."Alt Address" := '';
+                Rec.Modify();
+
+            end;
+        }
+        modify("Ship-to Address")
+        {
+            trigger OnAfterValidate()
+            begin
+                if Rec."Ship-to Post code" <> Rec."Sell-to post code" then
+                    rec."Alt Address" := 'Alternate Address'
+
+                else
+                    rec."Alt Address" := '';
+                Rec.Modify();
+
+                if rec."Ship-to Address" <> rec."Sell-to Address" then
+                    rec."Alt Address" := 'Alternate Address'
+
+                else
+                    rec."Alt Address" := '';
+                Rec.Modify();
+
             end;
         }
 

@@ -31,18 +31,45 @@ pageextension 70100 SalesHeader_OnHold extends "Sales Order"
             }
         }
 
+        modify("Ship-to Post code")
+        {
+            trigger OnAfterValidate()
+            begin
+                if Rec."Ship-to Post code" <> Rec."Sell-to post code" then
+                    rec."Alt Address" := 'Alternate Address'
+
+                else
+                    rec."Alt Address" := '';
+                Rec.Modify();
+
+                if rec."Ship-to Address" <> rec."Sell-to Address" then
+                    rec."Alt Address" := 'Alternate Address'
+
+                else
+                    rec."Alt Address" := '';
+                Rec.Modify();
+
+            end;
+        }
+
         modify("Ship-to Address")
         {
             trigger OnAfterValidate()
             begin
-                if Rec."Ship-to City" <> Rec."Sell-to City" then
-                    // if rec."Ship-to Address" <> rec."Sell-to Address" then
+                if Rec."Ship-to Post code" <> Rec."Sell-to post code" then
                     rec."Alt Address" := 'Alternate Address'
-                // else
 
-                //         rec."Alt Address" := 'Alternate Address'
                 else
                     rec."Alt Address" := '';
+                Rec.Modify();
+
+                if rec."Ship-to Address" <> rec."Sell-to Address" then
+                    rec."Alt Address" := 'Alternate Address'
+
+                else
+                    rec."Alt Address" := '';
+                Rec.Modify();
+
             end;
         }
         // modify("Sell-to Contact No.")

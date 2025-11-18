@@ -21,5 +21,13 @@ tableextension 70105 "Cust. Ledger Entry TExt" extends "Cust. Ledger Entry"
 
 
         }
+
+        field(70112; "WHSE Shipment Created By"; Text[50])
+        {
+            Caption = 'WHSE Shipment Created By';
+            FieldClass = FlowField;
+            CalcFormula = max("Sales Invoice Header"."WHSE Shipment Created By" where("No." = field("Document No."),
+                            "Posting Date" = field("Posting Date")));
+        }
     }
 }

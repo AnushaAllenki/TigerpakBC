@@ -32,6 +32,16 @@ pageextension 70117 "Customer Ledger Entries Ext" extends "Customer Ledger Entri
             ApplicationArea = All;
             Editable = false;
         }
+
+        addafter("Document Type")
+        {
+            field("WHSE Shipment Created By"; Rec."WHSE Shipment Created By")
+            {
+                ApplicationArea = All;
+                Caption = 'WHSE Shipment Created By';
+                Editable = false;
+            }
+        }
     }
 
     actions

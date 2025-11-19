@@ -41,6 +41,11 @@ page 70102 "TP Sales Invoiced API TS"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the user that created the warehouse shipment for the invoice.';
                 }
+                field("Your Reference"; Rec."Your Reference")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies your reference for the invoice.';
+                }
                 field("ModifiedBy"; rec."Modified By")
                 {
                     ApplicationArea = All;

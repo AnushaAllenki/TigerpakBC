@@ -2,6 +2,16 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
 {
     layout
     {
+        addafter(Description)
+        {
+            field("Line No."; Rec."Line No.")
+            {
+                ApplicationArea = All;
+                Caption = 'Line No.';
+                ToolTip = 'The Line No. field shows the line number for the sales quote line.';
+            }
+
+        }
         modify("Line Discount %")
         {
             Visible = false;
@@ -82,5 +92,15 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
         }
 
     }
+
+    trigger OnOpenPage();
+    var
+        NewView: Text;
+    begin
+        // Add ORDERBY to the existing SourceTableView
+        NewView := Rec.GetView(false) + ' ORDERBY("Item No." ASC, "Line No." ASC)';
+        Rec.SetView(NewView);
+        CurrPage.SetTableView(Rec);
+    end;
 }
 

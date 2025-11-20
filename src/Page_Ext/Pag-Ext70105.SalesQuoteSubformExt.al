@@ -1,5 +1,6 @@
 pageextension 70105 "Sales Quote Subform_Ext" extends "Sales Quote Subform"
 {
+
     layout
     {
         modify("Line Discount %")
@@ -43,4 +44,14 @@ pageextension 70105 "Sales Quote Subform_Ext" extends "Sales Quote Subform"
             Enabled = false;
         }
     }
+
+    trigger OnOpenPage();
+    var
+        NewView: Text;
+    begin
+        // Add ORDERBY to the existing SourceTableView
+        NewView := Rec.GetView(false) + ' ORDERBY("Item No." ASC, "Line No." ASC)';
+        Rec.SetView(NewView);
+        CurrPage.SetTableView(Rec);
+    end;
 }

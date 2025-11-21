@@ -304,6 +304,7 @@ codeunit 70100 "EventSubscribers1"
         Customer: Record Customer;
         Contact: Record Contact;
         EmailMsg: Codeunit "Email Message";
+        Email: codeunit Email;
         CreditMemoReport: Report "Standard Sales - Credit Memo";
         TempBlob: Codeunit "Temp Blob";
         OutStream: OutStream;
@@ -317,6 +318,8 @@ codeunit 70100 "EventSubscribers1"
             // Get Customer
             if Customer.Get(SalesCrMemoHeader."Sell-to Customer No.") then begin
                 // Find Default Contact for Customer
+                Contact.Reset();
+                Contact.Get(Customer."Primary Contact No.");
                 if Contact."E-Mail" <> '' then begin
                     // Generate PDF into TempBlob
                     TempBlob.CreateOutStream(OutStream);
@@ -334,7 +337,9 @@ codeunit 70100 "EventSubscribers1"
                     // The "Email Message" codeunit in this environment does not expose a Send method.
                     // Implement sending using a supported mail codeunit (for example, "SMTP Mail" or a custom email-sending service).
                     // For now just inform that the email was prepared.
-                    Message('Email prepared for %1; implement sending using a supported mail codeunit.', Contact."E-Mail");
+                    Email.Send(EmailMsg, Enum::"Email Scenario"::"Sales Credit Memo");
+
+
                 end;
             end;
         end;

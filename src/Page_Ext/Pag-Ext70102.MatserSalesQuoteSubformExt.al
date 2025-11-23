@@ -1,5 +1,7 @@
 pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote Subform"
+
 {
+
     layout
     {
         addafter(Description)
@@ -93,14 +95,19 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
 
     }
 
-    trigger OnOpenPage();
-    var
-        NewView: Text;
+
+    trigger OnOpenPage()
+
     begin
-        // Add ORDERBY to the existing SourceTableView
-        NewView := Rec.GetView(false) + ' ORDERBY("Item No." ASC, "Line No." ASC)';
-        Rec.SetView(NewView);
-        CurrPage.SetTableView(Rec);
+
+        if not Rec.IsEmpty() then begin
+            Rec.SETCURRENTKEY("No.", "Line No."); // Sort by Item No. first, then Line No.
+            Rec.ASCENDING(TRUE);
+        end;
+
+
     end;
+
+
 }
 

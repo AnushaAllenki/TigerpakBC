@@ -96,18 +96,17 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
     }
 
 
-    trigger OnOpenPage()
+    // trigger OnOpenPage()
 
-    begin
+    // begin
 
-        if not Rec.IsEmpty() then begin
-            //Rec.SETCURRENTKEY("No.", "Line No."); // Sort by Item No. first, then Line No.
-            //rec.SetCurrentKey()
-            Rec.ASCENDING(TRUE);
-        end;
+    //     if not Rec.IsEmpty() then begin
+    //         Rec.SETCURRENTKEY("No.", "Line No."); // Sort by Item No. first, then Line No.
+    //         Rec.ASCENDING(TRUE);
+    //     end;
 
 
-    end;
+    // end;
 
 
 }

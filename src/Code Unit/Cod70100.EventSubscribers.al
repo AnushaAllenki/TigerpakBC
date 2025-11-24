@@ -313,7 +313,7 @@ codeunit 70100 "EventSubscribers1"
         FileName: Text;
         SCHRecRef: RecordRef;
     begin
-        if salesCrMemoHeader."Auto Email - Post" then begin     //E
+        if salesCrMemoHeader."Auto Email - Post" then begin     //#254 - Auto Email Credit Memo on Post of CR/SRO - emailing to customer's default contact email
 
             if Customer.Get(SalesCrMemoHeader."Sell-to Customer No.") then begin
                 // Get Primary Contact
@@ -345,14 +345,16 @@ codeunit 70100 "EventSubscribers1"
 
 
 
-    //     if SalesCrMemoHeader."Auto Email - Post" then begin
+    //     if SalesCrMemoHeader."Auto Email - Post" then begin   //#254 - Auto Email Credit Memo on Post of CR/SRO - emailing to customer's sell-to email
     //         SalesCrMemoHeader.SetRecFilter();
     //         salesCrMemoHeader.EmailRecords(false);
     //     end;
     // end;
-
-
-
+    [eventsubscriber(ObjectType::Table, Database::"Assembly Header", OnValidateLocationCodeOnBeforeValidateDates, '', false, false)]
+    local procedure OnValidateLocationCodeOnBeforeValidateDates(var AssemblyHeader: Record "Assembly Header"; xAssemblyHeader: Record "Assembly Header"; var IsHandled: Boolean)
+    begin
+        AssemblyHeader.CreateDimFromDefaultDim();
+    end;// change of location should update line dimension based on new location.
 
 
 

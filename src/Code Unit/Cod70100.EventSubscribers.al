@@ -300,46 +300,40 @@ codeunit 70100 "EventSubscribers1"
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterSalesCrMemoHeaderInsert, '', true, true)]
     local procedure OnAfterSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
 
+
     var
         Customer: Record Customer;
         Contact: Record Contact;
         EmailMsg: Codeunit "Email Message";
-        Email: codeunit Email;
+        Email: Codeunit "Email";
         CreditMemoReport: Report "Standard Sales - Credit Memo";
         TempBlob: Codeunit "Temp Blob";
         OutStream: OutStream;
         InStream: InStream;
         FileName: Text;
-        RecRef: RecordRef;
-
+        SCHRecRef: RecordRef;
     begin
-        if SalesCrMemoHeader."Auto Email - Post" then begin
+        if salesCrMemoHeader."Auto Email - Post" then begin     //E
 
-            // Get Customer
             if Customer.Get(SalesCrMemoHeader."Sell-to Customer No.") then begin
-                // Find Default Contact for Customer
-                Contact.Reset();
-                Contact.Get(Customer."Primary Contact No.");
-                if Contact."E-Mail" <> '' then begin
-                    // Generate PDF into TempBlob
-                    TempBlob.CreateOutStream(OutStream);
-                    RecRef.SetTable(SalesCrMemoHeader);
-                    CreditMemoReport.SaveAs('', ReportFormat::Pdf, OutStream, RecRef);
+                // Get Primary Contact
+                if Contact.Get(Customer."Primary Contact No.") then begin
+                    if Contact."E-Mail" <> '' then begin
+                        // Generate Credit Memo PDF into TempBlob
+                        TempBlob.CreateOutStream(OutStream);
+                        report.SaveAs(report::"Standard Sales - Credit Memo", '', ReportFormat::Pdf, OutStream);
 
-                    // Prepare InStream for attachment
-                    TempBlob.CreateInStream(InStream);
-                    FileName := 'CreditMemo_' + SalesCrMemoHeader."No." + '.pdf';
+                        // Prepare InStream for attachment
+                        TempBlob.CreateInStream(InStream);
+                        FileName := 'CreditMemo_' + SalesCrMemoHeader."No." + '.pdf';
 
-                    // Create and Send Email
-                    EmailMsg.Create(Contact."E-Mail", 'Credit Memo ' + SalesCrMemoHeader."No.",
-                                    'Dear ' + Contact.Name + ', please find attached your credit note.');
-                    EmailMsg.AddAttachment(FileName, 'application/pdf', InStream);
-                    // The "Email Message" codeunit in this environment does not expose a Send method.
-                    // Implement sending using a supported mail codeunit (for example, "SMTP Mail" or a custom email-sending service).
-                    // For now just inform that the email was prepared.
-                    Email.Send(EmailMsg, Enum::"Email Scenario"::"Sales Credit Memo");
-
-
+                        // Create and Send Email
+                        EmailMsg.Create(Contact."E-Mail",
+                                        'Credit Memo ' + SalesCrMemoHeader."No.",
+                                        'Dear ' + Contact.Name + ',<br><br>Please find attached your credit note.<br><br>Regards,<br>Your Company');
+                        EmailMsg.AddAttachment(FileName, FileName, InStream);
+                        Email.Send(EmailMsg, Enum::"Email Scenario"::"Sales Credit Memo");
+                    end;
                 end;
             end;
         end;
@@ -357,36 +351,6 @@ codeunit 70100 "EventSubscribers1"
     //     end;
     // end;
 
-
-    // [EventSubscriber(ObjectType::Table, Database::"Sales Cr.Memo Header", 'OnAfterInsertEvent', '', false, false)]
-    // local procedure OnAfterSalesCrMemoHeaderInsert(var Rec: Record "Sales Cr.Memo Header")
-    // begin
-    //     SendCreditMemoEmail(Rec);
-    // end;
-
-
-
-    // local procedure SendCreditMemoEmail(SalesCrMemoHeader: Record "Sales Cr.Memo Header")
-    // var
-    //     TempBlob: Codeunit "Temp Blob";
-    //     OutStream: OutStream;
-    //     FileName: Text;
-    // begin
-    //     FileName := 'CreditMemo_' + SalesCrMemoHeader."No." + '.pdf';
-    //     // Use Temp Blob which is cloud-compatible to create an OutStream.
-    //     TempBlob.CreateOutStream(OutStream);
-    //     //Report.SaveAsPdf(Report::"Sales - Credit Memo", SalesCrMemoHeader."No.", OutStream);
-
-    //     // NOTE: Report.SaveAsPdf is OnPrem-only and cannot be used in cloud extensions.
-    //     // Implement a cloud-compatible PDF generation approach here (for example, render the report
-    //     // using Report.Render or a dedicated service that returns a blob/stream) and write the
-    //     // result into OutStream/TempBlob before sending.
-    //     // TODO: Render the "Sales - Credit Memo" report into OutStream using a cloud-safe API.
-
-    //     // NOTE: Sending a File variable is OnPrem-only; replace or reimplement SendEmailToCustomer
-    //     // with a cloud-compatible email routine that accepts a blob or stream.
-    //     // SendEmailToCustomer(SalesCrMemoHeader."Sell-to Customer No.", FileName, TempBlob);
-    // end;
 
 
 

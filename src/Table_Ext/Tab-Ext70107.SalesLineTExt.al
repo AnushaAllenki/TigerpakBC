@@ -117,7 +117,14 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
 
     }
+    keys
+    {
+        key("No."; "Line No.")
+        {
+            //Clustered = true;
+        }
 
+    }
     trigger OnAfterInsert()
     var
         SKU: Record "Stockkeeping Unit";
@@ -152,4 +159,6 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
     var
         SKU: Record "Stockkeeping Unit";
         Location: Record "Location";
+
 }
+

@@ -350,13 +350,21 @@ codeunit 70100 "EventSubscribers1"
     //         salesCrMemoHeader.EmailRecords(false);
     //     end;
     // end;
-    [eventsubscriber(ObjectType::Table, Database::"Assembly Header", OnValidateLocationCodeOnBeforeValidateDates, '', false, false)]
-    local procedure OnValidateLocationCodeOnBeforeValidateDates(var AssemblyHeader: Record "Assembly Header"; xAssemblyHeader: Record "Assembly Header"; var IsHandled: Boolean)
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Assembly Line Management", OnAfterUpdateAssemblyLines, '', true, true)]
+    local procedure OnAfterUpdateAssemblyLines(var AsmHeader: Record "Assembly Header"; OldAsmHeader: Record "Assembly Header"; FieldNum: Integer; ReplaceLinesFromBOM: Boolean; CurrFieldNo: Integer; CurrentFieldNum: Integer)
+    var
+        asmLine: Record "Assembly Line";
     begin
-        AssemblyHeader.CreateDimFromDefaultDim();
-    end;// change of location should update line dimension based on new location.
-
-
+        if FieldNum = AsmHeader.FieldNo("Location Code") then begin
+            AsmHeader.CreateDimFromDefaultDim();
+            asmLine.SetRange("Document No.", AsmHeader."No.");
+            if asmLine.FindSet() then
+                repeat
+                    asmLine.Validate("Location Code", AsmHeader."Location Code");
+                    asmLine.Modify();
+                until asmLine.Next() = 0;
+        end;
+    end; //Validate location code change in assembly order header to update in assembly lines with dimensions   
 
 
 

@@ -15,7 +15,4 @@ tableextension 70110 "Gen. Product Posting GroupTExt" extends "Gen. Product Post
         }
     }
 
-
-
-
 }

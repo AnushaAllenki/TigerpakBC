@@ -306,12 +306,15 @@ codeunit 70100 "EventSubscribers1"
         Contact: Record Contact;
         EmailMsg: Codeunit "Email Message";
         Email: Codeunit "Email";
-        CreditMemoReport: Report "Standard Sales - Credit Memo";
+        CreditMemoReport: Report "Custom Sales Cr. Memo";
         TempBlob: Codeunit "Temp Blob";
         OutStream: OutStream;
         InStream: InStream;
         FileName: Text;
         SCHRecRef: RecordRef;
+        ReportParameters: text;
+        SalesCrMemoHeader2: Record "Sales Cr.Memo Header";
+        reportselection: Record "Report Selections";
     begin
         if salesCrMemoHeader."Auto Email - Post" then begin     //#254 - Auto Email Credit Memo on Post of CR/SRO - emailing to customer's default contact email
 
@@ -320,17 +323,30 @@ codeunit 70100 "EventSubscribers1"
                 if Contact.Get(Customer."Primary Contact No.") then begin
                     if Contact."E-Mail" <> '' then begin
                         // Generate Credit Memo PDF into TempBlob
+                        SalesCrMemoHeader2.Get(SalesCrMemoHeader."No.");
+                        SCHRecRef.GetTable(SalesCrMemoHeader2);
                         TempBlob.CreateOutStream(OutStream);
-                        report.SaveAs(report::"Standard Sales - Credit Memo", '', ReportFormat::Pdf, OutStream);
+                        reportselection.reset;
+                        reportselection.setrange(Usage, reportselection.Usage::"S.Cr.Memo");
+                        reportselection.SetRange(Sequence, '1');
+                        if reportselection.FindFirst() then;
+
+
 
                         // Prepare InStream for attachment
-                        TempBlob.CreateInStream(InStream);
+
                         FileName := 'CreditMemo_' + SalesCrMemoHeader."No." + '.pdf';
 
                         // Create and Send Email
                         EmailMsg.Create(Contact."E-Mail",
                                         'Credit Memo ' + SalesCrMemoHeader."No.",
                                         'Dear ' + Contact.Name + ',<br><br>Please find attached your credit note.<br><br>Regards,<br>Your Company');
+
+                        //Report.SaveAs(reportselection."Report ID", '', ReportFormat::Pdf, OutStream, SCHRecRef);
+                        // report.SaveAs(reportselection."Report ID", '', ReportFormat::Pdf, OutStream, SCHRecRef);
+                        CreditMemoReport.SetTableView(SalesCrMemoHeader);
+                        CreditMemoReport.SaveAs('', ReportFormat::Pdf, OutStream, SCHRecRef);
+                        TempBlob.CreateInStream(InStream);
                         EmailMsg.AddAttachment(FileName, FileName, InStream);
                         Email.Send(EmailMsg, Enum::"Email Scenario"::"Sales Credit Memo");
                     end;
@@ -338,9 +354,6 @@ codeunit 70100 "EventSubscribers1"
             end;
         end;
     end;
-
-
-
 
 
 

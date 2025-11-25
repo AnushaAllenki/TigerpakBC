@@ -18,6 +18,7 @@ tableextension 70102 Customer_TExt extends Customer
             begin
                 if "Primary Contact No." <> '' then begin
                     if ContactRec.get(Rec."Primary Contact No.") then begin
+                        //Rec."E-Mail" := ContactRec."E-Mail";
                         if ContactRec.Status = ContactRec.Status::Inactive then
                             Error('This contact is inactive');
                     end;
@@ -43,6 +44,16 @@ tableextension 70102 Customer_TExt extends Customer
 
 
     }
+    trigger OnInsert()
+    var
+        Contact: Record Contact;
+    begin
+        if "Primary Contact No." <> '' then begin
+            if Contact.get(Rec."Primary Contact No.") then begin
+                Rec."E-Mail" := Contact."E-Mail";
+            end;
+        end;
+    end;
 
 
 

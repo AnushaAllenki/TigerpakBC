@@ -297,16 +297,14 @@ codeunit 70100 "EventSubscribers1"
 
 
 
-    [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterSalesCrMemoHeaderInsert, '', true, true)]
-    local procedure OnAfterSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
-
-
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterInsertCrMemoHeader, '', true, true)]
+    local procedure OnAfterInsertCrMemoHeader(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header")
     var
         Customer: Record Customer;
         Contact: Record Contact;
         EmailMsg: Codeunit "Email Message";
         Email: Codeunit "Email";
-        CreditMemoReport: Report "Custom Sales Cr. Memo";
+        CreditMemoReport: Report "TP Custom Sales Cr. Memo";
         TempBlob: Codeunit "Temp Blob";
         OutStream: OutStream;
         InStream: InStream;
@@ -323,15 +321,15 @@ codeunit 70100 "EventSubscribers1"
                 if Contact.Get(Customer."Primary Contact No.") then begin
                     if Contact."E-Mail" <> '' then begin
                         // Generate Credit Memo PDF into TempBlob
-                        SalesCrMemoHeader2.Get(SalesCrMemoHeader."No.");
-                        SCHRecRef.GetTable(SalesCrMemoHeader2);
+
                         TempBlob.CreateOutStream(OutStream);
                         reportselection.reset;
                         reportselection.setrange(Usage, reportselection.Usage::"S.Cr.Memo");
                         reportselection.SetRange(Sequence, '1');
                         if reportselection.FindFirst() then;
 
-
+                        CreditMemoReport.SetTableView(SalesCrMemoHeader);
+                        ReportParameters := '';
 
                         // Prepare InStream for attachment
 
@@ -341,11 +339,13 @@ codeunit 70100 "EventSubscribers1"
                         EmailMsg.Create(Contact."E-Mail",
                                         'Credit Memo ' + SalesCrMemoHeader."No.",
                                         'Dear ' + Contact.Name + ',<br><br>Please find attached your credit note.<br><br>Regards,<br>Your Company');
+                        SalesCrMemoHeader2.reset;
+                        SalesCrMemoHeader2.SetFilter("No.", SalesCrMemoHeader."No.");
+                        SCHRecRef.GetTable(SalesCrMemoHeader2);
 
-                        //Report.SaveAs(reportselection."Report ID", '', ReportFormat::Pdf, OutStream, SCHRecRef);
-                        // report.SaveAs(reportselection."Report ID", '', ReportFormat::Pdf, OutStream, SCHRecRef);
-                        CreditMemoReport.SetTableView(SalesCrMemoHeader);
-                        CreditMemoReport.SaveAs('', ReportFormat::Pdf, OutStream, SCHRecRef);
+                        Report.SaveAs(reportselection."Report ID", ReportParameters, ReportFormat::Pdf, OutStream, SCHRecRef);
+
+                        //CreditMemoReport.SaveAs('', ReportFormat::Pdf, OutStream, SCHRecRef);
                         TempBlob.CreateInStream(InStream);
                         EmailMsg.AddAttachment(FileName, FileName, InStream);
                         Email.Send(EmailMsg, Enum::"Email Scenario"::"Sales Credit Memo");

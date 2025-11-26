@@ -85,29 +85,41 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
 
                 end;
             }
+            action(ViewLinesSortedByItemNo)
+            {
+                ApplicationArea = All;
+                Caption = 'View Lines Sorted by Item No';
+                Image = View;
+
+                trigger OnAction()
+                begin
+                    PAGE.Run(PAGE::"Master Sales Quote Lines", Rec);
+                end;
 
 
 
 
 
+
+
+            }
 
         }
 
+
+        // trigger OnOpenPage()
+
+        // begin
+
+        //     if not Rec.IsEmpty() then begin
+        //         Rec.SETCURRENTKEY("No.", "Line No."); // Sort by Item No. first, then Line No.
+        //         Rec.ASCENDING(TRUE);
+        //     end;
+
+
+        // end;
+
+
     }
-
-
-    // trigger OnOpenPage()
-
-    // begin
-
-    //     if not Rec.IsEmpty() then begin
-    //         Rec.SETCURRENTKEY("No.", "Line No."); // Sort by Item No. first, then Line No.
-    //         Rec.ASCENDING(TRUE);
-    //     end;
-
-
-    // end;
-
-
 }
 

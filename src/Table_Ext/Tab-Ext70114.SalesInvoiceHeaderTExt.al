@@ -33,7 +33,7 @@ tableextension 70114 "Sales Invoice Header TExt" extends "Sales Invoice Header"
 
 
         }
-        field(70400; "WHSE Shipment Created By"; Text[50])
+        field(70400; "WHSE Shipment Created By"; Text[100])
         {
             Caption = 'WHSE Shipment Created By';
             DataClassification = ToBeClassified;

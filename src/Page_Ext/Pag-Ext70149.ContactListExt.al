@@ -14,7 +14,7 @@ pageextension 70149 "Contact List Ext" extends "Contact List"
                 Caption = 'Status';
                 trigger OnValidate()
                 begin
-                    if Rec.Status = Rec.Status::Inactive then
+                    if Rec.Status = 'Inactive' then
                         Message('This contact is inactive');
 
                 end;

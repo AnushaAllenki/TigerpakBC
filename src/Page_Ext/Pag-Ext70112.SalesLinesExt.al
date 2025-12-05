@@ -23,6 +23,18 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
             }
         }
 
+        addafter("Outstanding Quantity")   // field added for APU page AzureSalesLines - Tommy
+        {
+            field("Order creation time/date"; Rec."Order creation time/date")
+            {
+                ApplicationArea = All;
+                Caption = 'Order creation time/date';
+                ToolTip = 'Order creation time/date';
+                Editable = true;
+
+            }
+        }
+
 
 
 

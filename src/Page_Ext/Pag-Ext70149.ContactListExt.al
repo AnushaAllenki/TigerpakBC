@@ -12,12 +12,13 @@ pageextension 70149 "Contact List Ext" extends "Contact List"
             {
                 ApplicationArea = All;
                 Caption = 'Status';
-                trigger OnValidate()
-                begin
-                    if Rec.Status = 'Inactive' then
-                        Message('This contact is inactive');
+                Editable = false;
+                // trigger OnValidate()
+                // begin
+                //     if Rec.Status = 'Inactive' then
+                //         Message('This contact is inactive');
 
-                end;
+                // end;
             }
         }
     }

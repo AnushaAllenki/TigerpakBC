@@ -19,6 +19,17 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
             }
         }
 
+        addafter("Shipment Date")
+        {
+            field("Order creation time/date"; Rec."Order creation time/date")        // field added for API page AzureSalesLines - Tommy
+            {
+                ApplicationArea = All;
+                Caption = 'Order creation time/date';
+                ToolTip = 'Order creation time/date';
+                Editable = false;
+            }
+        }
+
 
 
 

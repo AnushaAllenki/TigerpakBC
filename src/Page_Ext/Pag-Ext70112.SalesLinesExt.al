@@ -33,6 +33,21 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                 Editable = true;
 
             }
+            field("Item Category Group"; Rec."Item Category Group")
+            {
+                ApplicationArea = All;
+                Caption = 'Item Category Group';
+                ToolTip = 'Item Category Group';
+
+
+            }
+            field("TP_Order Creation Date/Time"; Rec."TP_Order Creation Date/Time")
+            {
+                ApplicationArea = All;
+                Caption = 'TP_Order Creation Date/Time';
+                ToolTip = 'TP_Order Creation Date/Time';
+
+            }
         }
 
 
@@ -64,6 +79,54 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                     // Message('Selected Lines Deleted')
 
 
+                end;
+            }
+
+            action("Update Item Category Group")
+            {
+                ApplicationArea = All;
+                Caption = 'Update Item Category Group';
+                Image = EditLines;
+
+                trigger OnAction()
+                var
+                    salesLine: Record "Sales Line";
+                    item: Record Item;
+                begin
+                    //CurrPage.SetSelectionFilter(salesLine);
+                    salesLine.SetFilter("Document Type", '%1', salesLine."Document Type"::Order);
+                    salesLine.SetRange("Type", salesLine."Type"::Item);
+                    if salesLine.FindFirst then
+                        repeat
+                            item.SetRange("No.", salesLine."No.");
+                            if item.FindFirst then begin
+                                salesLine."Item Category Group" := item."Item Category Group";
+                                salesLine.Modify();
+                            end;
+                        until salesLine.next = 0;
+                end;
+            }
+            action("Update Order Creation Date/Time")
+            {
+                ApplicationArea = All;
+                Caption = 'Update Order Creation Date/Time';
+                Image = EditLines;
+
+                trigger OnAction()
+                var
+                    salesLine: Record "Sales Line";
+                    salesHeader: Record "Sales Header";
+                begin
+                    //CurrPage.SetSelectionFilter(salesLine);
+                    salesLine.SetFilter("Document Type", '%1', salesLine."Document Type"::Order);
+                    if salesLine.FindFirst then
+                        repeat
+                            salesHeader.SetRange("No.", salesLine."Document No.");
+                            if salesHeader.FindFirst then begin
+                                salesLine."TP_Order Creation Date/Time" := salesHeader."Order creation time/date";
+                                salesLine.Modify();
+                            end;
+                        until salesLine.next = 0;
                 end;
             }
         }

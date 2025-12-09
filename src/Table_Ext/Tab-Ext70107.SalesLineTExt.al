@@ -93,7 +93,19 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             Caption = 'Pick Duration';
             DataClassification = ToBeClassified;
         }
+        field(70121; "Item Category Group"; Option)
+        {
+            Caption = 'Item Category Group';
+            DataClassification = ToBeClassified;
+            OptionMembers = " ","Adhesive & Wrapping Solutions","Primary Packaging Materials","Shipping & Protective Solutions","Industrial & Workplace Essentials";
 
+        }
+
+        field(70122; "TP_Order Creation Date/Time"; DateTime)
+        {
+            Caption = 'TP_Order Creation Date/Time';
+            DataClassification = ToBeClassified;
+        }
 
 
 
@@ -135,7 +147,26 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             Rec."TP Unit Cost_New" := SKU."TP Unit Cost_New";
             Rec.Modify();
         end;
+
+
     end;
+
+    trigger OnInsert()
+    var
+        SH: Record "Sales Header";
+    begin
+        repeat
+            Rec.SetRange("Document Type", Rec."Document Type"::Order);
+            Rec.SetRange("Document No.", SH."No.");
+            if rec.FindFirst() then begin
+                Rec."TP_Order Creation Date/Time" := SH."Order creation time/date";
+                Rec.Modify();
+            end;
+        until Rec.Next() = 0;
+    end;
+
+
+
 
     // trigger OnAfterModify()
     // var

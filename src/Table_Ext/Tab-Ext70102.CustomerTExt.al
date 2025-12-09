@@ -43,6 +43,7 @@ tableextension 70102 Customer_TExt extends Customer
 
 
 
+
     }
     trigger OnInsert()
     var

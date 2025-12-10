@@ -62,5 +62,13 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
                 Caption = 'Reseller';
             }
         }
+        addafter("Document Sending Profile")
+        {
+            field("Marketing Industry"; Rec."Marketing Industry")
+            {
+                ApplicationArea = All;
+                Caption = 'Marketing Industry';
+            }
+        }
     }
 }

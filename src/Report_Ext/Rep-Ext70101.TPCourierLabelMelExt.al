@@ -1,17 +1,12 @@
-namespace ALProject.ALProject;
+namespace TigerpakBC.TigerpakBC;
 using Microsoft.Sales.Customer;
 
-reportextension 70100 "TP Courier Label Ext" extends "TP Courier Label"
+reportextension 70101 "TP Courier Label Mel Ext" extends "TP Courier Label Mel"
 {
-    RDLCLayout = './Layouts/TPcourierLabel.rdl';
     dataset
     {
         add("Sales Invoice Header")
         {
-            column(ReceiveTime; RecTime)
-            {
-
-            }
             column("XmasTradingHours"; Customer."Xmas Trading Hours")
             {
 
@@ -24,17 +19,14 @@ reportextension 70100 "TP Courier Label Ext" extends "TP Courier Label"
             begin
 
                 if Customer.get("Sales Invoice Header"."Sell-to Customer No.") then begin
-                    RecTime := Customer."Receive Times";
+
                     XmasTradingHours := Customer."Xmas Trading Hours";
-                end else
-                    RecTime := 'No Receive Time';
+                end;
             end;
         }
+
     }
     var
-        Customer: Record Customer;
-        RecTime: Text[100];
         XmasTradingHours: Text[100];
-
-
+        Customer: Record Customer;
 }

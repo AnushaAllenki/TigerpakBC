@@ -145,6 +145,8 @@ End Function
         <Field Name="ReceiveTime">
           <DataField>ReceiveTime</DataField>
         </Field>
+        <Field Name="Xmas_Trading_Hours">
+        <DataField>"Xmas Trading Hours"</DataField>
       </Fields>
       <Query>
         <DataSourceName>DataSource</DataSourceName>

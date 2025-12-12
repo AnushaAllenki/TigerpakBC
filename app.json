@@ -2,7 +2,7 @@
   "id": "2cc9585b-d11d-4b9c-b39e-b8558554e040",
   "name": "Tigerpak-BC",
   "publisher": "Tigerpak",
-  "version": "25.12.12.00",
+  "version": "25.12.12.02",
   "brief": "",
   "target": "Cloud",
   "description": "",
@@ -26,6 +26,7 @@
       "publisher" : "Wild-Tech"
       }  
       ,
+      
     {
       "id" : "d36f1fab-93da-4ce2-8393-f683804f236d",
       "name" : "IA D365 BC Pages_1002",

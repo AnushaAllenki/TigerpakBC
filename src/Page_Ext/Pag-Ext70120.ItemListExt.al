@@ -20,7 +20,15 @@ pageextension 70120 "Item List Ext" extends "Item List"
                 ApplicationArea = All;
             }
         }
+        addafter("Item Category Code")
+        {
+            field("Item Category Group"; Rec."Item Category Group")
+            {
+                Caption = 'Item Category Group';
+                ApplicationArea = All;
+            }
 
+        }
     }
     actions
     {

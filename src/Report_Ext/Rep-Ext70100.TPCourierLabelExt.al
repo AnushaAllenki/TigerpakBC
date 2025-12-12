@@ -12,6 +12,10 @@ reportextension 70100 "TP Courier Label Ext" extends "TP Courier Label"
             {
 
             }
+            column("XmasTradingHours"; Customer."Xmas Trading Hours")
+            {
+
+            }
 
         }
         modify("Sales Invoice Header")
@@ -21,14 +25,17 @@ reportextension 70100 "TP Courier Label Ext" extends "TP Courier Label"
 
                 if Customer.get("Sales Invoice Header"."Sell-to Customer No.") then begin
                     RecTime := Customer."Receive Times";
+                    XmasTradingHours := Customer."Xmas Trading Hours";
                 end else
                     RecTime := 'No Receive Time';
+                XmasTradingHours := 'No Xmas Trading Hours';
             end;
         }
     }
     var
         Customer: Record Customer;
         RecTime: Text[100];
+        XmasTradingHours: Text[100];
 
 
 }

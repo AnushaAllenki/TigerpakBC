@@ -7,7 +7,7 @@ reportextension 70104 "Tax - Invoice Ext" extends "Tax - Invoice"
     {
         add(Header)
         {
-            column("XmasTradingHours"; Customer."Xmas Trading Hours")
+            column(XmasTradingHours; XmasTradingHours)
             {
 
             }
@@ -25,6 +25,14 @@ reportextension 70104 "Tax - Invoice Ext" extends "Tax - Invoice"
             end;
         }
 
+    }
+    rendering
+    {
+        layout(XmasTrading)
+        {
+            Type = RDLC;
+            LayoutFile = './Layouts/XMasTaxInvoice.rdl';
+        }
     }
     var
         XmasTradingHours: Text[100];

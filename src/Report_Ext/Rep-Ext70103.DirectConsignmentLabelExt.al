@@ -26,9 +26,19 @@ reportextension 70103 "DirectConsignmentLabel Ext" extends DirectConsignmentLabe
         }
 
     }
+    rendering
+    {
+        layout("XmasTax")
+        {
+            Type = RDLC;
+            LayoutFile = './Layouts/XMasTaxInvoice.rdl';
+
+        }
+    }
     var
         XmasTradingHours: Text[100];
         Customer: Record Customer;
+
 }
 
 

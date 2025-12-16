@@ -124,15 +124,7 @@ pageextension
                     ApplicationArea = All;
 
                 }
-
-
-
-
-
-
-
             }
-
 
 
         }
@@ -147,6 +139,16 @@ pageextension
                 Editable = true;
                 Enabled = true;
                 Visible = true;
+            }
+        }
+        addafter("Vendor Item No.")
+        {
+            field("Secondary Vendor No."; Rec."Secondary Vendor No.")
+            {
+                ApplicationArea = All;
+                Caption = 'Secondary Vendor No.';
+                ToolTip = 'Secondary Vendor No.';
+
             }
         }
 

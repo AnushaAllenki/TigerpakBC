@@ -186,13 +186,13 @@ tableextension 70101 "Item_T-Ext" extends Item
 
         }
 
+        field(70116; "Secondary Vendor No."; Code[20])
+        {
+            Caption = 'Secondary Vendor No.';
+            DataClassification = ToBeClassified;
+            TableRelation = Vendor."No.";
 
-
-
-
-
-
-
+        }
 
     }
     trigger OnInsert()
@@ -217,9 +217,6 @@ tableextension 70101 "Item_T-Ext" extends Item
             until SL.next() = 0;
         end;
     end;
-
-
-
 
     // trigger OnModify()
     // var

@@ -32,10 +32,6 @@ pageextension 70123 "Stockkeeping Unit Card Ext" extends "Stockkeeping Unit Card
                 ApplicationArea = All;
                 Caption = 'Purcase MOQ Warning';
 
-
-
-
-
             }
 
             field("Purchase MOQ_TP"; Rec."Purchase MOQ_TP")
@@ -44,11 +40,17 @@ pageextension 70123 "Stockkeeping Unit Card Ext" extends "Stockkeeping Unit Card
                 Caption = 'Purchase MOQ';
             }
         }
+        addafter("Vendor Item No.")
+        {
+            field("Secondary Vendor No."; Rec."Secondary Vendor No.")
+            {
+                ApplicationArea = All;
+                Caption = 'Secondary Vendor No.';
+                ToolTip = 'Secondary Vendor No.';
+
+            }
+        }
 
     }
-
-
-
-
 
 }

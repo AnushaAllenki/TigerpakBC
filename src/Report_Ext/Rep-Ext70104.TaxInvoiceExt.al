@@ -19,8 +19,10 @@ reportextension 70104 "Tax - Invoice Ext" extends "Tax - Invoice"
             begin
 
                 if Customer.get(Header."Sell-to Customer No.") then begin
-
-                    XmasTradingHours := Customer."Xmas Trading Hours";
+                    if Customer."Xmas Trading Hours" <> '' then
+                        XmasTradingHours := 'Xmas Trading Hours: ' + Customer."Xmas Trading Hours"
+                    else
+                        XmasTradingHours := '';
                 end;
             end;
         }

@@ -67,6 +67,16 @@ pageextension
             }
 
         }
+        addafter("Vendor Item No.")
+        {
+            field("Secondary Vendor No."; Rec."Secondary Vendor No.")   //#305 - Sendory vendor Field
+            {
+                ApplicationArea = All;
+                Caption = 'Secondary Vendor No';
+                ToolTip = 'Secondary Vendor No';
+
+            }
+        }
 
 
         addafter("Expiration Calculation")

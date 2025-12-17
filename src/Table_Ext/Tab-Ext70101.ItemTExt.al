@@ -186,6 +186,15 @@ tableextension 70101 "Item_T-Ext" extends Item
 
         }
 
+        field(70116; "Secondary Vendor No."; Code[20])  // #305 - Sendory vendor Field
+        {
+            Caption = 'Secondary Vendor';
+            DataClassification = ToBeClassified;
+            TableRelation = Vendor."No.";
+
+
+        }
+
     }
     trigger OnInsert()
     var

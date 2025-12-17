@@ -2,6 +2,7 @@ namespace ALProject.ALProject;
 
 using Microsoft.Inventory.Location;
 using Microsoft.Sales.Document;
+using Microsoft.Purchases.Vendor;
 using Microsoft.Sales.History;
 using Microsoft.Inventory.Item;
 
@@ -49,6 +50,12 @@ tableextension 70108 "Stockkeeping Unit TExt" extends "Stockkeeping Unit"
             Caption = 'Purchase MOQ';
             DataClassification = ToBeClassified;
 
+        }
+        field(70104; "Secondary Vendor No."; Code[20])  // #305 - Sendory vendor Field
+        {
+            Caption = 'Secondary Vendor No';
+            DataClassification = ToBeClassified;
+            TableRelation = Vendor."No.";
         }
     }
 

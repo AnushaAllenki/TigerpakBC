@@ -32,16 +32,21 @@ pageextension 70123 "Stockkeeping Unit Card Ext" extends "Stockkeeping Unit Card
                 ApplicationArea = All;
                 Caption = 'Purcase MOQ Warning';
 
-
-
-
-
             }
 
             field("Purchase MOQ_TP"; Rec."Purchase MOQ_TP")
             {
                 ApplicationArea = All;
                 Caption = 'Purchase MOQ';
+            }
+        }
+        addafter("Vendor Item No.")
+        {
+            field("Secondary Vendor No."; Rec."Secondary Vendor No.")    //#305 - Sendory vendor Field
+            {
+                ApplicationArea = All;
+                Caption = 'Secondary Vendor No';
+
             }
         }
 

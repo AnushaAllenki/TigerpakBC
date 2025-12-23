@@ -1,0 +1,9 @@
+namespace TigerpakBC.TigerpakBC;
+
+reportextension 70105 "Order New Ext" extends "Order New"
+{
+    dataset
+    {
+
+    }
+}

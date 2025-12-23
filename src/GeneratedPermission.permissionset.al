@@ -16,5 +16,11 @@ permissionset 70101 GeneratedPermtp
         page "TP Sales Invoiced API TS" = X,
         page "TP Sales Lines" = X,
         page "TP Salesorder Timestamps" = X,
-        page TPCustomerledgerentryTS = X;
+        page TPCustomerledgerentryTS = X,
+        tabledata "Market Industry Category" = RIMD,
+        tabledata "Marketing Industry SubCategory" = RIMD,
+        table "Market Industry Category" = X,
+        table "Marketing Industry SubCategory" = X,
+        page "Market Industry_Category" = X,
+        page "Marketing Industry_SubCat" = X;
 }

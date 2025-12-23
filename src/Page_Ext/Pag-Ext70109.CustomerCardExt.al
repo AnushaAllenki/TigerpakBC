@@ -8,6 +8,23 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
             {
                 ApplicationArea = All;
             }
+            field("Marginamount 12months"; Rec.Marginamount_12months)
+            {
+                ApplicationArea = All;
+                Caption = 'Marginamount 12months';
+
+                tooltip = 'Shows the Gross Margin Amount for the last 12 months.';
+            }
+            field("This Qrtr Sales Amount"; Rec."This Qrtr Sales Amount")
+            {
+                ApplicationArea = All;
+                Caption = 'This Qrtr Sales Amount';
+            }
+            field("Last Qrtr Sales Amount"; Rec."Last Qrtr Sales Amount")
+            {
+                ApplicationArea = All;
+                Caption = 'Last Qrtr Sales Amount';
+            }
         }
 
         modify("Account Status")
@@ -70,5 +87,51 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
                 Caption = 'Marketing Industry';
             }
         }
+        addafter("Marketing Industry")
+        {
+            field("Marginamount_12months"; Rec."Marginamount_12months")
+            {
+                ApplicationArea = All;
+                Caption = 'Marginamount_12months';
+
+                tooltip = 'Shows the Gross Margin Amount for the last 12 months.';
+
+            }
+        }
     }
+    // actions
+    // {
+    //     addafter(Templates)
+    //     {
+    //         action(CalculateGrossMargin)
+    //         {
+    //             ApplicationArea = All;
+    //             Caption = 'Calculate Gross Margin';
+    //             Image = Calculate;
+    //             trigger OnAction()
+    //             var
+    //                 EventSub: Codeunit "EventSubscribers1";
+    //             begin
+    //                 Rec."Marginamount_12months" := EventSub.CalcGrosMarginLast12Months(Rec."No.");
+    //                 Rec.Modify();
+    //                 Message('Gross Margin for last 12 months is calculated and updated.');
+    //             end;
+    //         }
+    //     }
+    trigger OnOpenPage()
+    begin
+        REC.SETRANGE("Date Filter", TODAY - 365, TODAY);
+        REC.SETRANGE("Qrtr Date Filter", Today - 90, TODAY);
+        REC.SETRANGE("Last Qrtr Date Filter", Today - 180, TODAY - 91);
+    end;
 }
+
+// trigger OnAfterGetRecord()
+// var
+//     EventSub: Codeunit "eventsubscribers1";
+// begin
+//     EventSub.CalcGrosMarginLast12Months(Rec."No.");
+// end;
+
+
+

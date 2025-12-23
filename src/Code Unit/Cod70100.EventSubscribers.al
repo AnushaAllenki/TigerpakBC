@@ -772,6 +772,31 @@ codeunit 70100 "EventSubscribers1"
         end;
     end;  // Support ticket from outlook from Justin, need to uncomment and deploy upon Justin's confirmation
 
+    procedure CalcGrosMarginLast12Months(CustomerNo: Code[20]): Decimal
+    var
+        CLE: Record "Cust. Ledger Entry";
+        customer: Record Customer;
+        FromDate: Date;
+        ToDate: Date;
+        GrossMargin: Decimal;
+    begin
+        ToDate := Today();
+        FromDate := CalcDate('<-12M', ToDate);
+        CLE.Reset();
+        CLE.SetRange("Sell-to Customer No.", customer."No.");
+        CLE.SetRange("Document Type", CLE."Document Type"::Invoice);
+        CLE.SetFilter("Posting Date", '%1..%2', FromDate, ToDate);
+        if CLE.FindSet() then
+            repeat
+                GrossMargin += CLE."Inv Margin Amount_New";
+            until CLE.Next() = 0;
+        customer.Get(CLE."Sell-to Customer No.");
+        if customer.FindFirst() then
+            customer.Marginamount_12months := GrossMargin;
+    end;
+
+
+
 
 
 

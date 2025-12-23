@@ -38,7 +38,7 @@ table 70101 "Marketing Industry SubCategory"
     }
     fieldgroups
     {
-        fieldgroup(DropDown; "Marketing Subcategory", "Marketing Industry Category")
+        fieldgroup(DropDown; "Marketing Industry Category", "Marketing Subcategory")
         {
         }
     }

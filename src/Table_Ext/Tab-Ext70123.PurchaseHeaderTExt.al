@@ -15,9 +15,9 @@ tableextension 70123 "Purchase Header TExt" extends "Purchase Header"
         }
     }
 
-    trigger OnInsert()
-    begin
-        if "Delivery Date" = 0D then
-            "Delivery Date" := Today();
-    end;
+    // trigger OnInsert()
+    // begin
+    //     if "Delivery Date" = 0D then
+    //         "Delivery Date" := Today();
+    // end;
 }

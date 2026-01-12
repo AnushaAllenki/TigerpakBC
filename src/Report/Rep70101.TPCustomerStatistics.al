@@ -3,6 +3,7 @@ namespace TigerpakBC.TigerpakBC;
 using Microsoft.Sales.Customer;
 using Microsoft.Pricing.PriceList;
 using Microsoft.Inventory.Ledger;
+using Microsoft.Sales.History;
 
 report 70101 "TP Customer Statistics "
 {
@@ -14,6 +15,8 @@ report 70101 "TP Customer Statistics "
     {
         dataitem(Customer; Customer)
         {
+            DataItemTableView = SORTING("No.");
+            RequestFilterFields = "No.";
             column(Name; Name)
             {
             }
@@ -59,7 +62,8 @@ report 70101 "TP Customer Statistics "
 
             dataitem("Price List Line"; "Price List Line")
             {
-                DataItemLink = "Assign-to No." = field("No.");
+                DataItemLinkReference = Customer;
+                DataItemLink = "Source No." = field("No.");
                 column(Product_No_; "Product No.")
                 { }
                 column(Description; Description)
@@ -71,59 +75,96 @@ report 70101 "TP Customer Statistics "
 
                 trigger OnAfterGetRecord()
                 begin
-                    "Price List Line".SetRange("Assign-to No.", Customer."No.");
+                    //"Price List Line".SetRange("Assign-to No.", Customer."No.");
 
                 end;
-    
+
 
             }
-            
 
-            DataItem(ItemLedgerEntry; "Item Ledger Entry")
+            // DataItem(ItemLedgerEntry; "Item Ledger Entry")
+            // {
+            //     DataItemLinkReference = Customer;
+            //     DataItemLink = "Source No." = field("No.");
+
+            //     DataItemTableView = SORTING("Posting Date") ORDER(Descending);
+
+            //     column(Posting_Date; "Posting Date") { }
+            //     Column(Document_No_; "Document No.") { }
+            //     column(Item_No_; "Item No.") { }
+            //     column(Description_item; Description) { }
+            //     column(Quantity; Quantity) { }
+            //     trigger OnPreDataItem()
+            //     begin
+            //         // Apply filters before fetching
+
+            //         ItemLedgerEntry.SetRange("Entry Type", ItemLedgerEntry."Entry Type"::Sale);
+            //         ItemLedgerEntry.SetRange("Source Type", ItemLedgerEntry."Source Type"::Customer);
+            //         ItemLedgerEntry.SetRange("Source No.", Customer."No.");
+            //     end;
+
+            //     trigger OnAfterGetRecord()
+            //     var
+            //         Count: Integer;
+            //     begin
+            //         Count += 1;
+            //         if (Count >= 20) then
+            //             CurrReport.Break;
+            //     end;
+            // }
+            DataItem(SalesInvLines; "Sales Invoice Line")
             {
-                DataItemLink = "Source No." = field("No.");
+                DataItemLinkReference = Customer;
+                DataItemLink = "Sell-to Customer No." = field("No.");
 
                 DataItemTableView = SORTING("Posting Date") ORDER(Descending);
-                RequestFilterFields = "Source No.";
+
                 column(Posting_Date; "Posting Date") { }
                 Column(Document_No_; "Document No.") { }
-                column(Item_No_; "Item No.") { }
+                column(Item_No_; "No.") { }
                 column(Description_item; Description) { }
                 column(Quantity; Quantity) { }
-
-
-
+                column(UnitPrice; "Unit Price") { }
                 trigger OnPreDataItem()
                 begin
                     // Apply filters before fetching
-                    SetRange("Entry Type", "Entry Type"::Sale);
+
+                    // SalesInvLines.SetRange("Entry Type", SalesInvLines."Entry Type"::Sale);
+                    SalesInvLines.SetRange("Type", SalesInvLines.Type::Item);
+                    SalesInvLines.SetRange("Sell-to Customer No.", Customer."No.");
                 end;
 
                 trigger OnAfterGetRecord()
                 var
-                    count: Integer;
+                    Count: Integer;
                 begin
-                    ItemLedgerEntry.Reset();
-                    ItemLedgerEntry.SetRange("Entry Type", ItemLedgerEntry."Entry Type"::Sale);
-                    ItemLedgerEntry.SetRange("Source Type", ItemLedgerEntry."Source Type"::Customer);
-                    ItemLedgerEntry.SetRange("Source No.", Customer."No.");
-
-                    ItemLedgerEntry.SetCurrentKey("Posting Date");
-                    if ItemLedgerEntry.FindSet() then begin
-                        count := 0;
-                        repeat
-                            count += 1;
-                        until (ItemLedgerEntry.Next() = 0) or (Count >= 20);
-                    end;
+                    Count += 1;
+                    if (Count >= 20) then
+                        CurrReport.Break;
                 end;
-
-
-
-
+            }
+            dataitem("SalesInvoiceLine2"; "Sales Invoice Line")
+            {
+                DataItemLinkReference = Customer;
+                DataItemLink = "Sell-to Customer No." = field("No.");
+                DataItemTableView = SORTING("Posting Date") ORDER(Descending);
+                column(Posting_Date2; "Posting Date") { }
+                Column(Document_No_2; "Document No.") { }
+                column(Item_No_2; "No.") { }
+                column(Description_item2; Description) { }
+                column(Quantity2; Quantity) { }
+                column(UnitPrice2; "Unit Price") { }
+                column(Item_Category_Group; "Item Category Group") { }
+                column(Line_Amount; "Line Amount") { }
+                trigger OnPreDataItem()
+                begin
+                    "SalesInvoiceLine2".SetRange("Sell-to Customer No.", Customer."No.");
+                end;
 
             }
         }
     }
+
     rendering
     {
         layout(TPCustomerStatistics)
@@ -132,5 +173,5 @@ report 70101 "TP Customer Statistics "
             Type = Word;
         }
     }
-    
+
 }

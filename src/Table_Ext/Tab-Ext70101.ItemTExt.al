@@ -199,6 +199,7 @@ tableextension 70101 "Item_T-Ext" extends Item
     var
         BinContent: Record "Bin Content";
         SL: Record "Sales Line";
+        SIL: Record "Sales Invoice Line";
     begin
 
         BinContent.SetRange("Item No.", Rec."No.");
@@ -215,6 +216,14 @@ tableextension 70101 "Item_T-Ext" extends Item
                 SL."Item Category Group" := Rec."Item Category Group";
                 SL.Modify();
             until SL.next() = 0;
+        end;
+
+        SIL.SetRange("No.", Rec."No.");
+        if SIL.findset() then begin
+            repeat
+                SIL."Item Category Group" := Rec."Item Category Group";
+                SIL.Modify();
+            until SIL.next() = 0;
         end;
     end;
 

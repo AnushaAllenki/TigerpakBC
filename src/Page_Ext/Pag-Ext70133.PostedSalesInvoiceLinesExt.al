@@ -2,6 +2,7 @@ namespace ALProject.ALProject;
 
 using Microsoft.Sales.History;
 using Microsoft.Sales.Document;
+using Microsoft.Inventory.Item;
 
 pageextension 70133 "Posted Sales Invoice Lines Ext" extends "Posted Sales Invoice Lines"
 {
@@ -26,6 +27,15 @@ pageextension 70133 "Posted Sales Invoice Lines Ext" extends "Posted Sales Invoi
                 ToolTip = 'The External Document No. field shows the external document number associated with the posted sales invoice line.';
             }
         }
+        addafter("External Document No.")
+        {
+            field("Item Category Group"; Rec."Item Category Group")
+            {
+                ApplicationArea = All;
+                Caption = 'Item Category Group';
+                ToolTip = 'The Item Category Group field shows the category group of the item.';
+            }
+        }
     }
     actions
     {
@@ -44,6 +54,21 @@ pageextension 70133 "Posted Sales Invoice Lines Ext" extends "Posted Sales Invoi
                 begin
                     eventSub.UpdateExternalDocNo();
 
+                end;
+            }
+            action("Update Item Category Group")
+            {
+                ApplicationArea = All;
+                Caption = 'Update Item Category Group';
+                ToolTip = 'Update Item Category Group';
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    eventSub: Codeunit "EventSubscribers1";  // Item Category Group for Customer Statistics Report
+
+                begin
+                    eventSub.UpdateItemCategoryGroup();
                 end;
             }
         }

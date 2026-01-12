@@ -795,6 +795,22 @@ codeunit 70100 "EventSubscribers1"
             customer.Marginamount_12months := GrossMargin;
     end;
 
+    procedure updateitemcategorygroup()
+    var
+        Item: Record Item;
+        SIL: Record "Sales Invoice Line";
+    begin
+        SIL.Reset();
+        SIL.SetRange(Type, SIL.Type::Item);
+        if SIL.FindSet() then
+            repeat
+                if Item.Get(SIL."No.") then begin
+                    SIL."Item Category Group" := Item."Item Category Group";
+                    SIL.Modify();
+                end;
+            until SIL.Next() = 0;
+    end;
+
 
 
 

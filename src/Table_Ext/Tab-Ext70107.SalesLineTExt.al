@@ -101,7 +101,7 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
         }
 
-        field(70122; "TP_Order Creation Date/Time"; DateTime)
+        field(70130; "TP_Order Creation Date/Time"; DateTime)
         {
             Caption = 'TP_Order Creation Date/Time';
             DataClassification = ToBeClassified;
@@ -159,7 +159,7 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             Rec.SetRange("Document Type", Rec."Document Type"::Order);
             Rec.SetRange("Document No.", SH."No.");
             if rec.FindFirst() then begin
-                Rec."TP_Order Creation Date/Time" := SH."Order creation time/date";
+                //Rec."TP_Order Creation Date/Time" := SH."Order creation time/date";
                 Rec.Modify();
             end;
         until Rec.Next() = 0;

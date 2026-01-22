@@ -123,7 +123,7 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                         repeat
                             salesHeader.SetRange("No.", salesLine."Document No.");
                             if salesHeader.FindFirst then begin
-                                salesLine."TP_Order Creation Date/Time" := salesHeader."Order creation time/date";
+                                // salesLine."TP_Order Creation Date/Time" := salesHeader."Order creation time/date";
                                 salesLine.Modify();
                             end;
                         until salesLine.next = 0;

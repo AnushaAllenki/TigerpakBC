@@ -38,6 +38,13 @@ tableextension 70114 "Sales Invoice Header TExt" extends "Sales Invoice Header"
             Caption = 'WHSE Shipment Created By';
             DataClassification = ToBeClassified;
         }
+        field(70301; "Auto-Email Post"; Boolean)
+        {
+            Caption = 'Auto-Email Post';
+            DataClassification = ToBeClassified;
+        }
+
+
     }
 
 }

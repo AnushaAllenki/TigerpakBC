@@ -21,6 +21,11 @@ tableextension 70120 "Purchase Line TExt" extends "Purchase Line"
 
             // end;
         }
+        field(70112; "Delivery Date"; Date)
+        {
+            Caption = 'Delivery Date';
+            DataClassification = ToBeClassified;
+        }
 
 
     }

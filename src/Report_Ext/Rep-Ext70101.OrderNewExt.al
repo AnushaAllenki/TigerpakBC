@@ -10,6 +10,14 @@ reportextension 70101 "Order New Ext" extends "Order New"
             {
                 Caption = 'Delivery Date';
             }
+
+        }
+        add(RoundLoop)
+        {
+            column(Delivery_Date_Line; "Purchase Line"."TP_Delivery Date")
+            {
+                Caption = 'Delivery Date Line';
+            }
         }
     }
 }

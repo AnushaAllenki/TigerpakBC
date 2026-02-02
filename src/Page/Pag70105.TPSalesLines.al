@@ -22,12 +22,12 @@ page 70105 "TP Sales Lines"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the number of the sales document to which the sales line belongs.';
                 }
-                field(OrederCreationTimeDate; Rec."TP_Order Creation Date/Time")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the date and time when order was created.';
+                // field(OrederCreationTimeDate; Rec."TP_Order Creation Date/Time")   //Commented because of empty set warning error in sales order and need to identify the issue and fix it back
+                // {
+                //     ApplicationArea = All;
+                //     ToolTip = 'Specifies the date and time when order was created.';
 
-                }
+                // }
 
                 field("No."; Rec."No.")
                 {
@@ -96,7 +96,7 @@ page 70105 "TP Sales Lines"
     trigger OnOpenPage();
     begin
         Rec.SetFilter("Document Type", '%1', Rec."Document Type"::Order);
-        Rec.SetFilter("Backorder Status", '%1|%2', Rec."Backorder Status"::Backorder, Rec."Backorder Status"::Partial);
+        //AA Testing Sales line   Rec.SetFilter("Backorder Status", '%1|%2', Rec."Backorder Status"::Backorder, Rec."Backorder Status"::Partial);
         Rec.SetFilter("Outstanding Quantity", '>0');
         Rec.SetFilter("No.", '%1..%2', '10000', '99999');
         Rec.SetFilter(Reserve, '%1', Rec.Reserve::Optional);

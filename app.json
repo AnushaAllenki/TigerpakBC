@@ -2,7 +2,7 @@
   "id": "2cc9585b-d11d-4b9c-b39e-b8558554e040",
   "name": "Tigerpak-BC",
   "publisher": "Tigerpak",
-  "version": "26.01.23.00",
+  "version": "26.02.02.00",
   "brief": "",
   "target": "Cloud",
   "description": "",
@@ -29,13 +29,6 @@
       "id" : "2cac2e2b-e84d-4770-8dcd-0aa40c8238b4",
       "name" : "Tigerpak-Reports",
       "version" : "25.10.6.1",
-      "publisher" : "Wild-Tech"
-      }
-      ,
-        {
-      "id" : "51def875-9c83-4326-a92a-fa50b262cd45",
-      "name" : "WT-BackOrders",
-      "version" : "1.25.318.3",
       "publisher" : "Wild-Tech"
       }
       ,

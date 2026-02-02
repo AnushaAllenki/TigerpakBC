@@ -101,11 +101,11 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
         }
 
-        field(70130; "TP_Order Creation Date/Time"; DateTime)
-        {
-            Caption = 'TP_Order Creation Date/Time';
-            DataClassification = ToBeClassified;
-        }
+        // field(70122; "TP_Order Creation Date/Time"; DateTime) //Commented because of empty set warning error in sales order and need to identify the issue and fix it back
+        // {
+        //     Caption = 'TP_Order Creation Date/Time';
+        //     DataClassification = ToBeClassified;
+        // }
 
 
 
@@ -151,19 +151,19 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
     end;
 
-    trigger OnInsert()
-    var
-        SH: Record "Sales Header";
-    begin
-        repeat
-            Rec.SetRange("Document Type", Rec."Document Type"::Order);
-            Rec.SetRange("Document No.", SH."No.");
-            if rec.FindFirst() then begin
-                //Rec."TP_Order Creation Date/Time" := SH."Order creation time/date";
-                Rec.Modify();
-            end;
-        until Rec.Next() = 0;
-    end;
+    // trigger OnInsert()     //Commented because of empty set warning error in sales order and need to identify the issue and fix it back
+    // var
+    //     SH: Record "Sales Header";
+    // begin
+    //     repeat
+    //         Rec.SetRange("Document Type", Rec."Document Type"::Order);
+    //         Rec.SetRange("Document No.", SH."No.");
+    //         if rec.FindFirst() then begin
+    //             Rec."TP_Order Creation Date/Time" := SH."Order creation time/date";
+    //             Rec.Modify();
+    //         end;
+    //     until Rec.Next() = 0;
+    // end;
 
 
 

@@ -41,13 +41,13 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
 
 
             }
-            field("TP_Order Creation Date/Time"; Rec."TP_Order Creation Date/Time")
-            {
-                ApplicationArea = All;
-                Caption = 'TP_Order Creation Date/Time';
-                ToolTip = 'TP_Order Creation Date/Time';
+            // field("TP_Order Creation Date/Time"; Rec."TP_Order Creation Date/Time")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'TP_Order Creation Date/Time';
+            //     ToolTip = 'TP_Order Creation Date/Time';
 
-            }
+            // }
         }
 
 
@@ -106,29 +106,29 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                         until salesLine.next = 0;
                 end;
             }
-            action("Update Order Creation Date/Time")
-            {
-                ApplicationArea = All;
-                Caption = 'Update Order Creation Date/Time';
-                Image = EditLines;
+            // action("Update Order Creation Date/Time")   //Commented because of empty set warning error in sales order and need to identify the issue and fix it back
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Update Order Creation Date/Time';
+            //     Image = EditLines;
 
-                trigger OnAction()
-                var
-                    salesLine: Record "Sales Line";
-                    salesHeader: Record "Sales Header";
-                begin
-                    //CurrPage.SetSelectionFilter(salesLine);
-                    salesLine.SetFilter("Document Type", '%1', salesLine."Document Type"::Order);
-                    if salesLine.FindFirst then
-                        repeat
-                            salesHeader.SetRange("No.", salesLine."Document No.");
-                            if salesHeader.FindFirst then begin
-                                // salesLine."TP_Order Creation Date/Time" := salesHeader."Order creation time/date";
-                                salesLine.Modify();
-                            end;
-                        until salesLine.next = 0;
-                end;
-            }
+            //     trigger OnAction()
+            //     var
+            //         salesLine: Record "Sales Line";
+            //         salesHeader: Record "Sales Header";
+            //     begin
+            //         //CurrPage.SetSelectionFilter(salesLine);
+            //         salesLine.SetFilter("Document Type", '%1', salesLine."Document Type"::Order);
+            //         if salesLine.FindFirst then
+            //             repeat
+            //                 salesHeader.SetRange("No.", salesLine."Document No.");
+            //                 if salesHeader.FindFirst then begin
+            //                     salesLine."TP_Order Creation Date/Time" := salesHeader."Order creation time/date";
+            //                     salesLine.Modify();
+            //                 end;
+            //             until salesLine.next = 0;
+            //     end;
+            // }
         }
 
         addafter("Show Document")

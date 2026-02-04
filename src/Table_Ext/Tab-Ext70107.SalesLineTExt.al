@@ -101,6 +101,18 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
         }
 
+        field(70140; Blocked_Item; Boolean)
+        {
+            Caption = 'Blocked Item';
+            DataClassification = ToBeClassified;
+
+            trigger OnValidate()
+            begin
+                Item.Get(Rec."No.");
+                Blocked_Item := Item.Blocked;
+            end;
+        }
+
         // field(70122; "TP_Order Creation Date/Time"; DateTime) //Commented because of empty set warning error in sales order and need to identify the issue and fix it back
         // {
         //     Caption = 'TP_Order Creation Date/Time';
@@ -190,6 +202,7 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
     var
         SKU: Record "Stockkeeping Unit";
         Location: Record "Location";
+        Item: Record Item;
 
 }
 

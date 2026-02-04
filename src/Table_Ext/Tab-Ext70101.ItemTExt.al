@@ -214,6 +214,7 @@ tableextension 70101 "Item_T-Ext" extends Item
         if SL.findset() then begin
             repeat
                 SL."Item Category Group" := Rec."Item Category Group";
+                SL.Blocked_Item := Rec."Blocked";
                 SL.Modify();
             until SL.next() = 0;
         end;

@@ -10,6 +10,7 @@ reportextension 70106 "Remittance Advice - EntriesExt" extends "Remittance Advic
         add("Vendor Ledger Entry")
         {
             column(Posting_Date; "Posting Date") { } //Posting Date in Header of the report
+            column(Document_Date_VendorLedgerEntry; "Document Date") { } //Document Date in Header of the report
 
         }
         add(VendLedgEntry2)

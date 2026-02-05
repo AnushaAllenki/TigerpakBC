@@ -8,13 +8,13 @@
             "type": "al",
             "environmentType": "Sandbox",
             "environmentName": "Prod-Backup",
+            "tenant": "a550520b-18c7-499d-99b4-2437253d6e83",
             "startupObjectId": 22,
             "startupObjectType": "Page",
             "breakOnError": "All",
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,
-            "enableSqlInformationDebugger": true,
-            "tenant": "a550520b-18c7-499d-99b4-2437253d6e83",
+            "enableSqlInformationDebugger": true,            
             "usePublicURLFromServer": true,
             "schemaUpdateMode": "ForceSync"
         }

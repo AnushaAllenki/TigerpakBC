@@ -192,8 +192,8 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                 begin
                     repeat
                         salesLine.reset();
-                        salesLine.SetRange("Document Type", salesLine."Document Type"::Quote);
-                        salesLine.SetRange("Type", salesLine."Type"::Item);
+                        salesLine.SetRange("Document Type", salesLine."Document Type"::Order);
+                        //salesLine.SetRange("Type", salesLine."Type"::Item);
                         if salesLine.FindSet() then begin
                             SH.Reset();
                             SH.SetRange("No.", salesLine."Document No.");

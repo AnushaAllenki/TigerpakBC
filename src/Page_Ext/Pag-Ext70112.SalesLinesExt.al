@@ -29,7 +29,7 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                 Editable = false;
             }
         }
-        addafter("Location Code")
+        addafter("Location Code")   // field added for API page AzureSalesLines - Tommy
         {
             field("WH Exist"; Rec."WH Exist")
             {

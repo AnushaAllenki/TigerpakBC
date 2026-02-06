@@ -2,6 +2,7 @@ namespace ALProject.ALProject;
 using Microsoft.Sales.Document;
 using Microsoft.Inventory.Location;
 using Microsoft.Inventory.Item;
+using Microsoft.Warehouse.Document;
 
 tableextension 70107 "Sales Line TExt" extends "Sales Line"
 {
@@ -113,20 +114,11 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             end;
         }
 
-        field(70141; "WH Exist"; Boolean)
+        field(50008; "WH Exist"; Boolean)
         {
-            Caption = 'WH Exist';
-            DataClassification = ToBeClassified;
-
-            trigger OnValidate()
-            var
-                SH: Record "Sales Header";
-
-            begin
-                SH.SetRange("No.", Rec."Document No.");
-                if SH.FindFirst() then
-                    Rec."WH Exist" := SH."WH Exist";
-            end;
+            FieldClass = FlowField;
+            Editable = false;
+            CalcFormula = exist("Warehouse Shipment Line" where("Source No." = FIELD("Document No.")));
         }
 
         // field(70122; "TP_Order Creation Date/Time"; DateTime) //Commented because of empty set warning error in sales order and need to identify the issue and fix it back

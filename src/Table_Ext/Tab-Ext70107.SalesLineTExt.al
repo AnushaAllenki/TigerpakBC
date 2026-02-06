@@ -28,6 +28,22 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             DataClassification = ToBeClassified;
 
         }
+
+        field(70120; "WH Exist"; Boolean)
+        {
+            Caption = 'WH Exist';
+            DataClassification = ToBeClassified;
+
+            trigger OnValidate()
+            var
+                SH: Record "Sales Header";
+
+            begin
+                SH.SetRange("No.", Rec."Document No.");
+                if SH.FindFirst() then
+                    Rec."WH Exist" := SH."WH Exist";
+            end;
+        }
         modify("Unit of Measure Code")
         {
             trigger OnAfterValidate()

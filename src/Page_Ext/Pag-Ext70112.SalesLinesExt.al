@@ -29,6 +29,16 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                 Editable = false;
             }
         }
+        addafter("Location Code")
+        {
+            field("WH Exist"; Rec."WH Exist")
+            {
+                ApplicationArea = All;
+                Caption = 'WH Exist';
+                ToolTip = 'WH Exist';
+
+            }
+        }
 
 
 
@@ -167,6 +177,35 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
             }
 
 
+
+
+            action("Update WH Exist")
+            {
+                ApplicationArea = All;
+                Caption = 'Update All WH Exist';
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    salesLine: Record "Sales Line";
+                    SH: Record "Sales Header";
+                begin
+                    repeat
+                        salesLine.reset();
+                        salesLine.SetRange("Document Type", salesLine."Document Type"::Quote);
+                        salesLine.SetRange("Type", salesLine."Type"::Item);
+                        if salesLine.FindSet() then begin
+                            SH.Reset();
+                            SH.SetRange("No.", salesLine."Document No.");
+                            if SH.FindFirst() then begin
+                                salesLine."WH Exist" := SH."WH Exist";
+                                salesLine.Modify();
+                            end;
+
+                        end;
+                    until salesLine.next = 0;
+                end;
+            }
 
         }
 

@@ -113,6 +113,22 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             end;
         }
 
+        field(70141; "WH Exist"; Boolean)
+        {
+            Caption = 'WH Exist';
+            DataClassification = ToBeClassified;
+
+            trigger OnValidate()
+            var
+                SH: Record "Sales Header";
+
+            begin
+                SH.SetRange("No.", Rec."Document No.");
+                if SH.FindFirst() then
+                    Rec."WH Exist" := SH."WH Exist";
+            end;
+        }
+
         // field(70122; "TP_Order Creation Date/Time"; DateTime) //Commented because of empty set warning error in sales order and need to identify the issue and fix it back
         // {
         //     Caption = 'TP_Order Creation Date/Time';

@@ -28,14 +28,23 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                 ToolTip = 'Order creation time/date';
                 Editable = false;
             }
+
+            field(WH_Exist_API; Rec.WH_Exist_API) // field added for API page AzureSalesLines - Tommy
+            {
+                ApplicationArea = All;
+                Caption = 'WH Exist';
+                ToolTip = 'WH Exist API';
+                Editable = false;
+            }
         }
-        addafter("Location Code")   // field added for API page AzureSalesLines - Tommy
+        addafter("Location Code")   //The field was hidden in page because not in use as logic is not working properly.
         {
             field("WH Exist"; Rec."WH Exist")
             {
                 ApplicationArea = All;
                 Caption = 'WH Exist';
                 ToolTip = 'WH Exist';
+                Visible = false;
 
             }
         }

@@ -2,6 +2,7 @@ namespace ALProject.ALProject;
 using Microsoft.Sales.Document;
 using Microsoft.Inventory.Item;
 using Microsoft.Inventory.Location;
+using Microsoft.Warehouse.Activity;
 
 tableextension 70107 "Sales Line TExt" extends "Sales Line"
 {
@@ -29,10 +30,12 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
         }
 
-        field(70120; "WH Exist"; Boolean)
+        field(70120; "WH Exist"; Boolean)  //The field was hidden in page because not in use as logic s not working properly.
         {
             Caption = 'WH Exist';
             DataClassification = ToBeClassified;
+
+
 
             trigger OnValidate()
             var
@@ -44,6 +47,16 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
                     Rec."WH Exist" := SH."WH Exist";
             end;
         }
+
+        field(70121; "WH_Exist_API"; Boolean)  // field added for API page AzureSalesLines - Tommy
+        {
+            FieldClass = FlowField;
+            Caption = 'WH Exist';
+            Editable = false;
+            CalcFormula = exist("Warehouse Activity Line" where("Source No." = FIELD("Document No.")));
+        }
+
+
         modify("Unit of Measure Code")
         {
             trigger OnAfterValidate()

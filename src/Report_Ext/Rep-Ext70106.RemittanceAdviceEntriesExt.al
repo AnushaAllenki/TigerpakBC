@@ -16,6 +16,8 @@ reportextension 70106 "Remittance Advice - EntriesExt" extends "Remittance Advic
         add(VendLedgEntry2)
         {
             column(Document_Date; "Document Date") { } //Document Date in Lines of the report
+            column(Document_No_VLE2; "Document No.") { }
+
         }
     }
 }

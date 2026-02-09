@@ -30,6 +30,7 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             DataClassification = ToBeClassified;
 
         }
+
         modify("Unit of Measure Code")
         {
             trigger OnAfterValidate()
@@ -51,6 +52,7 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
                     Validate("TP Unit Cost_New", rec."Unit Cost");
             end;
         }
+
         modify("Location Code")
         {
             trigger OnAfterValidate()
@@ -114,7 +116,7 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             end;
         }
 
-        field(50008; "WH Exist"; Boolean)
+        field(70150; "WH Exist"; Boolean)
         {
             FieldClass = FlowField;
             Editable = false;

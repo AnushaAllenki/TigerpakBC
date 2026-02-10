@@ -811,6 +811,22 @@ codeunit 70100 "EventSubscribers1"
             until SIL.Next() = 0;
     end;
 
+    procedure UpdateItemsBlocked()
+    var
+        Item: Record Item;
+        SIL: Record "Sales Invoice Line";
+    begin
+        SIL.Reset();
+        SIL.SetRange(Type, SIL.Type::Item);
+        if SIL.FindSet() then
+            repeat
+                if Item.Get(SIL."No.") then begin
+                    SIL.Blocked_Item := Item."Blocked";
+                    SIL.Modify();
+                end;
+            until SIL.Next() = 0;
+    end;
+
 
 
 

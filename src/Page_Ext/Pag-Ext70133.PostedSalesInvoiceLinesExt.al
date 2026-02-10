@@ -35,6 +35,12 @@ pageextension 70133 "Posted Sales Invoice Lines Ext" extends "Posted Sales Invoi
                 Caption = 'Item Category Group';
                 ToolTip = 'The Item Category Group field shows the category group of the item.';
             }
+            field(Blocked_Item; Rec.Blocked_Item)
+            {
+                ApplicationArea = All;
+                Caption = 'Blocked Item';
+                ToolTip = 'The Blocked Item field indicates whether the item is blocked.';
+            }
         }
     }
     actions
@@ -71,6 +77,22 @@ pageextension 70133 "Posted Sales Invoice Lines Ext" extends "Posted Sales Invoi
                     eventSub.UpdateItemCategoryGroup();
                 end;
             }
+            action("Update Blocked Item")
+            {
+                ApplicationArea = All;
+                Caption = 'Update Blocked Item';
+                ToolTip = 'Update Blocked Item';
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    eventSub: Codeunit "EventSubscribers1";  // Update Blocked Item for Customer Statistics Report
+
+                begin
+                    eventSub.UpdateItemsBlocked();
+                end;
+            }
+
         }
     }
     var

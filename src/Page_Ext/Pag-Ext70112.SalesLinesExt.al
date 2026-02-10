@@ -41,6 +41,14 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
 
 
             }
+            // field(Blocked_Item; Rec.Blocked_Item)
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Blocked Item';
+            //     ToolTip = 'Blocked Item';
+
+
+            // }
 
 
             // field("TP_Order Creation Date/Time"; Rec."TP_Order Creation Date/Time")
@@ -119,6 +127,7 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                         until salesLine.next = 0;
                 end;
             }
+
             // action("Update Order Creation Date/Time")   //Commented because of empty set warning error in sales order and need to identify the issue and fix it back
             // {
             //     ApplicationArea = All;

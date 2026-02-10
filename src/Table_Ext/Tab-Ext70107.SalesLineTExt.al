@@ -104,17 +104,17 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
         }
 
-        field(70140; Blocked_Item; Boolean)
-        {
-            Caption = 'Blocked Item';
-            DataClassification = ToBeClassified;
+        // field(70140; Blocked_Item; Boolean)
+        // {
+        //     Caption = 'Blocked Item';
+        //     DataClassification = ToBeClassified;
 
-            trigger OnValidate()
-            begin
-                Item.Get(Rec."No.");
-                Blocked_Item := Item.Blocked;
-            end;
-        }
+        //     trigger OnValidate()
+        //     begin
+        //         Item.Get(Rec."No.");
+        //         Blocked_Item := Item.Blocked;
+        //     end;
+        // }
 
         field(70150; "WH Exist"; Boolean)
         {

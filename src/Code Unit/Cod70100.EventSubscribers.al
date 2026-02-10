@@ -179,6 +179,7 @@ codeunit 70100 "EventSubscribers1"
 
         SH: Record "Sales Header";
         WHSELine: Record "Warehouse Shipment Line";
+        QstnLbl: Text;
     begin
         WHSELine.Reset();
         WHSELine.SetRange("No.", WhseShptHeader."No.");
@@ -187,12 +188,30 @@ codeunit 70100 "EventSubscribers1"
                 SH.Reset();
                 SH.SetRange("No.", WHSELine."Source No.");
                 if SH.FindFirst() then begin
+                    // if SH."Location Code" <> SH."Ship-to County" then
+                    //     QstnLbl := StrSubstNo('The Location Code %1 is different from Ship-to County %2. Do you want to continue?', SH."Location Code", SH."Ship-to County");
+                    // if not Confirm(QstnLbl) then
+                    //     exit
+                    // else
                     SH.Validate("WHSE Shipment Created By", UserId());   //#298 - Sales Order/New field - Web Tracking
                     SH.Modify();
+
                 end;
 
             end;
         end;
+
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Sales Release", 'OnBeforeRelease', '', false, false)]
+    local procedure OnBeforeRelease(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean)
+    var
+        QstnLbl: Text;
+    begin
+        if SalesHeader."Location Code" <> SalesHeader."Ship-to County" then
+            QstnLbl := StrSubstNo('The Location Code %1 is different from Ship-to County %2. Do you want to continue?', SalesHeader."Location Code", SalesHeader."Ship-to County");
+        if not Confirm(QstnLbl) then
+            exit;
     end;
 
     // local procedure OnBeforeCreateFromSalesOrder(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean)

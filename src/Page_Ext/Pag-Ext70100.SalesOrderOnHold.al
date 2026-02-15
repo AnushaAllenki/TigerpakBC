@@ -17,6 +17,7 @@ pageextension 70100 SalesOrder_OnHold extends "Sales Order"
                 Caption = 'Alt Address';
                 Style = Favorable;
                 Editable = false;
+                Visible = false;
             }
 
 

@@ -659,21 +659,32 @@ codeunit 70100 "EventSubscribers1"
             until SIH.Next() = 0;
     end;
 
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", OnBeforePerformManualReleaseProcedure, '', false, false)]
-    // local procedure OnBeforePerformManualReleaseProcedure(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean; var IsHandled: Boolean)
-    // begin
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", OnBeforePerformManualReleaseProcedure, '', false, false)]
+    local procedure OnBeforePerformManualReleaseProcedure(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean; var IsHandled: Boolean)
+    var
+        Loc3: Text[3];
+    begin
 
 
-    //     if SalesHeader."Document Type" = SalesHeader."Document Type"::Quote then begin
+        //     if SalesHeader."Document Type" = SalesHeader."Document Type"::Quote then begin
 
 
-    //         if SalesHeader."Quote Type" = SalesHeader."Quote Type"::" " then
-    //             Error('Please select Quote Type before releasing the Quote');
+        //         if SalesHeader."Quote Type" = SalesHeader."Quote Type"::" " then
+        //             Error('Please select Quote Type before releasing the Quote');
 
 
-    //     end;
-    // end;  // Support ticket from outlook from Justin, need to uncomment and deploy upon Justin's confirmation
+        //     end;// Support ticket from outlook from Justin, need to uncomment and deploy upon Justin's confirmation
 
+        Loc3 := CopyStr(SalesHeader."Location Code", 1, 3);
+        if SalesHeader."Document Type" = SalesHeader."Document Type"::Order then begin
+            if Loc3 <> SalesHeader."Ship-to County" then begin
+                if not Confirm('The Location Code is different from Shipping state. Do you want to continue?') then
+                    IsHandled := true;
+            end;
+        end;
+
+
+    end;
 
 
 

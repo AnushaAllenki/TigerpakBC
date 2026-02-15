@@ -33,16 +33,17 @@ pageextension 70100 SalesOrder_OnHold extends "Sales Order"
             }
         }
 
-        modify("Ship-to Address")
-        {
-            trigger OnAfterValidate()
-            begin
-                if rec."Ship-to Address" <> rec."Sell-to Address" then
-                    rec."Alt Address" := 'Alternate Address'
-                else
-                    rec."Alt Address" := '';
-            end;
-        }
+        // modify("Ship-to Address")  //Commented beacause of Shipping state vs Warehouse Location logic is enough and working fine - Tommy
+
+        // {
+        //     trigger OnAfterValidate()
+        //     begin
+        //         if rec."Ship-to Address" <> rec."Sell-to Address" then
+        //             rec."Alt Address" := 'Alternate Address'
+        //         else
+        //             rec."Alt Address" := '';
+        //     end;
+        // }
 
 
     }

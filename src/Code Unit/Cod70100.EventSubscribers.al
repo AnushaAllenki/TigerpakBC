@@ -583,19 +583,19 @@ codeunit 70100 "EventSubscribers1"
         exit(TypeHelper.GetAmountFormatLCYWithUserLocale());
     end;
 
-    // [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterInsertEvent', '', true, true)]  //Commented beacause of Shipping state vs Warehouse Location logic is enough and working fine - Tommy
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterInsertEvent', '', true, true)]  //Commented beacause of Shipping state vs Warehouse Location logic is enough and working fine - Tommy
 
-    // local procedure OnAfterInsertEvent1(var Rec: Record "Sales Header"; RunTrigger: Boolean)
-    // begin
+    local procedure OnAfterInsertEvent1(var Rec: Record "Sales Header"; RunTrigger: Boolean)
+    begin
 
-    //     if Rec."Ship-to Address" <> Rec."Sell-to Address" then
-    //         Rec."Alt Address" := 'Alternative Address'
-    //     else
-    //         Rec."Alt Address" := '';
-    //     Rec.Modify();
+        if Rec."Ship-to Address" <> Rec."Sell-to Address" then
+            Rec."Alt Address" := 'Alternative Address'
+        else
+            Rec."Alt Address" := '';
+        Rec.Modify();
 
 
-    // end;
+    end;
 
     procedure UpdateExternalDocNo()       // #290 Posted Sales Invoice Lines - External Document No. field update from Sales Invoice Header
     var

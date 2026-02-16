@@ -774,7 +774,8 @@ codeunit 70100 "EventSubscribers1"
 
         Warining: Text;
 
-        Loc3: Text[3];
+        Loc2: Text[2];
+        State2: Text[2];
     begin
 
 
@@ -785,9 +786,10 @@ codeunit 70100 "EventSubscribers1"
         //         Error('Please select Quote Type before releasing the Quote');
 
         // end;
-        Loc3 := CopyStr(SalesHeader."Location Code", 1, 3);
+        Loc2 := CopyStr(SalesHeader."Location Code", 1, 2);
+        State2 := CopyStr(SalesHeader."Ship-to County", 1, 2);
         if SalesHeader."Document Type" = SalesHeader."Document Type"::Order then begin
-            if Loc3 <> SalesHeader."Ship-to County" then begin
+            if Loc2 <> State2 then begin
                 if not Confirm('The Location Code is different from Shipping state. Do you want to continue?') then
                     IsHandled := true;
             end;

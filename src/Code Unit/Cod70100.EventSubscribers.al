@@ -583,16 +583,16 @@ codeunit 70100 "EventSubscribers1"
         exit(TypeHelper.GetAmountFormatLCYWithUserLocale());
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterInsertEvent', '', true, true)]  //Commented beacause of Shipping state vs Warehouse Location logic is enough and working fine - Tommy
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterInsertEvent', '', true, true)]
 
     local procedure OnAfterInsertEvent1(var Rec: Record "Sales Header"; RunTrigger: Boolean)
     begin
 
-        if Rec."Ship-to Address" <> Rec."Sell-to Address" then
-            Rec."Alt Address" := 'Alternative Address'
-        else
-            Rec."Alt Address" := '';
-        Rec.Modify();
+        // if Rec."Ship-to Address" <> Rec."Sell-to Address" then  //Commented beacause of Shipping state vs Warehouse Location logic is enough and working fine - Tommy
+        //     Rec."Alt Address" := 'Alternative Address'
+        // else
+        //     Rec."Alt Address" := '';
+        // Rec.Modify();
 
 
     end;
@@ -675,13 +675,13 @@ codeunit 70100 "EventSubscribers1"
 
         //     end;// Support ticket from outlook from Justin, need to uncomment and deploy upon Justin's confirmation
 
-        Loc3 := CopyStr(SalesHeader."Location Code", 1, 3);
-        if SalesHeader."Document Type" = SalesHeader."Document Type"::Order then begin
-            if Loc3 <> SalesHeader."Ship-to County" then begin
-                if not Confirm('The Location Code is different from Shipping state. Do you want to continue?') then
-                    IsHandled := true;
-            end;
-        end;
+        // Loc3 := CopyStr(SalesHeader."Location Code", 1, 3);  // Commented temporarily as the logic need to be updated to check only first 2 letters, testing in sandbox - Tommy
+        // if SalesHeader."Document Type" = SalesHeader."Document Type"::Order then begin
+        //     if Loc3 <> SalesHeader."Ship-to County" then begin
+        //         if not Confirm('The Location Code is different from Shipping state. Do you want to continue?') then
+        //             IsHandled := true;
+        //     end;
+        // end;
 
 
     end;

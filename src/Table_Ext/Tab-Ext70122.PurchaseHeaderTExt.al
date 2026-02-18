@@ -13,6 +13,28 @@ tableextension 70122 "Purchase Header TExt" extends "Purchase Header"
             DataClassification = CustomerContent;
 
         }
+
+        field(70101; "Container Configuration"; Option)
+        {
+            Caption = 'Container Configuration';
+            DataClassification = CustomerContent;
+            OptionMembers = " ",Courier,"Live Unload","Side Loader","Side Loader/Hand Unload";
+        }
+
+        field(70102; "Freight Forwarder"; Option)
+        {
+            Caption = 'Freight Forwarder';
+            DataClassification = CustomerContent;
+            OptionMembers = " ",Crane,Mainfreight,Crystal;
+        }
+
+        field(70103; "Container No."; Text[200])
+        {
+            Caption = 'Container No.';
+            DataClassification = ToBeClassified;
+        }
+
+
     }
 
     // trigger OnInsert()

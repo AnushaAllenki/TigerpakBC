@@ -662,7 +662,8 @@ codeunit 70100 "EventSubscribers1"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", OnBeforePerformManualReleaseProcedure, '', false, false)]
     local procedure OnBeforePerformManualReleaseProcedure(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean; var IsHandled: Boolean)
     var
-        Loc3: Text[3];
+        Loc2: Text[2];
+        State2: Text[2];
     begin
 
 
@@ -675,13 +676,14 @@ codeunit 70100 "EventSubscribers1"
 
         //     end;// Support ticket from outlook from Justin, need to uncomment and deploy upon Justin's confirmation
 
-        // Loc3 := CopyStr(SalesHeader."Location Code", 1, 3);  // Commented temporarily as the logic need to be updated to check only first 2 letters, testing in sandbox - Tommy
-        // if SalesHeader."Document Type" = SalesHeader."Document Type"::Order then begin
-        //     if Loc3 <> SalesHeader."Ship-to County" then begin
-        //         if not Confirm('The Location Code is different from Shipping state. Do you want to continue?') then
-        //             IsHandled := true;
-        //     end;
-        // end;
+        Loc2 := CopyStr(SalesHeader."Location Code", 1, 2);
+        State2 := CopyStr(SalesHeader."Ship-to County", 1, 2);
+        if SalesHeader."Document Type" = SalesHeader."Document Type"::Order then begin
+            if Loc2 <> State2 then begin
+                if not Confirm('The Location Code is different from Shipping state. Do you want to continue?') then
+                    IsHandled := true;
+            end;
+        end;
 
 
     end;

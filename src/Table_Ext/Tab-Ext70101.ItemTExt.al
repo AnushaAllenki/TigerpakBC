@@ -199,6 +199,7 @@ tableextension 70101 "Item_T-Ext" extends Item
     trigger OnInsert()
     var
         BinContent: Record "Bin Content";
+        Vendor: Record Vendor;
     begin
 
         BinContent.SetRange("Item No.", Rec."No.");
@@ -207,6 +208,12 @@ tableextension 70101 "Item_T-Ext" extends Item
             BinContent."HACCP Item" := Rec."HACCP Item";   //#288 HACCP Item added to Bincontents
             BinContent.Modify();
 
+        end;
+
+        Vendor.SetRange("No.", Rec."Vendor No.");
+        if Vendor.FindFirst() then begin
+            Vendor."Item Category Group" := Rec."Item Category Group";
+            Vendor.Modify();
         end;
     end;
 

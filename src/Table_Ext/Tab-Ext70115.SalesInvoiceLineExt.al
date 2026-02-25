@@ -30,5 +30,18 @@ tableextension 70115 "Sales Invoice Line Ext" extends "Sales Invoice Line"
             DataClassification = ToBeClassified;
         }
 
+        field(70103; "Blocked_Days Since"; Integer)
+        {
+            Caption = 'Blocked Days Since';
+            DataClassification = ToBeClassified;
+        }
+
+    }
+
+    keys
+    {
+        key(Key12; "Item Category Group")
+        {
+        }
     }
 }

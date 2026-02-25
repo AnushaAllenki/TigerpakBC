@@ -147,7 +147,7 @@ report 70101 "TP Customer Statistics "
             {
                 DataItemLinkReference = Customer;
                 DataItemLink = "Sell-to Customer No." = field("No.");
-                DataItemTableView = SORTING("Posting Date") ORDER(Descending);
+                DataItemTableView = SORTING(Type, "No.") where(Type = const(Item));
                 column(Posting_Date2; "Posting Date") { }
                 Column(Document_No_2; "Document No.") { }
                 column(Item_No_2; "No.") { }
@@ -156,9 +156,50 @@ report 70101 "TP Customer Statistics "
                 column(UnitPrice2; "Unit Price") { }
                 column(Item_Category_Group; "Item Category Group") { }
                 column(Line_Amount; "Line Amount") { }
-                trigger OnPreDataItem()
+                column(Blocked_Item; Blocked_Item) { }
+                column(Blocked_Days_Since; BlockedDaysSince) { }
+
+                trigger OnAfterGetRecord()
+                var
+                    Count: Integer;
+                    SalesInvLineRec: Record "Sales Invoice Line";
+
                 begin
-                    "SalesInvoiceLine2".SetRange("Sell-to Customer No.", Customer."No.");
+                    IF (ItemCode = '') or (ItemCode <> SalesInvoiceLine2."No.") then begin
+                        ItemCode := SalesInvoiceLine2."No.";
+                        SalesInvLineRec.reset();
+                        SalesInvLineRec.SetCurrentKey("Order No.", "Order Line No.", "Posting Date");
+                        SalesInvLineRec.SetRange("No.", SalesInvoiceLine2."No.");
+                        if SalesInvLineRec.FindLast() then begin
+                            BlockedDaysSince := Today - SalesInvLineRec."Posting Date";
+                            if not (SalesInvLineRec."Posting Date" <= (Today - 90)) then
+                                CurrReport.Skip();
+                        end;
+                    end else
+                        CurrReport.Skip();
+
+                end;
+            }
+            dataitem("salesinvoiceline3"; "Sales Invoice Line")
+            {
+                DataItemLinkReference = Customer;
+                DataItemLink = "Sell-to Customer No." = field("No.");
+                DataItemTableView = SORTING("Item Category Group") where(Type = const(Item));
+                column(Posting_Date3; "Posting Date") { }
+                Column(Document_No_3; "Document No.") { }
+                column(Item_No_3; "No.") { }
+                column(Description_item3; Description) { }
+                column(Item_Category_Group3; "Item Category Group") { }
+                column(Quantity3; Quantity) { }
+                column(UnitPrice3; "Unit Price") { }
+                column(TotalSalesAmount; TotalSalesAmt) { }
+                trigger OnAfterGetRecord()
+                begin
+                    if ItemCategoryCode <> SalesInvoiceLine3."Item Category Group" then begin
+                        ItemCategoryCode := SalesInvoiceLine3."Item Category Group";
+                        TotalSalesAmt := "salesinvoiceline3"."Line Amount";
+                    end else
+                        TotalSalesAmt += "salesinvoiceline3"."Line Amount";
                 end;
 
             }
@@ -173,5 +214,9 @@ report 70101 "TP Customer Statistics "
             Type = Word;
         }
     }
-
+    var
+        BlockedDaysSince: Integer;
+        ItemCode: Code[20];
+        TotalSalesAmt: Decimal;
+        ItemCategoryCode: Option;
 }

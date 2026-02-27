@@ -29,6 +29,13 @@ tableextension 70102 Customer_TExt extends Customer
             DataClassification = ToBeClassified;
         }
 
+        field(70104; "Marketing Industry"; Text[50])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Marketing Industry';
+            TableRelation = "Marketing Industry SubCategory"."Marketing Subcategory" where("Marketing Subcategory" = FIELD("Marketing Industry"));
+        }
+
 
 
     }

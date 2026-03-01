@@ -160,6 +160,11 @@ pageextension
             }
         }
 
+        modify("Pick Max. Qty.")
+        {
+            Visible = false;
+        }
+
         // modify("Purchase MOQ")
         // {
         //     trigger OnAfterValidate()

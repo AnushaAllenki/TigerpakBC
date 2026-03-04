@@ -667,14 +667,14 @@ codeunit 70100 "EventSubscribers1"
     begin
 
 
-        //     if SalesHeader."Document Type" = SalesHeader."Document Type"::Quote then begin
+        if SalesHeader."Document Type" = SalesHeader."Document Type"::Quote then begin
 
 
-        //         if SalesHeader."Quote Type" = SalesHeader."Quote Type"::" " then
-        //             Error('Please select Quote Type before releasing the Quote');
+            if SalesHeader."Quote Type" = SalesHeader."Quote Type"::" " then
+                Error('Please select Quote Type before releasing the Quote');
 
 
-        //     end;// Support ticket from outlook from Justin, need to uncomment and deploy upon Justin's confirmation
+        end;// Support ticket from outlook from Justin, need to uncomment and deploy upon Justin's confirmation
 
         Loc2 := CopyStr(SalesHeader."Location Code", 1, 2);
         State2 := CopyStr(SalesHeader."Ship-to County", 1, 2);

@@ -79,6 +79,12 @@ tableextension 70102 Customer_TExt extends Customer
             FieldClass = FlowFilter;
         }
 
+        // field(70115; "FIS"; Boolean)
+        // {
+        //     Caption = 'FIS';
+        //     DataClassification = ToBeClassified;
+        // }
+
     }
 
     trigger OnInsert()

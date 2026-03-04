@@ -163,6 +163,7 @@ report 70101 "TP Customer Statistics "
                 var
                     Count: Integer;
                     SalesInvLineRec: Record "Sales Invoice Line";
+                    salesamount: Decimal;
 
                 begin
                     IF (ItemCode = '') or (ItemCode <> SalesInvoiceLine2."No.") then begin
@@ -172,9 +173,12 @@ report 70101 "TP Customer Statistics "
                         SalesInvLineRec.SetRange("No.", SalesInvoiceLine2."No.");
                         if SalesInvLineRec.FindLast() then begin
                             BlockedDaysSince := Today - SalesInvLineRec."Posting Date";
+                            salesamount += SalesInvLineRec."Line Amount";
+                            Count += 1;
                             if not (SalesInvLineRec."Posting Date" <= (Today - 90)) then
                                 CurrReport.Skip();
                         end;
+
                     end else
                         CurrReport.Skip();
 
@@ -194,12 +198,23 @@ report 70101 "TP Customer Statistics "
                 column(UnitPrice3; "Unit Price") { }
                 column(TotalSalesAmount; TotalSalesAmt) { }
                 trigger OnAfterGetRecord()
+                var
+                    salesInvRecLoc: Record "Sales Invoice Line";
                 begin
                     if ItemCategoryCode <> SalesInvoiceLine3."Item Category Group" then begin
                         ItemCategoryCode := SalesInvoiceLine3."Item Category Group";
                         TotalSalesAmt := "salesinvoiceline3"."Line Amount";
-                    end else
+                        CurrReport.Skip();
+                    end else begin
                         TotalSalesAmt += "salesinvoiceline3"."Line Amount";
+                        salesInvRecLoc.reset();
+                        salesInvRecLoc.SetCurrentKey("Item Category Group");
+                        salesInvRecLoc.CopyFilters(salesinvoiceline3);
+                        salesInvRecLoc.get(salesinvoiceline3."Document No.", salesinvoiceline3."Line No.");
+                        if salesInvRecLoc.find('>') then
+                            if salesInvRecLoc."Item Category Group" = SalesInvoiceLine3."Item Category Group" then
+                                CurrReport.Skip();
+                    end;
                 end;
 
             }
@@ -218,5 +233,5 @@ report 70101 "TP Customer Statistics "
         BlockedDaysSince: Integer;
         ItemCode: Code[20];
         TotalSalesAmt: Decimal;
-        ItemCategoryCode: Option;
+        ItemCategoryCode: Option " ","Adhesive & Wrapping Solutions","Primary Packaging Materials","Shipping & Protective Solutions","Industrial & Workplace Essentials";
 }

@@ -22,5 +22,13 @@ tableextension 70119 "Bin Content TExt" extends "Bin Content"
             Editable = false;
 
         }
+
+        field(70120; "Item Description"; Text[100])
+        {
+            Caption = 'Item Description';
+            DataClassification = ToBeClassified;
+            Editable = false;
+
+        }
     }
 }

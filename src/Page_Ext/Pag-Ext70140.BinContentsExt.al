@@ -30,6 +30,20 @@ pageextension 70140 "Bin Contents Ext" extends "Bin Contents"
 
             }
         }
+
+        addafter("Item No.")
+        {
+            field("Description"; Rec."Item Description")
+            {
+                ApplicationArea = All;
+                Caption = 'Item Description';
+                ToolTip = 'Description of the item.';
+                Editable = false;
+                Enabled = true;
+                Visible = true;
+
+            }
+        }
     }
 
     actions
@@ -72,6 +86,27 @@ pageextension 70140 "Bin Contents Ext" extends "Bin Contents"
 
                             if Item.Get(Rec."Item No.") then begin
                                 Rec."HACCP Item" := Item."HACCP Item";
+                                Rec.Modify();
+                            end;
+                        until Rec.Next() = 0;
+                end;
+            }
+
+            action("Update Item Descriptions")
+            {
+                ApplicationArea = All;
+                Caption = 'Update Item Descriptions';
+                ToolTip = 'Update the item descriptions based on the Bin Content.';
+                Image = Item;
+                trigger OnAction()
+                var
+                    Item: Record Item;
+                begin
+                    if Rec.FindSet() then
+                        repeat
+
+                            if Item.Get(Rec."Item No.") then begin
+                                Rec."Item Description" := Item.Description;
                                 Rec.Modify();
                             end;
                         until Rec.Next() = 0;

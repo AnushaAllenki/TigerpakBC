@@ -33,7 +33,7 @@ pageextension 70140 "Bin Contents Ext" extends "Bin Contents"
 
         addafter("Item No.")
         {
-            field("Description"; Rec."Item Description")
+            field("Description"; Rec."Item Description")  // Cameron Valiantis Request
             {
                 ApplicationArea = All;
                 Caption = 'Item Description';
@@ -92,7 +92,7 @@ pageextension 70140 "Bin Contents Ext" extends "Bin Contents"
                 end;
             }
 
-            action("Update Item Descriptions")
+            action("Update Item Descriptions")    // Cameron Valiantis Request
             {
                 ApplicationArea = All;
                 Caption = 'Update Item Descriptions';

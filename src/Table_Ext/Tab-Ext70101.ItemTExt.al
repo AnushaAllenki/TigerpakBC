@@ -207,7 +207,7 @@ tableextension 70101 "Item_T-Ext" extends Item
         if BinContent.Findset() then begin
             BinContent.Blocked_Item := Rec."Blocked";
             BinContent."HACCP Item" := Rec."HACCP Item";
-            BinContent."Item Description" := Rec.Description;
+            BinContent."Item Description" := Rec.Description;   // Cameron Valiantis Request - To add item description on bin content table
             BinContent.Modify();
 
         end;

@@ -23,7 +23,7 @@ tableextension 70119 "Bin Content TExt" extends "Bin Content"
 
         }
 
-        field(70120; "Item Description"; Text[100])
+        field(70120; "Item Description"; Text[100])    // Cameron Valiantis Request
         {
             Caption = 'Item Description';
             DataClassification = ToBeClassified;

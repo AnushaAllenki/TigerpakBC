@@ -29,11 +29,11 @@ pageextension 70129 "Master Sales Quote Ext" extends "Master Sales Quote"
                 ShowMandatory = true;
             }
 
-            field("Quote Status"; Rec."Quote Status")
+            field("Quote Outcome"; Rec."Quote Status")
             {
                 ApplicationArea = All;
-                Caption = 'Quote Status';
-                ToolTip = 'Quote Status';
+                Caption = 'Quote Outcome';
+                ToolTip = 'Quote Outcome';
                 Editable = true;
                 ShowMandatory = true;
             }

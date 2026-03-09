@@ -74,6 +74,10 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             Caption = 'Quote Type';
             DataClassification = ToBeClassified;
             OptionMembers = " ","RFQ - Request for Quote","CPL - Customer Price List","NBQ - New Business Quote";
+            trigger OnValidate()
+            begin
+                "Quote_Type_Text" := Format("Quote Type");
+            end;
 
         }
 
@@ -82,8 +86,49 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             Caption = 'Quote Status';
             DataClassification = ToBeClassified;
             OptionMembers = " ","Won","Lost";
+            trigger OnValidate()
+            begin
+                "Quote_Outcome_Text" := Format("Quote Status");
+            end;
 
         }
+        modify("Quote Status")
+        {
+            trigger OnAfterValidate()
+            begin
+                Quote_Outcome_Text := Format("Quote Status");
+                Rec.Modify();
+            end;
+        }
+
+        field(70330; "Quote_Type_Text"; Text[50])
+        {
+            Caption = 'Quote Type Text';
+            DataClassification = ToBeClassified;
+            Editable = false;
+
+
+        }
+
+        modify("Quote Type")
+        {
+            trigger OnAfterValidate()
+            begin
+                Quote_Type_Text := Format("Quote Type");
+                Rec.Modify();
+            end;
+        }
+
+        field(70340; "Quote_Outcome_Text"; Text[50])
+        {
+            Caption = 'Quote Outcome Text';
+            DataClassification = ToBeClassified;
+            Editable = false;
+
+
+        }
+
+
         modify("Ship-to post code")    //Alternate Shipping Address from Weborders when different from Sell-to Address
         {
             trigger OnAfterValidate()
@@ -149,6 +194,7 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             DataClassification = CustomerContent;
         }
 
+
     }
 
 
@@ -185,6 +231,14 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
         end;
         exit(confirm);
     end;
+
+    trigger OnInsert()
+    begin
+        "Quote_Type_Text" := Format("Quote Type");
+        "Quote_Outcome_Text" := Format("Quote Status");
+    end;
+
+
 
 
 

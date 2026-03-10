@@ -3,6 +3,7 @@ namespace TigerpakBC.TigerpakBC;
 using Microsoft.Sales.Customer;
 using Microsoft.Pricing.PriceList;
 using Microsoft.Inventory.Ledger;
+using Microsoft.Inventory.Item;
 using Microsoft.Sales.History;
 
 report 70101 "TP Customer Statistics "
@@ -201,12 +202,18 @@ report 70101 "TP Customer Statistics "
                 var
                     salesInvRecLoc: Record "Sales Invoice Line";
                 begin
-                    if ItemCategoryCode <> SalesInvoiceLine3."Item Category Group" then begin
+                    if ItemCategoryCode = SalesInvoiceLine3."Item Category Group" then begin
+                        TotalSalesAmt += "salesinvoiceline3"."Line Amount";
+                        salesInvRecLoc.reset();
+                        salesInvRecLoc.SetCurrentKey("Item Category Group");
+                        salesInvRecLoc.CopyFilters(salesinvoiceline3);
+                        salesInvRecLoc.get(salesinvoiceline3."Document No.", salesinvoiceline3."Line No.");
+                        if salesInvRecLoc.find('>') then
+                            if salesInvRecLoc."Item Category Group" = SalesInvoiceLine3."Item Category Group" then
+                                CurrReport.Skip();
+                    end else begin
                         ItemCategoryCode := SalesInvoiceLine3."Item Category Group";
                         TotalSalesAmt := "salesinvoiceline3"."Line Amount";
-                        CurrReport.Skip();
-                    end else begin
-                        TotalSalesAmt += "salesinvoiceline3"."Line Amount";
                         salesInvRecLoc.reset();
                         salesInvRecLoc.SetCurrentKey("Item Category Group");
                         salesInvRecLoc.CopyFilters(salesinvoiceline3);
@@ -218,8 +225,38 @@ report 70101 "TP Customer Statistics "
                 end;
 
             }
+
+            dataitem(Result1; "Top10DormantItems Buffer")
+            {
+                UseTemporary = true;
+
+                // Sort by sales amount DESC so highest appear first
+                DataItemTableView = SORTING("Total Sales Amount") ORDER(Descending);
+
+                // Optional request filter
+                RequestFilterFields = "Item No.";
+
+                column(ItemNo; "Item No.") { Caption = 'Item No.'; }
+                column(ResultDescription; Description) { Caption = 'Description'; }
+                column(ResultTotalSalesAmount; "Total Sales Amount")
+                {
+                    Caption = 'Total Sales Amount (LCY)';
+                    AutoFormatType = 1; // standard amount formatting
+                }
+                column(LastSaleDate; "Last Sale Date") { Caption = 'Last Sale Date'; }
+                column(DaysSinceLastSale; "Days Since Last Sale") { Caption = 'Days Since Last Sale'; }
+
+                trigger OnPreDataItem()
+                begin
+                    // Build + trim the temporary dataset before iteration
+                    BuildCandidatesAndMeasures(Result);
+                    KeepTopN(Result);
+                end;
+            }
+
         }
     }
+
 
     rendering
     {
@@ -229,9 +266,181 @@ report 70101 "TP Customer Statistics "
             Type = Word;
         }
     }
+
+
+    local procedure BuildCandidatesAndMeasures(var ResultRec: Record "Top10DormantItems Buffer" temporary)
+    var
+        ItemRec: Record Item;
+        ILE: Record "Item Ledger Entry";
+        VE: Record "Value Entry";
+        LastSale: Date;
+        AgeDays: Integer;
+        SumSales: Decimal;
+        ItemNoFilter: Text;
+    begin
+        // Respect any Item No. filter the user applied on the DataItem
+        ItemNoFilter := ResultRec.GetFilter("Item No.");
+
+        ItemRec.Reset();
+        if ItemNoFilter <> '' then
+            ItemRec.SetFilter("No.", ItemNoFilter);
+
+        // Optional: add other quick constraints (uncomment as needed)
+        // ItemRec.SetRange(Type, ItemRec.Type::Inventory);
+        // ItemRec.SetRange(Blocked, false);
+
+        if not ItemRec.FindSet() then
+            exit;
+
+        repeat
+            // 1) Last sale date up to WorkDateParam
+            LastSale := 0D;
+            ILE.Reset();
+            ILE.SetRange("Item No.", ItemRec."No.");
+            ILE.SetRange("Entry Type", ILE."Entry Type"::Sale);
+            ILE.SetFilter("Posting Date", '..%1', WorkDateParam);
+            ILE.SetCurrentKey("Item No.", "Posting Date");
+            if ILE.FindLast() then
+                LastSale := ILE."Posting Date";
+
+            // Guarded logic instead of 'continue'
+            if LastSale <> 0D then begin
+                AgeDays := WorkDateParam - LastSale;
+
+                if AgeDays > DaysWithoutSales then begin
+                    // 2) Sum Sales Amount (Actual) up to WorkDateParam, only for sales-linked VEs
+                    SumSales := 0;
+                    VE.Reset();
+                    VE.SetCurrentKey("Item No.", "Posting Date");
+                    VE.SetRange("Item No.", ItemRec."No.");
+                    VE.SetFilter("Posting Date", '..%1', WorkDateParam);
+
+                    if VE.FindSet() then
+                        repeat
+                            if IsSaleValueEntry(VE) then
+                                SumSales += VE."Sales Amount (Actual)";
+                        until VE.Next() = 0;
+
+                    if SumSales <> 0 then begin
+                        ResultRec.Init();
+                        ResultRec."Item No." := ItemRec."No.";
+                        ResultRec.Description := ItemRec.Description;
+                        ResultRec."Total Sales Amount" := SumSales;
+                        ResultRec."Last Sale Date" := LastSale;
+                        ResultRec."Days Since Last Sale" := AgeDays;
+                        ResultRec.Insert();
+                    end;
+                end;
+            end;
+        until ItemRec.Next() = 0;
+    end;
+
+    local procedure GetLastSaleDate(ItemNo: Code[20]): Date
+    var
+        ILE: Record "Item Ledger Entry";
+    begin
+        ILE.Reset();
+        ILE.SetRange("Item No.", ItemNo);
+        ILE.SetRange("Entry Type", ILE."Entry Type"::Sale);
+        ILE.SetFilter("Posting Date", '..%1', WorkDateParam);
+        ILE.SetCurrentKey("Item No.", "Posting Date");
+        if ILE.FindLast() then
+            exit(ILE."Posting Date");
+        exit(0D);
+    end;
+
+    local procedure CalcSalesAmount(ItemNo: Code[20]; ToDate: Date): Decimal
+    var
+        VE: Record "Value Entry";
+        ILE: Record "Item Ledger Entry";
+        SumSales: Decimal;
+    begin
+        SumSales := 0;
+        VE.Reset();
+        VE.SetCurrentKey("Item No.", "Posting Date");
+        VE.SetRange("Item No.", ItemNo);
+        VE.SetFilter("Posting Date", '..%1', ToDate);
+
+        if VE.FindSet() then
+            repeat
+                if (VE."Item Ledger Entry No." <> 0) and ILE.Get(VE."Item Ledger Entry No.") then
+                    if ILE."Entry Type" = ILE."Entry Type"::Sale then
+                        SumSales += VE."Sales Amount (Actual)";
+            until VE.Next() = 0;
+
+        exit(SumSales);
+    end;
+
+
+    local procedure KeepTopN(var ResultRec: Record "Top10DormantItems Buffer" temporary)
+    var
+        Rank: Integer;
+        Sorted: Record "Top10DormantItems Buffer" temporary;
+    begin
+        // Copy top N rows (sorted by Total Sales Amount DESC) into a new temp and swap
+        Sorted.DeleteAll();
+
+        ResultRec.Reset();
+        ResultRec.SetCurrentKey("Total Sales Amount");
+        ResultRec.Ascending(false);
+
+        if ResultRec.FindSet() then begin
+            Rank := 0;
+            repeat
+                Rank += 1;
+                if Rank <= TopN then begin
+                    Sorted.Init();
+                    Sorted.TransferFields(ResultRec);
+                    Sorted.Insert();
+                end;
+            until ResultRec.Next() = 0;
+        end;
+
+        ResultRec.DeleteAll();
+        if Sorted.FindSet() then
+            repeat
+                ResultRec.Init();
+                ResultRec.TransferFields(Sorted);
+                ResultRec.Insert();
+            until Sorted.Next() = 0;
+    end;
+
+    local procedure IsSaleValueEntry(var VE: Record "Value Entry"): Boolean
+    var
+        ILE: Record "Item Ledger Entry";
+    begin
+        // Confirm the VE is tied to a Sale ILE
+        if VE."Item Ledger Entry No." = 0 then
+            exit(false);
+        if not ILE.Get(VE."Item Ledger Entry No.") then
+            exit(false);
+        exit(ILE."Entry Type" = ILE."Entry Type"::Sale);
+    end;
+
     var
         BlockedDaysSince: Integer;
         ItemCode: Code[20];
         TotalSalesAmt: Decimal;
         ItemCategoryCode: Option " ","Adhesive & Wrapping Solutions","Primary Packaging Materials","Shipping & Protective Solutions","Industrial & Workplace Essentials";
+
+        WorkDateParam: Date;
+        DaysWithoutSales: Integer;
+        TopN: Integer;
+
+        // Working records
+        ItemRec: Record Item;
+        ILE: Record "Item Ledger Entry";
+        VE: Record "Value Entry";
+        Result: Record "Top10DormantItems Buffer" temporary;
+
+    trigger OnInitReport()
+    begin
+        if WorkDateParam = 0D then
+            WorkDateParam := WorkDate; // default to user Work Date
+        if DaysWithoutSales = 0 then
+            DaysWithoutSales := 90;     // default dormancy threshold
+        if TopN = 0 then
+            TopN := 10;                 // default top N
+    end;
+
 }

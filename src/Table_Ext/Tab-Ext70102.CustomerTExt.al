@@ -42,6 +42,10 @@ tableextension 70102 Customer_TExt extends Customer
             DataClassification = ToBeClassified;
             Caption = 'Marketing Industry';
             TableRelation = "Marketing Industry SubCategory"."Marketing Subcategory" where("Marketing Subcategory" = FIELD("Marketing Industry"));
+            trigger OnValidate()
+            begin
+                Marketing_Industry_Text := "Marketing Industry";
+            end;
         }
 
 
@@ -78,6 +82,13 @@ tableextension 70102 Customer_TExt extends Customer
             Caption = 'Last Qtr Date Filter';
             FieldClass = FlowFilter;
         }
+
+        field(70111; "Marketing_Industry_Text"; Text[50])
+        {
+            Caption = 'Marketing Industry Text';
+            Editable = false;
+        }
+
 
         // field(70115; "FIS"; Boolean)
         // {

@@ -27,6 +27,8 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
             }
         }
 
+
+
         modify("Account Status")
         {
             Editable = false;
@@ -86,7 +88,17 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
                 ApplicationArea = All;
                 Caption = 'Marketing Industry';
             }
+
+
+            field("Marketing Industry Text"; Rec."Marketing_Industry_Text")
+            {
+                ApplicationArea = All;
+                Caption = 'Marketing Industry Text';
+                Editable = false;
+            }
+
         }
+
         addafter("Marketing Industry")
         {
             field("Marginamount_12months"; Rec."Marginamount_12months")

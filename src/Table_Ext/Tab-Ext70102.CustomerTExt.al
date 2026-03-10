@@ -38,5 +38,7 @@ tableextension 70102 Customer_TExt extends Customer
 
 
 
+
+
     }
 }

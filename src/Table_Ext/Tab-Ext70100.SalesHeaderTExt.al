@@ -94,30 +94,16 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
 
 
         }
-        modify("Quote Status")
-        {
-            trigger OnAfterValidate()
-            begin
-                Quote_Outcome_Text := Format("Quote Status");
-                Rec.Modify();
-            end;
-        }
-        field(70330; "Quote_Type_Text"; Text[50])
+
+        field(70330; "Quote_Type_Text"; Text[50])    // field created to couple in dataverse
         {
             Caption = 'Quote Type Text';
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        modify("Quote Type")
-        {
-            trigger OnAfterValidate()
-            begin
-                Quote_Type_Text := Format("Quote Type");
-                Rec.Modify();
-            end;
-        }
 
-        field(70340; "Quote_Outcome_Text"; Text[50])
+
+        field(70340; "Quote_Outcome_Text"; Text[50])    // field created to couple in dataverse
         {
             Caption = 'Quote Outcome Text';
             DataClassification = ToBeClassified;

@@ -36,6 +36,13 @@ tableextension 70102 Customer_TExt extends Customer
             TableRelation = "Marketing Industry SubCategory"."Marketing Subcategory" where("Marketing Subcategory" = FIELD("Marketing Industry"));
         }
 
+        field(70105; "Marketing Industry Text"; Text[50])
+        {
+            Caption = 'Marketing Industry Text';
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
+
 
 
 

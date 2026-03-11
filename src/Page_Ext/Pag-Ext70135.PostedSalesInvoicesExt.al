@@ -1,6 +1,7 @@
 namespace ALProject.ALProject;
 
 using Microsoft.Sales.History;
+using Microsoft.CRM.Contact;
 
 pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
 {
@@ -55,6 +56,15 @@ pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
                 Caption = 'Your Reference';
                 ToolTip = 'The Your Reference field shows your reference for the posted sales invoice.';
             }
+            field(BillToContactEmail; BillToContact."E-Mail")
+            {
+                ApplicationArea = Basic, Suite;
+                Caption = 'Email';
+                Editable = false;
+                Importance = Additional;
+                ExtendedDatatype = EMail;
+                ToolTip = 'Specifies the email address of the person you regularly contact when you communicate with the customer to whom the invoice was sent.';
+            }
 
 
         }
@@ -107,5 +117,7 @@ pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
 
         }
     }
+    var
+        BillToContact: Record Contact;
 
 }

@@ -56,6 +56,7 @@ pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
                 ToolTip = 'The Your Reference field shows your reference for the posted sales invoice.';
             }
 
+
         }
     }
 

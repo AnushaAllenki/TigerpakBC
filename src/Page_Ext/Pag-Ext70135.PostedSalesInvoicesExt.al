@@ -1,6 +1,7 @@
 namespace ALProject.ALProject;
 
 using Microsoft.Sales.History;
+using Microsoft.CRM.Contact;
 
 pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
 {
@@ -22,6 +23,7 @@ pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
                 Caption = 'Margin %_New';
                 ToolTip = 'The Margin %_New field shows the new margin percentage for the posted sales invoice.';
             }
+
             field("Created By"; Rec."Created By")
             {
                 ApplicationArea = All;
@@ -46,9 +48,30 @@ pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
                 Caption = 'Your Reference';
                 ToolTip = 'Specifies your reference for the posted sales invoice.';
             }
+            field(BillToContactEmail; BillToContact."E-Mail")  // added for API - Posted Sales Invoices
+            {
+                ApplicationArea = Basic, Suite;
+                Caption = 'Email';
+                Editable = false;
+                Importance = Additional;
+                ExtendedDatatype = EMail;
+                ToolTip = 'Specifies the email address of the person you regularly contact when you communicate with the customer to whom the invoice was sent.';
+            }
+            field(SellToContactEmail; SellToContact."E-Mail") // added for API - Posted Sales Invoices
+            {
+                ApplicationArea = Basic, Suite;
+                Caption = 'Sell-to Contact Email';
+                Editable = false;
+                Importance = Additional;
+                ExtendedDatatype = EMail;
+                ToolTip = 'Specifies the email address of the person you regularly contact when you communicate with the sell-to customer.';
+            }
+
 
         }
+
     }
+
 
     actions
     {
@@ -73,7 +96,24 @@ pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
 
 
             }
+
         }
     }
+    var
+        BillToContact: Record Contact;
+        SellToContact: Record Contact;
+
+    trigger OnAfterGetRecord()   // added for API - Posted Sales Invoices
+    begin
+        if Rec."Bill-to Contact No." <> '' then
+            BillToContact.Get(Rec."Bill-to Contact No.")
+        else
+            BillToContact.Init();
+
+        if Rec."Sell-to Contact No." <> '' then
+            SellToContact.Get(Rec."Sell-to Contact No.")
+        else
+            SellToContact.Init();
+    end;
 
 }

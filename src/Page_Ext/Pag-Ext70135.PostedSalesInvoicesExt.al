@@ -56,23 +56,19 @@ pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
                 Caption = 'Your Reference';
                 ToolTip = 'The Your Reference field shows your reference for the posted sales invoice.';
             }
-            field(BillToContactEmail; BillToContact."E-Mail")
+            field(BillToContactEmail; Rec."Bill-toContact Email")
             {
                 ApplicationArea = Basic, Suite;
                 Caption = 'Bill-To Contact Email';
                 Editable = false;
-                Importance = Additional;
-                ExtendedDatatype = EMail;
-                ToolTip = 'Specifies the email address of the person you regularly contact when you communicate with the customer to whom the invoice was sent.';
+
             }
-            field(SellToContactEmail; SellToContact."E-Mail") // added for API - Posted Sales Invoices
+            field(SellToContactEmail; Rec."Sell-tocontact Email") // added for API - Posted Sales Invoices
             {
                 ApplicationArea = Basic, Suite;
                 Caption = 'Sell-to Contact Email';
                 Editable = false;
-                Importance = Additional;
-                ExtendedDatatype = EMail;
-                ToolTip = 'Specifies the email address of the person you regularly contact when you communicate with the sell-to customer.';
+
             }
 
 

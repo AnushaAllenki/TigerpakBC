@@ -1,6 +1,7 @@
 namespace ALProject.ALProject;
 
 using Microsoft.Sales.History;
+using Microsoft.CRM.Contact;
 using Microsoft.Warehouse.Activity.History;
 
 tableextension 70114 "Sales Invoice Header TExt" extends "Sales Invoice Header"
@@ -43,9 +44,23 @@ tableextension 70114 "Sales Invoice Header TExt" extends "Sales Invoice Header"
             Caption = 'Auto-Email Post';
             DataClassification = ToBeClassified;
         }
+        field(70160; "Sell-tocontact Email"; Text[100])
+        {
+            Caption = 'Sell-to Contact Email';
+            FieldClass = FlowField;
+            CalcFormula = Lookup(Contact."E-Mail" where("No." = field("Sell-to Contact No.")));
+        }
+
+        field(70161; "Bill-toContact Email"; Text[100])
+        {
+            Caption = 'Bill-to Contact Email';
+            FieldClass = FlowField;
+            CalcFormula = Lookup(Contact."E-Mail" where("No." = field("Bill-to Contact No.")));
+
+
+        }
 
 
     }
-
 }
 

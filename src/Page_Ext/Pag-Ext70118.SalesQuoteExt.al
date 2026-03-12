@@ -72,6 +72,8 @@ pageextension 70118 "Sales Quote Ext" extends "Sales Quote"
     }
 
 
+
+
 }
 
 

@@ -122,20 +122,7 @@ pageextension 70135 "Posted Sales Invoices Ext" extends "Posted Sales Invoices"
 
         }
     }
-    var
-        BillToContact: Record Contact;
-        SellToContact: Record Contact;
 
-    trigger OnAfterGetRecord()   // added for API - Posted Sales Invoices
-    begin
-        if Rec."Bill-to Contact No." <> '' then
-            BillToContact.Get(Rec."Bill-to Contact No.")
-        else
-            BillToContact.Init();
 
-        if Rec."Sell-to Contact No." <> '' then
-            SellToContact.Get(Rec."Sell-to Contact No.")
-        else
-            SellToContact.Init();
-    end;
+
 }

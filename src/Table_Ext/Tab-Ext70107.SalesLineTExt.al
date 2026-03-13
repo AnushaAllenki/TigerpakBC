@@ -31,6 +31,17 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
         }
 
+        field(70111; "Backorder Quantity"; Decimal)
+        {
+            Caption = 'Backorder Quantity';
+            DataClassification = ToBeClassified;
+            // trigger OnValidate()
+            // begin
+            //     "Backorder Quantity" := "Quantity" - "Quantity Shipped";
+            // end;
+        }
+
+
         modify("Unit of Measure Code")
         {
             trigger OnAfterValidate()
@@ -206,7 +217,10 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
     //end;
 
-
+    trigger OnModify()
+    begin
+        "Backorder Quantity" := "Quantity" - "Qty. Shipped (Base)";
+    end;
 
 
     var

@@ -4,6 +4,7 @@ pageextension 70103 "Sales Order Subform_Ext" extends "Sales Order Subform"
     {
         addafter("Line Discount Amount")
         {
+
             field("TP Unit Cost_New"; Rec."TP Unit Cost_New")
             {
                 ApplicationArea = All;
@@ -15,6 +16,12 @@ pageextension 70103 "Sales Order Subform_Ext" extends "Sales Order Subform"
                 ApplicationArea = All;
                 Caption = 'TP Profit%_New';
                 ToolTip = 'The TP Profit%_New field shows the new TP profit percentage for the sales order line.';
+            }
+            field("Backorder Quantity"; Rec."Backorder Quantity")
+            {
+                ApplicationArea = All;
+                Caption = 'Backorder Quantity';
+                ToolTip = 'The Backorder Quantity field shows the backorder quantity for the sales order line.';
             }
 
 

@@ -47,6 +47,16 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
                     Rec."WH Exist" := SH."WH Exist";
             end;
         }
+        field(70111; "Backorder Quantity"; Decimal)
+        {
+            Caption = 'Backorder Quantity';
+            DataClassification = ToBeClassified;
+            // trigger OnValidate()
+            // begin
+            //     "Backorder Quantity" := "Quantity" - "Quantity Shipped";
+            // end;
+
+        }
 
         field(70121; "WH_Exist_API"; Boolean)  // field added for API page AzureSalesLines - Tommy
         {

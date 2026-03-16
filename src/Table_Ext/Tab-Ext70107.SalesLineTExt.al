@@ -5,6 +5,7 @@ using Microsoft.Inventory.Item;
 using Microsoft.Warehouse.Document;
 
 tableextension 70107 "Sales Line TExt" extends "Sales Line"
+
 {
     fields
     {
@@ -98,6 +99,13 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
                     "TP Profit%_New" := 0
                 else
                     "TP Profit%_New" := Round((("Unit Price" - "TP Unit Cost_New") / "Unit Price") * 100, 0.01, '=')
+            end;
+        }
+        modify("Qty. Shipped (Base)")
+        {
+            trigger OnAfterValidate()
+            begin
+                UpdateBackorderQuantity();
             end;
         }
 
@@ -217,7 +225,14 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
     //end;
 
-    trigger OnModify()
+
+
+    trigger OnAfterModify()
+    begin
+        UpdateBackorderQuantity();
+    end;
+
+    procedure UpdateBackorderQuantity()
     begin
         "Backorder Quantity" := "Quantity" - "Qty. Shipped (Base)";
     end;

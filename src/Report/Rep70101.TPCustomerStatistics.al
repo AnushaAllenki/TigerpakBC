@@ -226,33 +226,33 @@ report 70101 "TP Customer Statistics "
 
             }
 
-            dataitem(Result1; "Top10DormantItems Buffer")
-            {
-                UseTemporary = true;
+            //         dataitem(Result1; "Top10DormantItems Buffer")
+            //         {
+            //             UseTemporary = true;
 
-                // Sort by sales amount DESC so highest appear first
-                DataItemTableView = SORTING("Total Sales Amount") ORDER(Descending);
+            //             // Sort by sales amount DESC so highest appear first
+            //             DataItemTableView = SORTING("Total Sales Amount") ORDER(Descending);
 
-                // Optional request filter
-                RequestFilterFields = "Item No.";
+            //             // Optional request filter
+            //             RequestFilterFields = "Item No.";
 
-                column(ItemNo; "Item No.") { Caption = 'Item No.'; }
-                column(ResultDescription; Description) { Caption = 'Description'; }
-                column(ResultTotalSalesAmount; "Total Sales Amount")
-                {
-                    Caption = 'Total Sales Amount (LCY)';
-                    AutoFormatType = 1; // standard amount formatting
-                }
-                column(LastSaleDate; "Last Sale Date") { Caption = 'Last Sale Date'; }
-                column(DaysSinceLastSale; "Days Since Last Sale") { Caption = 'Days Since Last Sale'; }
+            //             column(ItemNo; "Item No.") { Caption = 'Item No.'; }
+            //             column(ResultDescription; Description) { Caption = 'Description'; }
+            //             column(ResultTotalSalesAmount; "Total Sales Amount")
+            //             {
+            //                 Caption = 'Total Sales Amount (LCY)';
+            //                 AutoFormatType = 1; // standard amount formatting
+            //             }
+            //             column(LastSaleDate; "Last Sale Date") { Caption = 'Last Sale Date'; }
+            //             column(DaysSinceLastSale; "Days Since Last Sale") { Caption = 'Days Since Last Sale'; }
 
-                trigger OnPreDataItem()
-                begin
-                    // Build + trim the temporary dataset before iteration
-                    BuildCandidatesAndMeasures(Result);
-                    KeepTopN(Result);
-                end;
-            }
+            //             trigger OnPreDataItem()
+            //             begin
+            //                 // Build + trim the temporary dataset before iteration
+            //                 BuildCandidatesAndMeasures(Result);
+            //                 KeepTopN(Result);
+            //             end;
+            //         }
 
         }
     }
@@ -268,154 +268,155 @@ report 70101 "TP Customer Statistics "
     }
 
 
-    local procedure BuildCandidatesAndMeasures(var ResultRec: Record "Top10DormantItems Buffer" temporary)
-    var
-        ItemRec: Record Item;
-        ILE: Record "Item Ledger Entry";
-        VE: Record "Value Entry";
-        LastSale: Date;
-        AgeDays: Integer;
-        SumSales: Decimal;
-        ItemNoFilter: Text;
-    begin
-        // Respect any Item No. filter the user applied on the DataItem
-        ItemNoFilter := ResultRec.GetFilter("Item No.");
 
-        ItemRec.Reset();
-        if ItemNoFilter <> '' then
-            ItemRec.SetFilter("No.", ItemNoFilter);
+    // local procedure BuildCandidatesAndMeasures(var ResultRec: Record "Top10DormantItems Buffer" temporary)
+    // var
+    //     ItemRec: Record Item;
+    //     ILE: Record "Item Ledger Entry";
+    //     VE: Record "Value Entry";
+    //     LastSale: Date;
+    //     AgeDays: Integer;
+    //     SumSales: Decimal;
+    //     ItemNoFilter: Text;
+    // begin
+    //     // Respect any Item No. filter the user applied on the DataItem
+    //     ItemNoFilter := ResultRec.GetFilter("Item No.");
 
-        // Optional: add other quick constraints (uncomment as needed)
-        // ItemRec.SetRange(Type, ItemRec.Type::Inventory);
-        // ItemRec.SetRange(Blocked, false);
+    //     ItemRec.Reset();
+    //     if ItemNoFilter <> '' then
+    //         ItemRec.SetFilter("No.", ItemNoFilter);
 
-        if not ItemRec.FindSet() then
-            exit;
+    //     // Optional: add other quick constraints (uncomment as needed)
+    //     // ItemRec.SetRange(Type, ItemRec.Type::Inventory);
+    //     // ItemRec.SetRange(Blocked, false);
 
-        repeat
-            // 1) Last sale date up to WorkDateParam
-            LastSale := 0D;
-            ILE.Reset();
-            ILE.SetRange("Item No.", ItemRec."No.");
-            ILE.SetRange("Entry Type", ILE."Entry Type"::Sale);
-            ILE.SetFilter("Posting Date", '..%1', WorkDateParam);
-            ILE.SetCurrentKey("Item No.", "Posting Date");
-            if ILE.FindLast() then
-                LastSale := ILE."Posting Date";
+    //     if not ItemRec.FindSet() then
+    //         exit;
 
-            // Guarded logic instead of 'continue'
-            if LastSale <> 0D then begin
-                AgeDays := WorkDateParam - LastSale;
+    //     repeat
+    //         // 1) Last sale date up to WorkDateParam
+    //         LastSale := 0D;
+    //         ILE.Reset();
+    //         ILE.SetRange("Item No.", ItemRec."No.");
+    //         ILE.SetRange("Entry Type", ILE."Entry Type"::Sale);
+    //         ILE.SetFilter("Posting Date", '..%1', WorkDateParam);
+    //         ILE.SetCurrentKey("Item No.", "Posting Date");
+    //         if ILE.FindLast() then
+    //             LastSale := ILE."Posting Date";
 
-                if AgeDays > DaysWithoutSales then begin
-                    // 2) Sum Sales Amount (Actual) up to WorkDateParam, only for sales-linked VEs
-                    SumSales := 0;
-                    VE.Reset();
-                    VE.SetCurrentKey("Item No.", "Posting Date");
-                    VE.SetRange("Item No.", ItemRec."No.");
-                    VE.SetFilter("Posting Date", '..%1', WorkDateParam);
+    //         // Guarded logic instead of 'continue'
+    //         if LastSale <> 0D then begin
+    //             AgeDays := WorkDateParam - LastSale;
 
-                    if VE.FindSet() then
-                        repeat
-                            if IsSaleValueEntry(VE) then
-                                SumSales += VE."Sales Amount (Actual)";
-                        until VE.Next() = 0;
+    //             if AgeDays > DaysWithoutSales then begin
+    //                 // 2) Sum Sales Amount (Actual) up to WorkDateParam, only for sales-linked VEs
+    //                 SumSales := 0;
+    //                 VE.Reset();
+    //                 VE.SetCurrentKey("Item No.", "Posting Date");
+    //                 VE.SetRange("Item No.", ItemRec."No.");
+    //                 VE.SetFilter("Posting Date", '..%1', WorkDateParam);
 
-                    if SumSales <> 0 then begin
-                        ResultRec.Init();
-                        ResultRec."Item No." := ItemRec."No.";
-                        ResultRec.Description := ItemRec.Description;
-                        ResultRec."Total Sales Amount" := SumSales;
-                        ResultRec."Last Sale Date" := LastSale;
-                        ResultRec."Days Since Last Sale" := AgeDays;
-                        ResultRec.Insert();
-                    end;
-                end;
-            end;
-        until ItemRec.Next() = 0;
-    end;
+    //                 if VE.FindSet() then
+    //                     repeat
+    //                         if IsSaleValueEntry(VE) then
+    //                             SumSales += VE."Sales Amount (Actual)";
+    //                     until VE.Next() = 0;
 
-    local procedure GetLastSaleDate(ItemNo: Code[20]): Date
-    var
-        ILE: Record "Item Ledger Entry";
-    begin
-        ILE.Reset();
-        ILE.SetRange("Item No.", ItemNo);
-        ILE.SetRange("Entry Type", ILE."Entry Type"::Sale);
-        ILE.SetFilter("Posting Date", '..%1', WorkDateParam);
-        ILE.SetCurrentKey("Item No.", "Posting Date");
-        if ILE.FindLast() then
-            exit(ILE."Posting Date");
-        exit(0D);
-    end;
+    //                 if SumSales <> 0 then begin
+    //                     ResultRec.Init();
+    //                     ResultRec."Item No." := ItemRec."No.";
+    //                     ResultRec.Description := ItemRec.Description;
+    //                     ResultRec."Total Sales Amount" := SumSales;
+    //                     ResultRec."Last Sale Date" := LastSale;
+    //                     ResultRec."Days Since Last Sale" := AgeDays;
+    //                     ResultRec.Insert();
+    //                 end;
+    //             end;
+    //         end;
+    //     until ItemRec.Next() = 0;
+    // end;
 
-    local procedure CalcSalesAmount(ItemNo: Code[20]; ToDate: Date): Decimal
-    var
-        VE: Record "Value Entry";
-        ILE: Record "Item Ledger Entry";
-        SumSales: Decimal;
-    begin
-        SumSales := 0;
-        VE.Reset();
-        VE.SetCurrentKey("Item No.", "Posting Date");
-        VE.SetRange("Item No.", ItemNo);
-        VE.SetFilter("Posting Date", '..%1', ToDate);
+    // local procedure GetLastSaleDate(ItemNo: Code[20]): Date
+    // var
+    //     ILE: Record "Item Ledger Entry";
+    // begin
+    //     ILE.Reset();
+    //     ILE.SetRange("Item No.", ItemNo);
+    //     ILE.SetRange("Entry Type", ILE."Entry Type"::Sale);
+    //     ILE.SetFilter("Posting Date", '..%1', WorkDateParam);
+    //     ILE.SetCurrentKey("Item No.", "Posting Date");
+    //     if ILE.FindLast() then
+    //         exit(ILE."Posting Date");
+    //     exit(0D);
+    // end;
 
-        if VE.FindSet() then
-            repeat
-                if (VE."Item Ledger Entry No." <> 0) and ILE.Get(VE."Item Ledger Entry No.") then
-                    if ILE."Entry Type" = ILE."Entry Type"::Sale then
-                        SumSales += VE."Sales Amount (Actual)";
-            until VE.Next() = 0;
+    // local procedure CalcSalesAmount(ItemNo: Code[20]; ToDate: Date): Decimal
+    // var
+    //     VE: Record "Value Entry";
+    //     ILE: Record "Item Ledger Entry";
+    //     SumSales: Decimal;
+    // begin
+    //     SumSales := 0;
+    //     VE.Reset();
+    //     VE.SetCurrentKey("Item No.", "Posting Date");
+    //     VE.SetRange("Item No.", ItemNo);
+    //     VE.SetFilter("Posting Date", '..%1', ToDate);
 
-        exit(SumSales);
-    end;
+    //     if VE.FindSet() then
+    //         repeat
+    //             if (VE."Item Ledger Entry No." <> 0) and ILE.Get(VE."Item Ledger Entry No.") then
+    //                 if ILE."Entry Type" = ILE."Entry Type"::Sale then
+    //                     SumSales += VE."Sales Amount (Actual)";
+    //         until VE.Next() = 0;
+
+    //     exit(SumSales);
+    // end;
 
 
-    local procedure KeepTopN(var ResultRec: Record "Top10DormantItems Buffer" temporary)
-    var
-        Rank: Integer;
-        Sorted: Record "Top10DormantItems Buffer" temporary;
-    begin
-        // Copy top N rows (sorted by Total Sales Amount DESC) into a new temp and swap
-        Sorted.DeleteAll();
+    // local procedure KeepTopN(var ResultRec: Record "Top10DormantItems Buffer" temporary)
+    // var
+    //     Rank: Integer;
+    //     Sorted: Record "Top10DormantItems Buffer" temporary;
+    // begin
+    //     // Copy top N rows (sorted by Total Sales Amount DESC) into a new temp and swap
+    //     Sorted.DeleteAll();
 
-        ResultRec.Reset();
-        ResultRec.SetCurrentKey("Total Sales Amount");
-        ResultRec.Ascending(false);
+    //     ResultRec.Reset();
+    //     ResultRec.SetCurrentKey("Total Sales Amount");
+    //     ResultRec.Ascending(false);
 
-        if ResultRec.FindSet() then begin
-            Rank := 0;
-            repeat
-                Rank += 1;
-                if Rank <= TopN then begin
-                    Sorted.Init();
-                    Sorted.TransferFields(ResultRec);
-                    Sorted.Insert();
-                end;
-            until ResultRec.Next() = 0;
-        end;
+    //     if ResultRec.FindSet() then begin
+    //         Rank := 0;
+    //         repeat
+    //             Rank += 1;
+    //             if Rank <= TopN then begin
+    //                 Sorted.Init();
+    //                 Sorted.TransferFields(ResultRec);
+    //                 Sorted.Insert();
+    //             end;
+    //         until ResultRec.Next() = 0;
+    //     end;
 
-        ResultRec.DeleteAll();
-        if Sorted.FindSet() then
-            repeat
-                ResultRec.Init();
-                ResultRec.TransferFields(Sorted);
-                ResultRec.Insert();
-            until Sorted.Next() = 0;
-    end;
+    //     ResultRec.DeleteAll();
+    //     if Sorted.FindSet() then
+    //         repeat
+    //             ResultRec.Init();
+    //             ResultRec.TransferFields(Sorted);
+    //             ResultRec.Insert();
+    //         until Sorted.Next() = 0;
+    // end;
 
-    local procedure IsSaleValueEntry(var VE: Record "Value Entry"): Boolean
-    var
-        ILE: Record "Item Ledger Entry";
-    begin
-        // Confirm the VE is tied to a Sale ILE
-        if VE."Item Ledger Entry No." = 0 then
-            exit(false);
-        if not ILE.Get(VE."Item Ledger Entry No.") then
-            exit(false);
-        exit(ILE."Entry Type" = ILE."Entry Type"::Sale);
-    end;
+    // local procedure IsSaleValueEntry(var VE: Record "Value Entry"): Boolean
+    // var
+    //     ILE: Record "Item Ledger Entry";
+    // begin
+    //     // Confirm the VE is tied to a Sale ILE
+    //     if VE."Item Ledger Entry No." = 0 then
+    //         exit(false);
+    //     if not ILE.Get(VE."Item Ledger Entry No.") then
+    //         exit(false);
+    //     exit(ILE."Entry Type" = ILE."Entry Type"::Sale);
+    // end;
 
     var
         BlockedDaysSince: Integer;

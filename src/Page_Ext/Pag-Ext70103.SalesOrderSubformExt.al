@@ -16,6 +16,13 @@ pageextension 70103 "Sales Order Subform_Ext" extends "Sales Order Subform"
                 Caption = 'TP Profit%_New';
                 ToolTip = 'The TP Profit%_New field shows the new TP profit percentage for the sales order line.';
             }
+            field("Backorder Quantity"; Rec."Backorder Quantity")
+            {
+                ApplicationArea = All;
+                Caption = 'Backorder Quantity';
+                ToolTip = 'The Backorder Quantity field shows the quantity of items that are on backorder for the sales order line.';
+                Editable = false;
+            }
         }
 
         modify("TP Profit %")

@@ -51,10 +51,7 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
         {
             Caption = 'Backorder Quantity';
             DataClassification = ToBeClassified;
-            // trigger OnValidate()
-            // begin
-            //     "Backorder Quantity" := "Quantity" - "Quantity Shipped";
-            // end;
+
 
         }
 
@@ -66,16 +63,6 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             CalcFormula = exist("Warehouse Activity Line" where("Source No." = FIELD("Document No.")));
         }
 
-        // field(70122; "Backorder Quantity"; Decimal)
-        // {
-        //     Caption = 'Backorder Quantity';
-        //     DataClassification = ToBeClassified;
-        //     trigger OnValidate()
-        //     begin
-        //         "Backorder Quantity" := "Quantity" - "Quantity Shipped";
-        //     end;
-
-        // }
 
 
         modify("Unit of Measure Code")

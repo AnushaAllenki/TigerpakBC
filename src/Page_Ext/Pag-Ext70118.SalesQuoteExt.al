@@ -42,7 +42,7 @@ pageextension 70118 "Sales Quote Ext" extends "Sales Quote"
                 Caption = 'Quote Outcome';
                 ToolTip = 'Quote Outcome';
                 Editable = true;
-                ShowMandatory = true;
+
             }
 
         }

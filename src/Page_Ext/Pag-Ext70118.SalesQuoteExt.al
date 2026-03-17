@@ -32,8 +32,7 @@ pageextension 70118 "Sales Quote Ext" extends "Sales Quote"
                 ApplicationArea = All;
                 Caption = 'Quote Type';
                 ToolTip = 'Quote Type';
-                Editable = true;
-                ShowMandatory = true;
+                ShowMandatory = rec."quote type" = rec."Quote Type"::" ";
             }
             field(Quote_Type_Text; Rec.Quote_Type_Text)
             {
@@ -41,6 +40,7 @@ pageextension 70118 "Sales Quote Ext" extends "Sales Quote"
                 Caption = 'Quote Type Text';
                 ToolTip = 'Quote Type Text';
                 Editable = false;
+                ShowMandatory = true;
             }
 
             field("Quote Outcome"; Rec."Quote Status")
@@ -49,7 +49,7 @@ pageextension 70118 "Sales Quote Ext" extends "Sales Quote"
                 Caption = 'Quote Outcome';
                 ToolTip = 'Quote Outcome';
                 Editable = true;
-                // ShowMandatory = true;
+
             }
 
             field(Quote_Outcome_Text; Rec.Quote_Outcome_Text)
@@ -70,7 +70,14 @@ pageextension 70118 "Sales Quote Ext" extends "Sales Quote"
 
 
     }
+    // trigger OnClosePage()
+    // begin
+    //     if rec."Quote Type" = rec."Quote Type":: " " then begin
+    //         if not Confirm('Warning:Quote Type is blank. Do you want to continue?') then
+    //             CurrPage.Close();
 
+
+    // end;
 
 
 

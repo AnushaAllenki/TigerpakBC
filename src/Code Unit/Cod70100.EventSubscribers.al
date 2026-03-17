@@ -1,6 +1,6 @@
 codeunit 70100 "EventSubscribers1"
 {
-    Permissions = tabledata 110 = RMID, tabledata 112 = RIMD, tabledata 114 = rmid, tabledata 21 = rmid, tabledata 113 = rmid, tabledata 5772 = rmid;
+    Permissions = tabledata 110 = RMID, tabledata 121 = RMID, tabledata 112 = RIMD, tabledata 114 = rmid, tabledata 21 = rmid, tabledata 113 = rmid, tabledata 5772 = rmid;
 
 
 
@@ -47,17 +47,18 @@ codeunit 70100 "EventSubscribers1"
             registeredWhseActivityHdr.Modify();
         end;
 
-        // To update the Source No. from Registered Whse. Activity Line to Registered Whse. Activity Header
-        //registedWhseActivityLine.Reset();
-        // registedWhseActivityLine.SetRange("No.", RegisteredWhseActivityHdr."No.");
-        // if registedWhseActivityLine.FindFirst() then begin
-        //     RegisteredWhseActivityHdr."Source No." := registedWhseActivityLine."Source No.";
-        //     RegisteredWhseActivityHdr.Modify();
-        // end;
-
-
-
     end;
+    // To update the Source No. from Registered Whse. Activity Line to Registered Whse. Activity Header
+    //registedWhseActivityLine.Reset();
+    // registedWhseActivityLine.SetRange("No.", RegisteredWhseActivityHdr."No.");
+    // if registedWhseActivityLine.FindFirst() then begin
+    //     RegisteredWhseActivityHdr."Source No." := registedWhseActivityLine."Source No.";
+    //     RegisteredWhseActivityHdr.Modify();
+    // end;
+
+
+
+
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Activity-Register", OnAfterRegisteredWhseActivLineInsert, '', false, false)]
     local procedure OnAfterRegisteredWhseActivLineInsert(var RegisteredWhseActivityLine: Record "Registered Whse. Activity Line"; WarehouseActivityLine: Record "Warehouse Activity Line")
@@ -74,6 +75,8 @@ codeunit 70100 "EventSubscribers1"
         until RegisteredWhseActivityLine.Next() = 0;
 
     end;
+
+
 
 
 
@@ -172,7 +175,6 @@ codeunit 70100 "EventSubscribers1"
         end;
     end;
 
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Get Source Doc. Outbound", 'OnAfterCreateWhseShipmentHeaderFromWhseRequest', '', false, false)]
     local procedure OnAfterCreateWhseShipmentHeaderFromWhseRequest(var WarehouseRequest: Record "Warehouse Request"; var WhseShptHeader: Record "Warehouse Shipment Header")
     var
@@ -195,25 +197,16 @@ codeunit 70100 "EventSubscribers1"
                     // else
                     SH.Validate("WHSE Shipment Created By", UserId());   //#298 - Sales Order/New field - Web Tracking
                     SH.Modify();
-
                 end;
 
             end;
         end;
-
     end;
-
-
-
     // local procedure OnBeforeCreateFromSalesOrder(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean)
     // begin
     //     SalesHeader.Validate("WHSE Shipment Created By", UserId());   //#298 - Sales Order/New field - Web Tracking
     //     SalesHeader.Modify();
     // end;
-
-
-
-
 
 
 
@@ -306,6 +299,20 @@ codeunit 70100 "EventSubscribers1"
         window.Close();
     end;
 
+
+
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterSalesCrMemoHeaderInsert, '', true, true)]
+    local procedure OnAfterSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; WhseShip: Boolean; WhseReceive: Boolean; var TempWhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader: Record "Warehouse Receipt Header")
+    begin
+        //SalesCrMemoHeader.SetRange("Pre-Assigned No.", SalesHeader."No.");
+        //if SalesCrMemoHeader.findfirst() then begin
+        if SalesCrMemoHeader."Auto Email - Post" then begin
+            SalesCrMemoHeader.SetRecFilter();
+            salesCrMemoHeader.EmailRecords(false);
+        end;
+    end;
+
+
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterPostSalesDoc, '', true, true)]
     local procedure OnAfterPostSalesDoc(var SalesHeader: Record "Sales Header"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; SalesShptHdrNo: Code[20]; RetRcpHdrNo: Code[20]; SalesInvHdrNo: Code[20]; SalesCrMemoHdrNo: Code[20]; CommitIsSuppressed: Boolean; InvtPickPutaway: Boolean; var CustLedgerEntry: Record "Cust. Ledger Entry"; WhseShip: Boolean; WhseReceiv: Boolean; PreviewMode: Boolean)
     // begin
@@ -386,11 +393,18 @@ codeunit 70100 "EventSubscribers1"
 
 
 
+
     //     if SalesCrMemoHeader."Auto Email - Post" then begin   //#254 - Auto Email Credit Memo on Post of CR/SRO - emailing to customer's sell-to email
     //         SalesCrMemoHeader.SetRecFilter();
     //         salesCrMemoHeader.EmailRecords(false);
     //     end;
     // end;
+
+
+
+
+    //end;
+
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Assembly Line Management", OnAfterUpdateAssemblyLines, '', true, true)]
     local procedure OnAfterUpdateAssemblyLines(var AsmHeader: Record "Assembly Header"; OldAsmHeader: Record "Assembly Header"; FieldNum: Integer; ReplaceLinesFromBOM: Boolean; CurrFieldNo: Integer; CurrentFieldNum: Integer)
     var
@@ -406,6 +420,12 @@ codeunit 70100 "EventSubscribers1"
                 until asmLine.Next() = 0;
         end;
     end; //Validate location code change in assembly order header to update in assembly lines with dimensions   
+
+
+
+
+
+
 
 
 
@@ -440,6 +460,8 @@ codeunit 70100 "EventSubscribers1"
         //Salesinvline.SetRange("No.", ;
         //Salesinvline.SetRange("Location Code", sku."Location Code");
         salesinvline.setrange(type, salesinvline.type::Item);
+        Salesinvline.SetFilter("TP Unit Cost_New", '=%1', 0);
+        //Salesinvline.SETFILTER("Posting Date", '01/10/25..31/10/25');  // Filter on the records to update only october month lines
         if SalesinvLine.FindSet() then
             repeat
                 SKU.Reset();
@@ -529,6 +551,7 @@ codeunit 70100 "EventSubscribers1"
         SIL: Record "Sales Invoice Line";
         TotalCost: Decimal;
     begin
+        //SIH.SetRange("Posting Date", DMY2Date(1, 10, 2025), DMY2Date(31, 10, 2025)); // Filter on the records to update only october,2025 month invoices
         SIH.SetRange("Margin Amount_New", 0);
         if SIH.Findfirst() then
             repeat
@@ -546,7 +569,7 @@ codeunit 70100 "EventSubscribers1"
                     SIH."Margin %_New" := (SIH."Margin Amount_New" / SIH."Amount") * 100;
                 SIH.Modify();
             until SIH.Next() = 0;
-
+        SIH.SetRange("Margin Amount_New", 0);
     end;
 
     procedure UpdateAllCLEMA();
@@ -576,6 +599,7 @@ codeunit 70100 "EventSubscribers1"
     begin
         CLE.Reset();
         CLE.SetRange("Document Type", CLE."Document Type"::Invoice);
+        // CLE.SetRange("Posting Date", DMY2Date(1, 10, 2025), DMY2Date(31, 10, 2025)); // Filter on the records to update only october,2025 month invoices
         CLE.SetRange("Inv Margin Amount_New", 0);
         if CLE.FindFirst() then
             repeat
@@ -687,20 +711,13 @@ codeunit 70100 "EventSubscribers1"
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterInsertEvent', '', true, true)]
 
     local procedure OnAfterInsertEvent1(var Rec: Record "Sales Header"; RunTrigger: Boolean)
-
     begin
-        if rec."Ship-to Address" <> rec."Sell-to Address" then
-            rec."Alt Address" := 'Alternate Address'
+        if Rec."Ship-to Address" <> Rec."Sell-to Address" then  //Commented beacause of Shipping state vs Warehouse Location logic is enough and working fine - Tommy
+            Rec."Alt Address" := 'Alternative Address'
         else
-            rec."Alt Address" := '';
+            Rec."Alt Address" := '';
         Rec.Modify();
 
-
-        if rec."Ship-to post code" <> rec."Sell-to post code" then
-            rec."Alt Address" := 'Alternate Address'
-        else
-            rec."Alt Address" := '';
-        Rec.Modify();
 
     end;
 
@@ -754,7 +771,7 @@ codeunit 70100 "EventSubscribers1"
 
     end; // #275: Item Template- Extended Text. Need to uncomment and deploy upon Justin's confirmation
 
-    procedure UpdatedEmailSent()
+    procedure UpdatedEmailSent()    // To make Emial sent field true for all sales invoices those are false to turn on job queue for sending emails
     var
         SIH: Record "Sales Invoice Header";
     begin
@@ -779,13 +796,15 @@ codeunit 70100 "EventSubscribers1"
     begin
 
 
-        if SalesHeader."Document Type" = SalesHeader."Document Type"::Quote then begin    // Support ticket from outlook from Justin, need to uncomment and deploy upon Justin's confirmation
+        if SalesHeader."Document Type" = SalesHeader."Document Type"::Quote then begin
 
 
             if SalesHeader."Quote Type" = SalesHeader."Quote Type"::" " then
                 Error('Please select Quote Type before releasing the Quote');
 
-        end;
+
+        end;// Support ticket from outlook from Justin, need to uncomment and deploy upon Justin's confirmation
+
         Loc2 := CopyStr(SalesHeader."Location Code", 1, 2);
         State2 := CopyStr(SalesHeader."Ship-to County", 1, 2);
         if SalesHeader."Document Type" = SalesHeader."Document Type"::Order then begin
@@ -865,8 +884,20 @@ codeunit 70100 "EventSubscribers1"
         end;
     end;
 
+    [EventSubscriber(ObjectType::Page, Page::"Sales Quote", OnQueryClosePageEvent, '', false, false)]
+    local procedure OnClosePageEvent(var Rec: Record "Sales Header")
+    begin
 
 
+        if Rec."Document Type" = Rec."Document Type"::Quote then
+            if Rec."Quote Type" = Rec."Quote Type"::" " then
+                Error('Please select Quote Type before closing the Sales Quote');
+        // if not Confirm('Warning:Quote Type must be selected before closing the Sales Quote.') then
+        //     exit;
+
+
+
+    end;
 
 
 

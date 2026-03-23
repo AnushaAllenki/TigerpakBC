@@ -30,7 +30,15 @@
       "name" : "Tigerpak-Reports",
       "version" : "25.10.6.1",
       "publisher" : "Wild-Tech"
+      },
+       
+     {
+      "id" : "51def875-9c83-4326-a92a-fa50b262cd45",
+      "name" : "WT-BackOrders",
+      "version" : "26.3.17.2",
+      "publisher" : "Wild-Tech"
       }
+
       ,
     {
       "id" : "d36f1fab-93da-4ce2-8393-f683804f236d",

@@ -61,6 +61,12 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
             {
                 ApplicationArea = All;
                 Caption = 'Marketing Industry';
+                visible = false;
+            }
+            field("Marketing Industry Text"; Rec."Marketing Industry Text") //This field s used for integration in dataverse with field Marketing Industry_TP in CRM
+            {
+                ApplicationArea = All;
+                Caption = 'Marketing Industry Text';
             }
         }
     }

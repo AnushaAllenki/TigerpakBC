@@ -714,6 +714,17 @@ codeunit 70100 "EventSubscribers1"
 
     end;
 
+    [EventSubscriber(ObjectType::Page, Page::"Master Sales Quote", OnQueryClosePageEvent, '', false, false)]
+    local procedure onclosepageevent1(var Rec: Record "Sales Header")
+    begin
+        if Rec."Document Type" = Rec."Document Type"::Quote then
+            if Rec."Quote Type" = Rec."Quote Type"::" " then
+                Error('Please select Quote Type before closing the Sales Quote');
+
+    end;
+
+
+
 
 }
 

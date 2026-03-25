@@ -12,69 +12,58 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                 ToolTip = 'TP Unit Cost_New';
                 Editable = true;
 
-            }
-            field("TP Profit%_New"; Rec."TP Profit%_New")
-            {
-                ApplicationArea = All;
-                Caption = 'TP Profit%_New';
-                ToolTip = 'TP Profit%_New';
-                Editable = true;
+
+
+
 
             }
+
+
         }
 
-        addafter("Outstanding Quantity")   // field added for APU page AzureSalesLines - Tommy
+        addafter("Shipment Date")
         {
-            field("Order creation time/date"; Rec."Order creation time/date")
+            field("Order creation time/date"; Rec."Order creation time/date")        // field added for API page AzureSalesLines - Tommy
             {
                 ApplicationArea = All;
                 Caption = 'Order creation time/date';
                 ToolTip = 'Order creation time/date';
-                Editable = true;
-
+                Editable = false;
             }
-            field("Item Category Group"; Rec."Item Category Group")
+
+            field(WH_Exist_API; Rec."WH Exist") // field added for API page AzureSalesLines - Tommy
             {
                 ApplicationArea = All;
-                Caption = 'Item Category Group';
-                ToolTip = 'Item Category Group';
-
+                Caption = 'WH Exist';
+                ToolTip = 'WH Exist API';
+                Editable = false;
 
             }
-            // field(Blocked_Item; Rec.Blocked_Item)
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Blocked Item';
-            //     ToolTip = 'Blocked Item';
-
-
-            // }
-
-
-            // field("TP_Order Creation Date/Time"; Rec."TP_Order Creation Date/Time")
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'TP_Order Creation Date/Time';
-            //     ToolTip = 'TP_Order Creation Date/Time';
-
-            // }
         }
-
-        addafter("Location Code")
+        addafter("Location Code")   //The field was hidden in page because not in use as logic is not working properly.
         {
             field("WH Exist"; Rec."WH Exist")
             {
                 ApplicationArea = All;
                 Caption = 'WH Exist';
                 ToolTip = 'WH Exist';
+                Visible = false;
 
             }
+
         }
-
-
-
-
     }
+
+
+
+
+
+
+
+
+
+
+
 
     actions
     {
@@ -102,55 +91,6 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
 
                 end;
             }
-
-            action("Update Item Category Group")
-            {
-                ApplicationArea = All;
-                Caption = 'Update Item Category Group';
-                Image = EditLines;
-
-                trigger OnAction()
-                var
-                    salesLine: Record "Sales Line";
-                    item: Record Item;
-                begin
-                    //CurrPage.SetSelectionFilter(salesLine);
-                    salesLine.SetFilter("Document Type", '%1', salesLine."Document Type"::Order);
-                    salesLine.SetRange("Type", salesLine."Type"::Item);
-                    if salesLine.FindFirst then
-                        repeat
-                            item.SetRange("No.", salesLine."No.");
-                            if item.FindFirst then begin
-                                salesLine."Item Category Group" := item."Item Category Group";
-                                salesLine.Modify();
-                            end;
-                        until salesLine.next = 0;
-                end;
-            }
-
-            // action("Update Order Creation Date/Time")   //Commented because of empty set warning error in sales order and need to identify the issue and fix it back
-            // {
-            //     ApplicationArea = All;
-            //     Caption = 'Update Order Creation Date/Time';
-            //     Image = EditLines;
-
-            //     trigger OnAction()
-            //     var
-            //         salesLine: Record "Sales Line";
-            //         salesHeader: Record "Sales Header";
-            //     begin
-            //         //CurrPage.SetSelectionFilter(salesLine);
-            //         salesLine.SetFilter("Document Type", '%1', salesLine."Document Type"::Order);
-            //         if salesLine.FindFirst then
-            //             repeat
-            //                 salesHeader.SetRange("No.", salesLine."Document No.");
-            //                 if salesHeader.FindFirst then begin
-            //                     salesLine."TP_Order Creation Date/Time" := salesHeader."Order creation time/date";
-            //                     salesLine.Modify();
-            //                 end;
-            //             until salesLine.next = 0;
-            //     end;
-            // }
         }
 
         addafter("Show Document")
@@ -199,20 +139,21 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                 var
                     salesLine: Record "Sales Line";
                     SKU: Record "Stockkeeping Unit";
-                begin
-                    // repeat
-                    //     //Rec.SetRange("Document Type", Rec."Document Type"::Invoice);
-                    //     //Rec.SetRange("Type", Rec."Type"::Item);
-                    //     rec.SetRange("No.", SKU."Item No.");
-                    //     Rec.SetRange("Location Code", SKU."Location Code");
-                    //     if Rec.FindFirst() then begin
 
-                    //         rec."TP Unit Cost_New" := SKU."TP Unit Cost_New";
-                    //         rec.Modify();
-                    //     end;
-                    // until Rec.Next() = 0;
+                begin
+
+                    //Rec.SetRange("Document Type", Rec."Document Type"::Invoice);
+                    //Rec.SetRange("Type", Rec."Type"::Item);
+                    // rec.SetRange("No.", SKU."Item No.");
+                    // Rec.SetRange("Location Code", SKU."Location Code");
+                    // if Rec.FindFirst() then begin
+
+                    //     rec."TP Unit Cost_New" := SKU."TP Unit Cost_New";
+                    //     rec.Modify();
+                    // end;
                     salesLine.reset();
                     salesLine.SetRange("Document Type", salesLine."Document Type"::Quote);
+                    salesLine.SetFilter("Document No.", 'MSQ*');   // To update TP Unit Cost_new for only MSQ-N*/ MSQ*sales quotes
                     salesLine.SetRange("Type", salesLine."Type"::Item);
                     if salesLine.FindSet() then
                         repeat
@@ -228,7 +169,7 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                 end;
 
             }
-            action("Update TP Profit %_New")
+            action("Update TP Profit %_New")  //#246-Customer ledger Entry Field
             {
                 ApplicationArea = All;
                 Caption = 'Update All Tp Profit %_New';
@@ -240,10 +181,8 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                 begin
                     repeat
                         salesLine.reset();
-                        salesLine.SetRange("Document Type", salesLine."Document Type"::Quote);
                         salesLine.SetRange("TP Profit%_New", 0);
                         salesLine.SetRange("Type", salesLine."Type"::Item);
-
                         if salesLine.FindSet() then begin
 
                             if salesLine."Unit Price" = 0 then
@@ -260,6 +199,36 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
 
 
 
+            action("Update WH Exist")
+            {
+                ApplicationArea = All;
+                Caption = 'Update All WH Exist';
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    salesLine: Record "Sales Line";
+                    SH: Record "Sales Header";
+                begin
+                    repeat
+                        salesLine.reset();
+                        salesLine.SetRange("Document Type", salesLine."Document Type"::Order);
+                        //salesLine.SetRange("Type", salesLine."Type"::Item);
+                        if salesLine.FindSet() then begin
+                            SH.Reset();
+                            SH.SetRange("No.", salesLine."Document No.");
+                            if SH.FindFirst() then begin
+                                salesLine."WH Exist" := SH."WH Exist";
+                                salesLine.Modify();
+                            end;
+
+                        end;
+                    until salesLine.next = 0;
+                end;
+            }
+
         }
+
+
     }
 }

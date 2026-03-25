@@ -875,14 +875,24 @@ codeunit 70100 "EventSubscribers1"
     [EventSubscriber(ObjectType::Table, Database::"Sales Line", 'OnAfterModifyEvent', '', false, false)]
     local procedure OnAfterSalesLineModify(var Rec: Record "Sales Line"; RunTrigger: Boolean)
     var
+
         NewBackorderQty: Decimal;
+
     begin
-        NewBackorderQty := Rec."Quantity" - Rec."Qty. Shipped (Base)";
-        if Rec."Backorder Quantity" <> NewBackorderQty then begin
-            Rec.Validate("Backorder Quantity", NewBackorderQty);
-            Rec.Modify();
+
+
+
+        if Rec."Qty. Shipped (Base)" <> 0 then begin
+
+            NewBackorderQty := Rec."Quantity" - Rec."Qty. Shipped (Base)";
+
+            if Rec."Backorder Quantity" <> NewBackorderQty then begin
+                Rec.Validate("Backorder Quantity", NewBackorderQty);
+                Rec.Modify();
+            end;
         end;
     end;
+
 
     [EventSubscriber(ObjectType::Page, Page::"Sales Quote", OnQueryClosePageEvent, '', false, false)]
     local procedure OnClosePageEvent(var Rec: Record "Sales Header")

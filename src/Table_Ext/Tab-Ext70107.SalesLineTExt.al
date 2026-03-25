@@ -101,13 +101,49 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
                     "TP Profit%_New" := Round((("Unit Price" - "TP Unit Cost_New") / "Unit Price") * 100, 0.01, '=')
             end;
         }
-        modify("Qty. Shipped (Base)")
+        modify("Quantity")
         {
             trigger OnAfterValidate()
+            var
+                SKU: Record "Stockkeeping Unit";
+                NewBackorderQty: Decimal;
+
             begin
-                UpdateBackorderQuantity();
+
+                if Rec."Qty. Shipped (Base)" = 0 then begin
+                    Rec."Backorder Quantity" := 0;
+                    SKU.SetRange("Item No.", Rec."No.");
+                    SKU.SetRange("Location Code", Rec."Location Code");
+                    if SKU.FindFirst() then begin
+                        SKU.CalcFields(Inventory);
+                        NewBackorderQty := Rec."Quantity" - SKU.Inventory;
+                        if NewBackorderQty <= 0 then
+                            Rec."Backorder Quantity" := 0
+                        else
+                            rec."Backorder Quantity" := NewBackorderQty;
+                    end;
+                end
+                else begin
+                    NewBackorderQty := Rec."Quantity" - Rec."Qty. Shipped (Base)";
+                    Rec."Backorder Quantity" := NewBackorderQty;
+                end;
+
             end;
+
         }
+        // modify("Qty. Shipped (Base)")
+        // {
+        //     trigger OnAfterValidate()
+        //     var
+        //         NewBackorderQty: Decimal;
+        //     begin
+        //         rec.CalcFields("Qty. Shipped (Base)");
+        //         if Rec."Qty. Shipped (Base)" <> 0 then begin
+        //             NewBackorderQty := Rec."Quantity" - Rec."Qty. Shipped (Base)";
+        //             Rec."Backorder Quantity" := NewBackorderQty;
+        //         end;
+        //     end;
+        // }
 
 
         field(70120; "Pick Duration"; Time)

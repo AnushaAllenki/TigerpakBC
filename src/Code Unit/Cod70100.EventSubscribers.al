@@ -920,7 +920,7 @@ codeunit 70100 "EventSubscribers1"
     end;
 
 
-    [EventSubscriber(ObjectType::Page, Page::"Customer Card", OnAfterOnOpenPage, '', false, false)]
+    [EventSubscriber(ObjectType::Page, Page::"Customer Card", OnAfterOnOpenPage, '', false, false)]// Balance and Credit limit warning on customer card - Tommy
     local procedure OnAfterOnOpenPage(var Customer: Record Customer)
     begin
         if (Customer."Balance" >= Customer."Credit Limit (LCY)") and (Customer."Credit Limit (LCY)" > 0) then

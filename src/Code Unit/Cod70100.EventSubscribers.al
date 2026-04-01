@@ -895,33 +895,40 @@ codeunit 70100 "EventSubscribers1"
 
 
     [EventSubscriber(ObjectType::Page, Page::"Sales Quote", OnQueryClosePageEvent, '', false, false)]
-    local procedure OnClosePageEvent(var Rec: Record "Sales Header")
+    local procedure OnClosePageEvent(var Rec: Record "Sales Header"; var AllowClose: Boolean)
     begin
 
 
         if Rec."Document Type" = Rec."Document Type"::Quote then
             if Rec."Quote Type" = Rec."Quote Type"::" " then
-                Error('Please select Quote Type before closing the Sales Quote');
-        // if not Confirm('Warning:Quote Type must be selected before closing the Sales Quote.') then
-        //     exit;
+                //Error('Please select Quote Type before closing the Sales Quote');
+         if not Confirm('Please select Quote Type before closing the Sales Quote. Do you want to exit anyway?', false) then
+                    AllowClose := false; // Stay on the page if No
 
 
 
     end;
+
 
     [EventSubscriber(ObjectType::Page, Page::"Master Sales Quote", OnQueryClosePageEvent, '', false, false)]
-    local procedure onclosepageevent1(var Rec: Record "Sales Header")
+    local procedure onclosepageevent1(var Rec: Record "Sales Header"; var AllowClose: Boolean)
     begin
         if Rec."Document Type" = Rec."Document Type"::Quote then
             if Rec."Quote Type" = Rec."Quote Type"::" " then
-                Error('Please select Quote Type before closing the Sales Quote');
-
+                if not Confirm('Please select Quote Type before closing the Sales Quote. Do you want to exit anyway?', false) then
+                    AllowClose := false; // Stay on the page if No
     end;
 
 
-
+    [EventSubscriber(ObjectType::Page, Page::"Customer Card", OnAfterOnOpenPage, '', false, false)]
+    local procedure OnAfterOnOpenPage(var Customer: Record Customer)
+    begin
+        if (Customer."Balance" >= Customer."Credit Limit (LCY)") and (Customer."Credit Limit (LCY)" > 0) then
+            Message('Warning: Customer %1 has reached or exceeded the credit limit!', Customer."No.");
+    end;
 
 
 
 }
+
 

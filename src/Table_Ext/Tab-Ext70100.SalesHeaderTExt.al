@@ -26,20 +26,20 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
         {
             Caption = 'Total Cost_New';
             DataClassification = ToBeClassified;
-
-
-
         }
+
         field(70130; "Margin Amount_New"; Decimal)
         {
             Caption = 'Margin Amount_New';
             DataClassification = ToBeClassified;
         }
+
         field(70140; "Margin %_New"; Decimal)
         {
             Caption = 'Margin %_New';
             DataClassification = ToBeClassified;
         }
+
 
         modify("sell-to Customer No.")
         {
@@ -61,7 +61,6 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             Editable = false;
 
         }
-
 
         field(70301; "Auto Email - Post"; Boolean)
         {
@@ -91,8 +90,8 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             begin
                 "Quote_Outcome_Text" := Format("Quote Status");
             end;
-
         }
+
         modify("Quote Status")
         {
             trigger OnAfterValidate()
@@ -107,8 +106,6 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             Caption = 'Quote Type Text';
             DataClassification = ToBeClassified;
             Editable = false;
-
-
         }
 
         modify("Quote Type")
@@ -121,7 +118,6 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
                         Error('Quote Type is mandatory for Quote document type');
                 Rec.Modify();
             end;
-
         }
 
         field(70340; "Quote_Outcome_Text"; Text[50])
@@ -129,8 +125,6 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             Caption = 'Quote Outcome Text';
             DataClassification = ToBeClassified;
             Editable = false;
-
-
         }
 
 
@@ -157,6 +151,7 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
 
             end;
         }
+
         modify("Ship-to Address")
         {
             trigger OnAfterValidate()
@@ -199,12 +194,7 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             DataClassification = CustomerContent;
         }
 
-
     }
-
-
-
-
 
 
     procedure UpdateTPUnitCostNew(): Boolean
@@ -242,9 +232,6 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
         "Quote_Type_Text" := Format("Quote Type");
         "Quote_Outcome_Text" := Format("Quote Status");
     end;
-
-
-
 
 
 }

@@ -923,10 +923,23 @@ codeunit 70100 "EventSubscribers1"
     [EventSubscriber(ObjectType::Page, Page::"Customer Card", OnAfterOnOpenPage, '', false, false)]// Balance and Credit limit warning on customer card - Tommy
     local procedure OnAfterOnOpenPage(var Customer: Record Customer)
     begin
+        Customer.CalcFields(Balance);
         if (Customer."Balance" >= Customer."Credit Limit (LCY)") and (Customer."Credit Limit (LCY)" > 0) then
             Message('Warning: Customer %1 has reached or exceeded the credit limit!', Customer."No.");
     end;
 
+
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterValidateEvent, 'Sell-to Customer No.', false, false)]
+    local procedure OnAfterValidateSellToCustomerNo(var Rec: Record "Sales Header"; var xRec: Record "Sales Header")
+    var
+        Customer: Record Customer;
+    begin
+        if Rec."Sell-to Customer No." <> '' then
+            if Customer.Get(Rec."Sell-to Customer No.") then
+                Customer.CalcFields(Balance);
+        if (Customer."Balance" >= Customer."Credit Limit (LCY)") and (Customer."Credit Limit (LCY)" > 0) then
+            Message('Warning: Customer %1 has reached or exceeded the credit limit!', Customer."No.");
+    end;
 
 
 }

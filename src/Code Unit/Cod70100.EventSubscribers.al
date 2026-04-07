@@ -929,7 +929,7 @@ codeunit 70100 "EventSubscribers1"
     end;
 
 
-    [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterValidateEvent, 'Sell-to Customer No.', false, false)]
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterValidateEvent, 'Sell-to Customer No.', false, false)]  // Balance and Credit limit warning on sales order- Tommy
     local procedure OnAfterValidateSellToCustomerNo(var Rec: Record "Sales Header"; var xRec: Record "Sales Header")
     var
         Customer: Record Customer;

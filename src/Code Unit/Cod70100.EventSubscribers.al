@@ -790,9 +790,12 @@ codeunit 70100 "EventSubscribers1"
         // QstnLbl: Text;
 
         Warining: Text;
+        Question: Text;
+        SalesSetup: Record "Sales & Receivables Setup";
 
         Loc2: Text[2];
         State2: Text[2];
+        Text001: Label 'The order amount is less than %1. Would you like to proceed?';
     begin
 
 
@@ -812,6 +815,13 @@ codeunit 70100 "EventSubscribers1"
                 if not Confirm('The Location Code is different from Shipping state. Do you want to continue?') then
                     IsHandled := true;
             end;
+        end;
+        Question := Text001;
+        SalesSetup.Get();
+        SalesHeader.CalcFields(Amount);
+        IF SalesHeader.Amount < SalesSetup."Minimum Order Amount" then begin
+            IF Not Confirm(Question, False, SalesSetup."Minimum Order Amount") then
+                Error('This process is cancelled by User!');
         end;
 
 

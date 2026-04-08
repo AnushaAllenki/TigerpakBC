@@ -20,7 +20,11 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
                 if "Unit Price" = 0 then
                     "TP Profit%_New" := 0
                 else
-                    "TP Profit%_New" := Round((("Unit Price" - "TP Unit Cost_New") / "Unit Price") * 100, 0.01, '=')
+                    "TP Profit%_New" := Round((("Unit Price" - "TP Unit Cost_New") / "Unit Price") * 100, 0.01, '=');
+                // if COPYSTR(Rec."No.", 1, 2) = 'NS' then begin
+                //     if "TP Profit%_New" <= 30 then
+                //         Message('Warning! TP Profit% is less than or equal to 30%');
+                //end;
             end;
 
         }
@@ -29,6 +33,13 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
         {
             Caption = 'TP Profit%_New';
             DataClassification = ToBeClassified;
+            trigger OnValidate()
+            begin
+                if COPYSTR(Rec."No.", 1, 2) = 'NS' then begin
+                    if "TP Profit%_New" <= 30 then
+                        Message('Warning! TP Profit% is less than or equal to 30%');
+                end;
+            end;
 
         }
 
@@ -88,7 +99,11 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
                 if "Unit Price" = 0 then
                     "TP Profit%_New" := 0
                 else
-                    "TP Profit%_New" := Round((("Unit Price" - "TP Unit Cost_New") / "Unit Price") * 100, 0.01, '=')
+                    "TP Profit%_New" := Round((("Unit Price" - "TP Unit Cost_New") / "Unit Price") * 100, 0.01, '=');
+                if COPYSTR(Rec."No.", 1, 2) = 'NS' then begin
+                    if "TP Profit%_New" <= 30 then
+                        Message('Warning! TP Profit% is less than or equal to 30%');
+                end;
             end;
         }
         modify("Unit Cost (LCY)")
@@ -98,7 +113,11 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
                 if "Unit Price" = 0 then
                     "TP Profit%_New" := 0
                 else
-                    "TP Profit%_New" := Round((("Unit Price" - "TP Unit Cost_New") / "Unit Price") * 100, 0.01, '=')
+                    "TP Profit%_New" := Round((("Unit Price" - "TP Unit Cost_New") / "Unit Price") * 100, 0.01, '=');
+                // if COPYSTR(Rec."No.", 1, 2) = 'NS' then begin
+                //     if "TP Profit%_New" <= 30 then
+                //         Message('Warning! TP Profit% is less than or equal to 30%');
+                // end;
             end;
         }
         modify("Quantity")
@@ -222,6 +241,10 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
         SKU.SetRange("Location Code", Rec."Location Code");
         if SKU.FindFirst() then begin
             Rec."TP Unit Cost_New" := SKU."TP Unit Cost_New";
+            // if COPYSTR(Rec."No.", 1, 2) = 'NS' then begin
+            //     if "TP Profit%_New" <= 30 then
+            //         Message('Warning! TP Profit% is less than or equal to 30%');
+            // end;
             Rec.Modify();
         end;
 
@@ -245,28 +268,33 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
 
 
-    // trigger OnAfterModify()
+    trigger OnAfterModify()
     // var
     //     SalesHeader: Record "Sales Header";
-    // begin
-    //     SalesHeader.SetRange("No.", Rec."Document No.");
-    //     if SalesHeader.FindFirst() then begin
-    //         SalesHeader."Total Cost_new" += Rec."TP Unit Cost_New" * Rec."Quantity";
-    //         SalesHeader.CalcFields(Amount, "Amount Including VAT");
-    //         SalesHeader."Margin Amount_New" := SalesHeader."Amount Including VAT" - SalesHeader."Total Cost_new";
-    //         SalesHeader."Margin %_New" := (SalesHeader."Amount Including VAT" - SalesHeader."Total Cost_new") / SalesHeader."Total Cost_new" * 100;
-    //         SalesHeader.Modify();
-    //     end;
-
-
-    //end;
-
-
-
-    trigger OnAfterModify()
     begin
+        //     SalesHeader.SetRange("No.", Rec."Document No.");
+        //     if SalesHeader.FindFirst() then begin
+        //         SalesHeader."Total Cost_new" += Rec."TP Unit Cost_New" * Rec."Quantity";
+        //         SalesHeader.CalcFields(Amount, "Amount Including VAT");
+        //         SalesHeader."Margin Amount_New" := SalesHeader."Amount Including VAT" - SalesHeader."Total Cost_new";
+        //         SalesHeader."Margin %_New" := (SalesHeader."Amount Including VAT" - SalesHeader."Total Cost_new") / SalesHeader."Total Cost_new" * 100;
+
+
+
+        //         SalesHeader.Modify();
+        //     end;
         UpdateBackorderQuantity();
+
+
     end;
+
+
+
+    // trigger OnAfterModify()
+    // begin
+
+
+    // end;
 
     procedure UpdateBackorderQuantity()
     begin

@@ -42,6 +42,40 @@ tableextension 70102 Customer_TExt extends Customer
             DataClassification = ToBeClassified;
             Editable = false;
         }
+        field(70106; "Marginamount_12months"; Decimal)
+        {
+            Caption = 'Marginamount_12months';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = sum("Sales Invoice Header"."Margin Amount_New" where("Sell-to Customer No." = field("No."), "Posting Date" = field("Date Filter")));
+        }
+        FIELD(70107; "This Qrtr Sales Amount"; Decimal)
+        {
+            Caption = 'This Qtr Sales Amount';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = sum("Sales Invoice Line"."Line Amount" where("Sell-to Customer No." = field("No."), "Posting Date" = field("Qrtr Date Filter")));
+        }
+        field(70108; "Qrtr Date Filter"; Date)
+        {
+            Caption = 'Qrtr Date Filter';
+            FieldClass = FlowFilter;
+
+        }
+        field(70109; "Last Qrtr Sales Amount"; Decimal)
+        {
+            Caption = 'Last Qrtr Sales Amount';
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = sum("Sales Invoice Line"."Line Amount" where("Sell-to Customer No." = field("No."), "Posting Date" = field("Last Qrtr Date Filter")));
+        }
+        field(70110; "Last Qrtr Date Filter"; Date)
+        {
+            Caption = 'Last Qtr Date Filter';
+            FieldClass = FlowFilter;
+        }
+
+
 
 
 

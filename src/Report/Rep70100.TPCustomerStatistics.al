@@ -1,6 +1,7 @@
 namespace TigerpakBC.TigerpakBC;
 using Microsoft.Sales.Customer;
 using Microsoft.Sales.History;
+using Microsoft.Pricing.PriceList;
 using Microsoft.Inventory.Item;
 using Microsoft.Inventory.Ledger;
 

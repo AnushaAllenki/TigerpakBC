@@ -62,6 +62,12 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             Editable = false;
             CalcFormula = exist("Warehouse Activity Line" where("Source No." = FIELD("Document No.")));
         }
+        field(70102; "Item Category Group"; Option)
+        {
+            Caption = 'Item Category Group';
+            DataClassification = ToBeClassified;
+            OptionMembers = " ","Adhesive & Wrapping Solutions","Primary Packaging Materials","Shipping & Protective Solutions","Industrial & Workplace Essentials";
+        }
 
 
 

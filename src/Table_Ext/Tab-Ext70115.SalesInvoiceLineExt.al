@@ -18,5 +18,24 @@ tableextension 70115 "Sales Invoice Line Ext" extends "Sales Invoice Line"
 
 
         }
+        field(70102; "Item Category Group"; Option)
+        {
+            Caption = 'Item Category Group';
+            DataClassification = ToBeClassified;
+            OptionMembers = " ","Adhesive & Wrapping Solutions","Primary Packaging Materials","Shipping & Protective Solutions","Industrial & Workplace Essentials";
+        }
+        field(70103; "Blocked_Item"; Boolean)
+        {
+            Caption = 'Blocked Item';
+            DataClassification = ToBeClassified;
+        }
+
+
+    }
+    keys
+    {
+        key(Key12; "Item Category Group")
+        {
+        }
     }
 }

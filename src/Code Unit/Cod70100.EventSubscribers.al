@@ -659,6 +659,16 @@ codeunit 70100 "EventSubscribers1"
             until SIH.Next() = 0;
     end;
 
+    procedure UpdateItemCategoryGroup()
+    begin
+
+    end;
+
+    procedure UpdateItemsBlocked()
+    begin
+
+    end;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", OnBeforePerformManualReleaseProcedure, '', false, false)]
     local procedure OnBeforePerformManualReleaseProcedure(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean; var IsHandled: Boolean)
     var

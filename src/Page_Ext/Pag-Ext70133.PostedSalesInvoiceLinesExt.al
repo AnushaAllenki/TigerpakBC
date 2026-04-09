@@ -60,6 +60,40 @@ pageextension 70133 "Posted Sales Invoice Lines Ext" extends "Posted Sales Invoi
                     EventSub.UpdateAllTPUnitCostNew();
                 end;
             }
+            action("Update Item Category Group")
+            {
+                ApplicationArea = All;
+                Caption = 'Update Item Category Group';
+                ToolTip = 'Update Item Category Group';
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    eventSub: Codeunit "EventSubscribers1";  // Item Category Group for Customer Statistics Report
+
+                begin
+                    eventSub.UpdateItemCategoryGroup();
+                end;
+            }
+            action("Update Blocked Item")
+            {
+                ApplicationArea = All;
+                Caption = 'Update Blocked Item';
+                ToolTip = 'Update Blocked Item';
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    eventSub: Codeunit "EventSubscribers1";  // Update Blocked Item for Customer Statistics Report
+
+                begin
+                    eventSub.UpdateItemsBlocked();
+                end;
+            }
+
+
+
+
         }
     }
     var

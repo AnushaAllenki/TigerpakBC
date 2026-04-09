@@ -17,6 +17,13 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
 
 
             }
+            field("Item Category Group"; Rec."Item Category Group")
+            {
+                ApplicationArea = All;
+                Caption = 'Item Category Group';
+                ToolTip = 'Item Category Group';
+
+            }
         }
 
         addafter("Shipment Date")
@@ -184,6 +191,34 @@ pageextension 70112 SalesLinesExt extends "Sales Lines"
                     until salesLine.next = 0;
                 end;
             }
+            action("Update Item Category Group")
+            {
+                ApplicationArea = All;
+                Caption = 'Update Item Category Group';
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    salesLine: Record "Sales Line";
+                    item: Record Item;
+                begin
+                    repeat
+                        salesLine.reset();
+                        salesLine.SetRange("Type", salesLine."Type"::Item);
+                        if salesLine.FindSet() then begin
+
+                            item.Reset();
+                            item.SetRange("No.", salesLine."No.");
+                            if item.FindFirst() then begin
+                                salesLine.Validate("Item Category Group", item."Item Category Group");
+                                salesLine.Modify();
+                            end;
+
+                        end;
+                    until salesLine.next = 0;
+                end;
+            }
+
 
 
 

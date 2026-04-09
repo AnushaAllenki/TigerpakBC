@@ -659,14 +659,36 @@ codeunit 70100 "EventSubscribers1"
             until SIH.Next() = 0;
     end;
 
-    procedure UpdateItemCategoryGroup()
+    procedure updateitemcategorygroup()
+    var
+        Item: Record Item;
+        SIL: Record "Sales Invoice Line";
     begin
-
+        SIL.Reset();
+        SIL.SetRange(Type, SIL.Type::Item);
+        if SIL.FindSet() then
+            repeat
+                if Item.Get(SIL."No.") then begin
+                    SIL."Item Category Group" := Item."Item Category Group";
+                    SIL.Modify();
+                end;
+            until SIL.Next() = 0;
     end;
 
     procedure UpdateItemsBlocked()
+    var
+        Item: Record Item;
+        SIL: Record "Sales Invoice Line";
     begin
-
+        SIL.Reset();
+        SIL.SetRange(Type, SIL.Type::Item);
+        if SIL.FindSet() then
+            repeat
+                if Item.Get(SIL."No.") then begin
+                    SIL.Blocked_Item := Item."Blocked";
+                    SIL.Modify();
+                end;
+            until SIL.Next() = 0;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", OnBeforePerformManualReleaseProcedure, '', false, false)]

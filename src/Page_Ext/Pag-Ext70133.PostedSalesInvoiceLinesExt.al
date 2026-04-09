@@ -25,6 +25,18 @@ pageextension 70133 "Posted Sales Invoice Lines Ext" extends "Posted Sales Invoi
                 Caption = 'External Document No.';
                 ToolTip = 'The External Document No. field shows the external document number associated with the posted sales invoice line.';
             }
+            field("Item Category Group"; Rec."Item Category Group")
+            {
+                ApplicationArea = All;
+                Caption = 'Item Category Group';
+                ToolTip = 'The Item Category Group field shows the item category group code for the item on the posted sales invoice line. This field is used for the Customer Statistics Report.';
+            }
+            field("Blocked Item"; Rec."Blocked_Item")
+            {
+                ApplicationArea = All;
+                Caption = 'Blocked Item';
+                ToolTip = 'The Blocked Item field indicates whether the item on the posted sales invoice line is blocked. This field is used for the Customer Statistics Report.';
+            }
         }
     }
     actions

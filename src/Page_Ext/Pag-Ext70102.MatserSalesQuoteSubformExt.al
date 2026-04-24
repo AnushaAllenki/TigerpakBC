@@ -54,6 +54,7 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
             Enabled = false;
         }
 
+
     }
     actions
     {
@@ -96,13 +97,10 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
                     PAGE.Run(PAGE::"Master Sales Quote Lines", Rec);
                 end;
 
-
-
-
-
-
-
             }
+
+
+
 
         }
 

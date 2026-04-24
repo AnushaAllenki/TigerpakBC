@@ -112,6 +112,31 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
             }
         }
     }
+    actions
+    {
+        addafter("Report Customer - Labels")
+        {
+            action("TP Customer Statistics")
+            {
+                ApplicationArea = All;
+                Image = Statistics;
+                trigger OnAction()
+                var
+                    CustomerStatisticsReport: Report "TP Customer Statistics ";
+                    CustomerRec: Record Customer;
+                begin
+                    CustomerStatisticsReport.SetTableView(Rec);
+
+                    CustomerRec.SetRange("No.", Rec."No.");
+
+                    CustomerStatisticsReport.SetTableView(CustomerRec);
+
+                    CustomerStatisticsReport.Run();
+                end;
+            }
+
+        }
+    }
     // actions
     // {
     //     addafter(Templates)

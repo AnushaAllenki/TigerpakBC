@@ -951,7 +951,25 @@ codeunit 70100 "EventSubscribers1"
             Message('Warning: Customer %1 has reached or exceeded the credit limit!', Customer."No.");
     end;
 
+    procedure UpdateOrderlineNo(PurchRcptDocNo: Code[20]; PurchRcptLineNo: Integer)
+    var
+        PurchRcptLine: Record "Purch. Rcpt. Line";
 
+        dlg: Dialog;
+        OrderLineNo: Integer;
+    begin
+
+        // dlg.Open('Enter Order Line No.:\#1########', OrderLineNo);
+
+        PurchRcptLine.SetRange("Document No.", 'PR-003251');                     // To Update Order line no. for the document asked by Lorina
+        PurchRcptLine.SetRange("Line No.", 10000);
+        if PurchRcptLine.FindFirst() then begin
+            PurchRcptLine."Order Line No." := 10000;
+            PurchRcptLine.Modify();
+            Message('Order Line No. %1 is updated for Purchase Receipt Line %2', OrderLineNo, PurchRcptLineNo);
+        end else
+            Message('Th e Purchase Receipt Line %1 for document %2 is not found', PurchRcptLineNo, PurchRcptDocNo);
+    end;
 }
 
 

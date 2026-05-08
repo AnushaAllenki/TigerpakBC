@@ -194,7 +194,23 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             DataClassification = CustomerContent;
         }
 
+        modify("Shipment Method Code")
+        {
+            trigger OnAfterValidate()
+            var
+                SL: Record "Sales Line";
+            begin
+                SL.SetRange("Document Type", Rec."Document Type"::Order);
+                SL.SetRange("Document No.", Rec."No.");
+                if SL.FindFirst() then begin
+                    if SL."Backorder Status" = SL."Backorder Status"::Backorder then
+                        Rec."Shipment Method Code" := 'delivery';
+                end;
+            end;
+        }
     }
+
+
 
 
     procedure UpdateTPUnitCostNew(): Boolean

@@ -150,6 +150,8 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             end;
 
         }
+
+
         // modify("Qty. Shipped (Base)")
         // {
         //     trigger OnAfterValidate()
@@ -236,6 +238,7 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
     trigger OnAfterInsert()
     var
         SKU: Record "Stockkeeping Unit";
+        SH: Record "Sales Header";
     begin
         SKU.SetRange("item No.", Rec."No.");
         SKU.SetRange("Location Code", Rec."Location Code");
@@ -248,7 +251,15 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             Rec.Modify();
         end;
 
+        if Rec."Backorder Status" = Rec."Backorder Status"::Backorder then begin
+            SH.SetRange("No.", Rec."Document No.");
+            if SH.FindFirst() then begin
+                SH."Shipment Method Code" := 'delivery';
+                SH.Modify();
 
+            end;
+
+        end;
     end;
 
     // trigger OnInsert()     //Commented because of empty set warning error in sales order and need to identify the issue and fix it back

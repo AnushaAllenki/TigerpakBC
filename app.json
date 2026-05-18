@@ -52,6 +52,12 @@
       "name" : " Continia Document Capture",
       "version" : "27.1.0.243474",
       "publisher" : "Continia Software"
+      },
+       {
+      "id" : "a5727ce6-368c-49e2-84cb-1a6052f0551c",
+      "name" : " Tasklet Mobile WMS",
+      "version" : "5.59.260.268",
+      "publisher" : "Tasklet Factory"
       }
 
   ],

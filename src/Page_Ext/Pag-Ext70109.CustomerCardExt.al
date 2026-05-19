@@ -78,6 +78,9 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
             {
                 ApplicationArea = All;
                 Image = Statistics;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Report;  //TP Customer Satistics button added under Report Menu
                 trigger OnAction()
                 var
                     CustomerStatisticsReport: Report "TP Customer Statistics";

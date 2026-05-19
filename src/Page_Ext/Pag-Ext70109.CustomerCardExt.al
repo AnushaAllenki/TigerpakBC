@@ -110,16 +110,29 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
                 tooltip = 'Shows the Gross Margin Amount for the last 12 months.';
 
             }
+
+
+
         }
+
     }
     actions
     {
-        addafter("Report Customer - Labels")
+
+
+
+        addafter("Report Statement")
         {
+
+
             action("TP Customer Statistics")
             {
-                ApplicationArea = All;
+                ApplicationArea = all;
+                Caption = 'TP Customer Statistics';
                 Image = Statistics;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Report;  //TP Customer Satistics button added under Report Menu
                 trigger OnAction()
                 var
                     CustomerStatisticsReport: Report "TP Customer Statistics ";
@@ -135,27 +148,39 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
                 end;
             }
 
+
         }
+
+
+
+
+
+
+
+
+
+
+        // actions
+        // {
+        //     addafter(Templates)
+        //     {
+        //         action(CalculateGrossMargin)
+        //         {
+        //             ApplicationArea = All;
+        //             Caption = 'Calculate Gross Margin';
+        //             Image = Calculate;
+        //             trigger OnAction()
+        //             var
+        //                 EventSub: Codeunit "EventSubscribers1";
+        //             begin
+        //                 Rec."Marginamount_12months" := EventSub.CalcGrosMarginLast12Months(Rec."No.");
+        //                 Rec.Modify();
+        //                 Message('Gross Margin for last 12 months is calculated and updated.');
+        //             end;
+        //         }
+        //     }
     }
-    // actions
-    // {
-    //     addafter(Templates)
-    //     {
-    //         action(CalculateGrossMargin)
-    //         {
-    //             ApplicationArea = All;
-    //             Caption = 'Calculate Gross Margin';
-    //             Image = Calculate;
-    //             trigger OnAction()
-    //             var
-    //                 EventSub: Codeunit "EventSubscribers1";
-    //             begin
-    //                 Rec."Marginamount_12months" := EventSub.CalcGrosMarginLast12Months(Rec."No.");
-    //                 Rec.Modify();
-    //                 Message('Gross Margin for last 12 months is calculated and updated.');
-    //             end;
-    //         }
-    //     }
+
     trigger OnOpenPage()
     begin
         REC.SETRANGE("Date Filter", TODAY - 365, TODAY);

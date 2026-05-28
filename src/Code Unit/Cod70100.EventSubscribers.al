@@ -933,7 +933,12 @@ codeunit 70100 "EventSubscribers1"
     [EventSubscriber(ObjectType::Page, Page::"Customer Card", OnAfterOnOpenPage, '', false, false)]// Balance and Credit limit warning on customer card - Tommy
     local procedure OnAfterOnOpenPage(var Customer: Record Customer)
     begin
-        Message('Please do not contact for payment. Invoices are manually consolidated monthly.');   //A pop up message when a customer card is clicked - Tommy
+
+
+        if (CopyStr(Customer.Name, 1, 17) = 'KONNECT FASTENING') or
+           (CopyStr(Customer.Name, 1, 3) = 'CFS') then begin
+            Message('Please do not contact for payment. Invoices are manually consolidated monthly.');   //A pop up message when a customer card is clicked - Tommy
+        end;
         Customer.CalcFields(Balance);
         if (Customer."Balance" >= Customer."Credit Limit (LCY)") and (Customer."Credit Limit (LCY)" > 0) then
             Message('Warning: Customer %1 has reached or exceeded the credit limit!', Customer."No.");

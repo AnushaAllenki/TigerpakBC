@@ -19,10 +19,10 @@ page 70110 "Get Tracking Data "
                 {
                     ApplicationArea = All;
                 }
-                // field("Your Reference";Rec."Your Reference")
-                // {
-                //     ApplicationArea = All;
-                // }
+                field("Your Reference"; Rec."Your Reference")
+                {
+                    ApplicationArea = All;
+                }
                 field("DC Job No."; Rec."Job No.")
                 {
                     ApplicationArea = All;

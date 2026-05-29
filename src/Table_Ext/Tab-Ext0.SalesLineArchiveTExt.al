@@ -2,7 +2,7 @@ tableextension 70125 "Sales Line Archive TExt" extends "Sales Line Archive"
 {
     fields
     {
-        field(70100; "Order Date"; Date)     //Order Date field added to Sales Line Archive- 6619 web services - Tommy
+        field(70310; "Order Date"; Date)     //Order Date field added to Sales Line Archive- 6619 web services - Tommy
         {
             Caption = 'Order Date';
             DataClassification = ToBeClassified;

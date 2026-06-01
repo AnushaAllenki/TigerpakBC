@@ -14,4 +14,13 @@ tableextension 70126 "Posted WhseShipmentHeader TExt" extends "Posted Whse. Ship
             DataClassification = ToBeClassified;
         }
     }
+
+    // keys
+    // {
+    //     key(Key5; "Web Order No.")
+    //     {
+
+
+    //     }
+    // }
 }

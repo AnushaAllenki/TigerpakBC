@@ -9,7 +9,7 @@ page 70110 "Get Tracking Data "
     {
         area(Content)
         {
-            group(General)
+            repeater(General)
             {
                 field("Order No."; Rec."Order No.")
                 {
@@ -27,14 +27,18 @@ page 70110 "Get Tracking Data "
                 {
                     ApplicationArea = All;
                 }
+
             }
 
         }
+
     }
     trigger OnOpenPage();
     begin
 
-        Rec.SetFilter("Web Order No.", '<>%1', '');
+        Rec.SetFilter("Your Reference", '%1', 'WEB*');
 
     end;
+
+
 }

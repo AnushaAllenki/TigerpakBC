@@ -1,6 +1,6 @@
 codeunit 70100 "EventSubscribers1"
 {
-    Permissions = tabledata 110 = RMID, tabledata 121 = RMID, tabledata 112 = RIMD, tabledata 114 = rmid, tabledata 21 = rmid, tabledata 113 = rmid, tabledata 5772 = rmid;
+    Permissions = tabledata 110 = RMID, tabledata 121 = RMID, tabledata 112 = RIMD, tabledata 114 = rmid, tabledata 7322 = RMID, tabledata 21 = rmid, tabledata 113 = rmid, tabledata 5772 = rmid;
 
 
 
@@ -167,6 +167,23 @@ codeunit 70100 "EventSubscribers1"
 
             end;
         end;
+        WhseShptHeader.Reset();
+        WhseShptHeader.SetRange("Order No.", SH."No.");
+        if WhseShptHeader.FindFirst() then begin
+            WhseShptHeader."Your Reference" := SH."Your Reference";  // Copying Your Reference from sales order to wshe shipments for web services API
+            if CopyStr(WhseShptHeader."Your Reference", 1, 3) = 'WEB' then
+                WhseShptHeader."Web Order No." := CopyStr(WhseShptHeader."Your Reference", 4)  // Web order number from sales order for web services
+            else
+                WhseShptHeader."Web Order No." := '';
+            WhseShptHeader.Modify();
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Whse.-Post Shipment", OnBeforePostedWhseShptHeaderInsert, '', false, false)]
+    local procedure OnBeforePostedWhseShptHeaderInsert(var PostedWhseShipmentHeader: Record "Posted Whse. Shipment Header"; WarehouseShipmentHeader: Record "Warehouse Shipment Header")
+    begin
+        PostedWhseShipmentHeader."Your Reference" := WarehouseShipmentHeader."Your Reference";  // Copying Your Reference from sales order to posted wshe shipments for web services API
+        PostedWhseShipmentHeader."Web Order No." := WarehouseShipmentHeader."Web Order No.";  // Copying Web Order No. from sales order to posted wshe shipments for web services API   
     end;
     // local procedure OnBeforeCreateFromSalesOrder(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean)
     // begin
@@ -804,7 +821,34 @@ codeunit 70100 "EventSubscribers1"
     //         Message('Th e Purchase Receipt Line %1 for document %2 is not found', PurchRcptLineNo, PurchRcptDocNo);
     // end;
 
+    procedure UpdateYourReference()  // Copying Your Reference from sales order to posted wshe shipments for web services API
+    var
+        SH: Record "Sales Header";
+        PWSH: Record "Posted Whse. Shipment Header";
+    begin
+        SH.SetRange("Document Type", SH."Document Type"::Order);
 
+        if SH.FindSet() then
+            repeat
+                PWSH.Reset();
+                PWSH.SetRange("Order No.", SH."No.");
+
+                if PWSH.FindSet() then
+                    repeat
+
+                        PWSH."Your Reference" := SH."Your Reference";
+
+                        if CopyStr(PWSH."Your Reference", 1, 3) = 'WEB' then
+                            PWSH."Web Order No." := CopyStr(PWSH."Your Reference", 4)  // Web order number from sales order for web services
+                        else
+                            PWSH."Web Order No." := '';
+
+                        PWSH.Modify(true);
+
+                    until PWSH.Next() = 0;
+
+            until SH.Next() = 0;
+    end;
 
 
 }

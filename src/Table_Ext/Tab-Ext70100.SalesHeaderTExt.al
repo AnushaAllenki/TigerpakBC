@@ -72,7 +72,7 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
         {
             Caption = 'Quote Type';
             DataClassification = ToBeClassified;
-            OptionMembers = " ","RFQ - Request for Quote","CPL - Customer Price List","NBQ - New Business Quote";
+            OptionMembers = "RFQ - Request for Quote","CPL - Customer Price List","NBQ - New Business Quote"," ";
 
             trigger OnValidate()
             begin

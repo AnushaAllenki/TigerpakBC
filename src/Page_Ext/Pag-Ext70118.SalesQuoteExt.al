@@ -69,7 +69,11 @@ pageextension 70118 "Sales Quote Ext" extends "Sales Quote"
 
 
 
+
+
+
     }
+
     // trigger OnClosePage()
     // begin
     //     if rec."Quote Type" = rec."Quote Type":: " " then begin

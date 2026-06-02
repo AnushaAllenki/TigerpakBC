@@ -26,6 +26,9 @@ pageextension 70103 "Sales Order Subform_Ext" extends "Sales Order Subform"
 
 
 
+
+
+
         }
 
         modify("TP Profit %")

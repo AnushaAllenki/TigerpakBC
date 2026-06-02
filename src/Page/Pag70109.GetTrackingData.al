@@ -35,7 +35,8 @@ page 70109 "Get Tracking Data"
     trigger OnOpenPage();
     begin
 
-        Rec.SetFilter("Web Order No.", '<>%1', '');
+        Rec.SetFilter("Your Reference", '%1', 'WEB*');
+
 
     end;
 }

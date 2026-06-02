@@ -41,5 +41,16 @@ pageextension 70105 "Sales Quote Subform_Ext" extends "Sales Quote Subform"
             Visible = false;
             Enabled = false;
         }
+
+        addlast(Control35)
+        {
+            field("Annualized Quote Figure"; Rec."Annualized Quote Figure")
+            {
+                ApplicationArea = All;
+                Caption = 'Annualized Quote Figure';
+                ToolTip = 'The Annualized Quote Figure field shows the annualized quote figure for the sales quote line.';
+            }
+
+        }
     }
 }

@@ -10,6 +10,7 @@ tableextension 70115 "Sales Invoice Line Ext" extends "Sales Invoice Line"
         {
             Caption = 'TP Unit Cost_New';
             DataClassification = ToBeClassified;
+
         }
         field(70101; "External Document No."; Code[50])  // #290 Posted Sales Invoice Lines - External Document No. field update from Sales Invoice Header
         {
@@ -33,6 +34,12 @@ tableextension 70115 "Sales Invoice Line Ext" extends "Sales Invoice Line"
         field(70103; "Blocked_Days Since"; Integer)
         {
             Caption = 'Blocked Days Since';
+            DataClassification = ToBeClassified;
+        }
+
+        field(70104; "Salesperson Code"; Code[20])
+        {
+            Caption = 'Salesperson Code';
             DataClassification = ToBeClassified;
         }
 

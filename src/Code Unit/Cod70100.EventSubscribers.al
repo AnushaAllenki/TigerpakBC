@@ -472,6 +472,13 @@ codeunit 70100 "EventSubscribers1"
         if salesinvline.FindSet() then
             repeat
                 salesinvline."TP Unit Cost_New" := TempSalesLineGlobal."TP Unit Cost_New";
+                salesinvline."Salesperson Code" := SalesInvoiceHeader."Salesperson Code";
+                salesinvline.Modify();
+            until salesinvline.Next() = 0;
+        salesinvline.SetRange("Document No.", SalesInvoiceHeader."Salesperson Code");
+        if salesinvline.FindSet() then
+            repeat
+                salesinvline."Salesperson Code" := SalesInvoiceHeader."Salesperson Code";
                 salesinvline.Modify();
             until salesinvline.Next() = 0;
     end;
@@ -500,6 +507,26 @@ codeunit 70100 "EventSubscribers1"
                 //SalesinvLine."TP Unit Cost_New" := SKU."TP Unit Cost_New";
                 SalesinvLine.Modify();
             until SalesinvLine.Next() = 0;
+
+    end;
+
+    procedure UpdateAllSalespersonCode()
+    var
+
+        Salesinvline: Record "Sales Invoice Line";
+        SalesInvoiceHeader: Record "Sales Invoice Header";
+    begin
+        SalesInvoiceHeader.Reset();
+        Salesinvline.SetRange("Salesperson Code", '');
+        if Salesinvline.FindSet() then
+            repeat
+                SalesInvoiceHeader.SetRange("No.", SalesinvLine."Document No.");
+                if SalesInvoiceHeader.FindFirst() then begin
+                    SalesinvLine."Salesperson Code" := SalesInvoiceHeader."Salesperson Code";
+                    SalesinvLine.Modify();
+                end;
+            until SalesinvLine.Next() = 0;
+
 
     end;
 

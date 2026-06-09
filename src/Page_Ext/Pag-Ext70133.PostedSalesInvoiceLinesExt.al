@@ -41,6 +41,21 @@ pageextension 70133 "Posted Sales Invoice Lines Ext" extends "Posted Sales Invoi
                 Caption = 'Blocked Item';
                 ToolTip = 'The Blocked Item field indicates whether the item is blocked.';
             }
+            field("Salesperson Code"; Rec."Salesperson Code")
+            {
+                ApplicationArea = All;
+                Caption = 'Salesperson Code';
+                ToolTip = 'The Salesperson Code field shows the code of the salesperson associated with the sales invoice line.';
+                //TableRelation = "Sales Invoice Header"."Salesperson Code" where("No." = field("Document No."), "Salesperson Code" = field("Salesperson Code"));
+            }
+            field("Blocked_Days Since"; Rec."Blocked_Days Since")
+            {
+                ApplicationArea = All;
+                Caption = 'Blocked Days Since';
+                ToolTip = 'The Blocked Days Since field shows the number of days since the item was blocked.';
+            }
+
+
         }
     }
     actions
@@ -92,6 +107,21 @@ pageextension 70133 "Posted Sales Invoice Lines Ext" extends "Posted Sales Invoi
                     eventSub.UpdateItemsBlocked();
                 end;
             }
+            action("Update Salesperson Code")
+            {
+                ApplicationArea = All;
+                Caption = 'Update Salesperson Code';
+                ToolTip = 'Update Salesperson Code';
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    eventSub: Codeunit "EventSubscribers1";
+                begin
+                    eventSub.UpdateAllSalespersonCode();
+                end;
+            }
+
 
         }
     }

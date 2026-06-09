@@ -118,7 +118,7 @@ report 70101 "TP Customer Statistics "
                 DataItemLinkReference = Customer;
                 DataItemLink = "Sell-to Customer No." = field("No.");
 
-                DataItemTableView = SORTING("Posting Date") ORDER(Descending);
+                DataItemTableView = SORTING("Posting Date") ORDER(Descending) where(Type = const(Item));
 
                 column(Posting_Date; "Posting Date") { }
                 Column(Document_No_; "Document No.") { }
@@ -128,20 +128,26 @@ report 70101 "TP Customer Statistics "
                 column(UnitPrice; "Unit Price") { }
                 trigger OnPreDataItem()
                 begin
+
                     // Apply filters before fetching
 
                     // SalesInvLines.SetRange("Entry Type", SalesInvLines."Entry Type"::Sale);
-                    SalesInvLines.SetRange("Type", SalesInvLines.Type::Item);
-                    SalesInvLines.SetRange("Sell-to Customer No.", Customer."No.");
+                    //  SalesInvLines.SetRange("Type", SalesInvLines.Type::Item);
+                    //SalesInvLines.SetRange("Sell-to Customer No.", Customer."No.");
                 end;
 
                 trigger OnAfterGetRecord()
-                var
-                    Count: Integer;
+
                 begin
-                    Count += 1;
-                    if (Count >= 20) then
+                    IntCount += 1;
+                    if (IntCount > 60) then
                         CurrReport.Break;
+                end;
+
+                trigger OnPostDataItem()
+                begin
+                    // Reset count for next customer
+                    IntCount := 0;
                 end;
             }
             dataitem("SalesInvoiceLine2"; "Sales Invoice Line")
@@ -159,6 +165,7 @@ report 70101 "TP Customer Statistics "
                 column(Line_Amount; "Line Amount") { }
                 column(Blocked_Item; Blocked_Item) { }
                 column(Blocked_Days_Since; BlockedDaysSince) { }
+
 
                 trigger OnAfterGetRecord()
                 var
@@ -419,6 +426,8 @@ report 70101 "TP Customer Statistics "
     // end;
 
     var
+        SalesInvLine: Record "Sales Invoice Line";
+        TempSalesInvLine: Record "Sales Invoice Line" temporary;
         BlockedDaysSince: Integer;
         ItemCode: Code[20];
         TotalSalesAmt: Decimal;
@@ -433,6 +442,7 @@ report 70101 "TP Customer Statistics "
         ILE: Record "Item Ledger Entry";
         VE: Record "Value Entry";
         Result: Record "Top10DormantItems Buffer" temporary;
+        IntCount: Integer;
 
     trigger OnInitReport()
     begin

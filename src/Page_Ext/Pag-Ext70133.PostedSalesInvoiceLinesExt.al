@@ -37,6 +37,12 @@ pageextension 70133 "Posted Sales Invoice Lines Ext" extends "Posted Sales Invoi
                 Caption = 'Blocked Item';
                 ToolTip = 'The Blocked Item field indicates whether the item on the posted sales invoice line is blocked. This field is used for the Customer Statistics Report.';
             }
+            field("Salesperson Code"; Rec."Salesperson Code")
+            {
+                ApplicationArea = All;
+                Caption = 'Salesperson Code';
+                ToolTip = 'The Salesperson Code field shows the code of the salesperson associated with the sales invoice line.';
+            }
         }
     }
     actions
@@ -100,6 +106,21 @@ pageextension 70133 "Posted Sales Invoice Lines Ext" extends "Posted Sales Invoi
 
                 begin
                     eventSub.UpdateItemsBlocked();
+                end;
+            }
+
+            action("Update Salesperson Code")  // Salesperson code field added to posted sales invoice lines for Web services - Greg
+            {
+                ApplicationArea = All;
+                Caption = 'Update Salesperson Code';
+                ToolTip = 'Update Salesperson Code';
+                Image = Action;
+
+                trigger OnAction()
+                var
+                    eventSub: Codeunit "EventSubscribers1";
+                begin
+                    eventSub.UpdateAllSalespersonCode();
                 end;
             }
 

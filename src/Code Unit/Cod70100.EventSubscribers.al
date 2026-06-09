@@ -340,6 +340,14 @@ codeunit 70100 "EventSubscribers1"
                 salesinvline."TP Unit Cost_New" := TempSalesLineGlobal."TP Unit Cost_New";
                 salesinvline.Modify();
             until salesinvline.Next() = 0;
+
+        salesinvline.SetRange("Document No.", SalesInvoiceHeader."No.");  // Salesperson code field added to posted sales invoice lines for Web services - Greg
+
+        if salesinvline.FindSet() then
+            repeat
+                salesinvline."Salesperson Code" := SalesInvoiceHeader."Salesperson Code";
+                salesinvline.Modify();
+            until salesinvline.Next() = 0;
     end;
 
     procedure UpdateAllTPUnitCostNew()
@@ -368,6 +376,30 @@ codeunit 70100 "EventSubscribers1"
             until SalesinvLine.Next() = 0;
 
     end;
+
+    procedure UpdateAllSalespersonCode()  // Salesperson code field added to posted sales invoice lines for Web services - Greg
+    var
+
+        Salesinvline: Record "Sales Invoice Line";
+        SalesInvoiceHeader: Record "Sales Invoice Header";
+    begin
+        SalesInvoiceHeader.Reset();
+        Salesinvline.SetRange("Salesperson Code", '');
+        if Salesinvline.FindSet() then
+            repeat
+                SalesInvoiceHeader.SetRange("No.", SalesinvLine."Document No.");
+                if SalesInvoiceHeader.FindFirst() then begin
+                    SalesinvLine."Salesperson Code" := SalesInvoiceHeader."Salesperson Code";
+                    SalesinvLine.Modify();
+                end;
+            until SalesinvLine.Next() = 0;
+
+
+    end;
+
+
+
+
 
 
     // [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterInsertPostedHeaders, '', true, true)]

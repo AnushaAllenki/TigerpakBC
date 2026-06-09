@@ -29,6 +29,11 @@ tableextension 70115 "Sales Invoice Line Ext" extends "Sales Invoice Line"
             Caption = 'Blocked Item';
             DataClassification = ToBeClassified;
         }
+        field(70104; "Salesperson Code"; Code[20])
+        {
+            Caption = 'Salesperson Code';
+            DataClassification = ToBeClassified;
+        }
 
 
     }

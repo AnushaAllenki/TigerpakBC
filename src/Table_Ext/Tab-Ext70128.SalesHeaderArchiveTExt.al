@@ -10,7 +10,7 @@ tableextension 70128 "Sales Header Archive TExt" extends "Sales Header Archive"
         {
             Caption = 'Quote Type';
             DataClassification = ToBeClassified;
-            OptionMembers = " ","RFQ - Request for Quote","CPL - Customer Price List","NBQ - New Business Quote";
+            OptionMembers = "RFQ - Request for Quote","CPL - Customer Price List","NBQ - New Business Quote"," ";
         }
     }
 }

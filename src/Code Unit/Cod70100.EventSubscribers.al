@@ -679,6 +679,15 @@ codeunit 70100 "EventSubscribers1"
             end;
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterGetNoSeriesCode, '', false, false)]
+
+    local procedure OnAfterGetNoSeriesCode(var SalesHeader: Record "Sales Header"; SalesReceivablesSetup: Record "Sales & Receivables Setup"; var NoSeriesCode: Code[20])
+    begin
+        //Overriding the No. Series code for sales quotes to differentiate from sales orders for better reporting and analysis
+        if SalesHeader."Document Type" = SalesHeader."Document Type"::Quote then
+            if SalesHeader.Master = true then
+                NoSeriesCode := SalesReceivablesSetup."Master Sales Quote Nos";
+    end;
 
     procedure UpdateAllCustomerGrading()
     var

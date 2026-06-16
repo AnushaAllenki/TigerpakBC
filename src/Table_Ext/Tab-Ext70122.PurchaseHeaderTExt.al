@@ -42,4 +42,12 @@ tableextension 70122 "Purchase Header TExt" extends "Purchase Header"
     //     if "Delivery Date" = 0D then
     //         "Delivery Date" := Today();
     // end;
+
+    trigger OnInsert()   // Put warning message on Supplier Invoice - Tommy
+    begin
+        if "Document Type" = "Document Type"::Invoice then begin
+            if "Document Date" <> Today then
+                Message('Document Date is different from today''s date.');
+        end;
+    end;
 }

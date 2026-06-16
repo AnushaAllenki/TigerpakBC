@@ -1,4 +1,4 @@
-tableextension 70127 "Warehouse Shipment Header TExt" extends "Warehouse Shipment Header"
+tableextension 70128 "Warehouse Shipment Header TExt" extends "Warehouse Shipment Header"
 {
     fields
     {

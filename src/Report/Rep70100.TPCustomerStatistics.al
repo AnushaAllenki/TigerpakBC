@@ -131,23 +131,23 @@ report 70100 "TP Customer Statistics"
 
                     // SalesInvLines.SetRange("Entry Type", SalesInvLines."Entry Type"::Sale);
                     // SalesInvLines.SetRange("Type", SalesInvLines.Type::Item);
-                    // SalesInvLines.SetRange("Sell-to Customer No.", Customer."No.");
+                    SalesInvLines.SetRange("Posting Date", Today - 60, Today);
                 end;
 
-                trigger OnAfterGetRecord()
-                // var
-                //     Count: Integer;
-                begin
-                    IntCount += 1;
-                    if (IntCount > 60) then
-                        CurrReport.Break;
-                end;
+                // trigger OnAfterGetRecord()
+                // // var
+                // //     Count: Integer;
+                // begin
+                //     IntCount += 1;
+                //     if (IntCount > 60) then
+                //         CurrReport.Break;
+                // end;
 
-                trigger OnPostDataItem()
-                begin
-                    // Reset count for next customer
-                    IntCount := 0;
-                end;
+                // trigger OnPostDataItem()
+                // begin
+                //     // Reset count for next customer
+                //     IntCount := 0;
+                // end;
             }
             dataitem("SalesInvoiceLine2"; "Sales Invoice Line")
             {

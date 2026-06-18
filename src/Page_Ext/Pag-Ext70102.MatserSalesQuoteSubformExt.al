@@ -58,6 +58,14 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
     }
     actions
     {
+        modify("Make Quote")
+        {
+            ApplicationArea = all;
+            Caption = 'Make Quote';
+            PromotedCategory = New;
+            Promoted = true;
+            PromotedIsBig = true;
+        }
         addafter("Update Sales Price")
         {
             action("Delete Line & Price Line")
@@ -119,5 +127,6 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
 
 
     }
+
 }
 

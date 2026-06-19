@@ -9,5 +9,12 @@ tableextension 70132 "CRM Invoice TExt" extends "CRM Invoice"
             Description = '';
             Caption = 'Package Tracking No.';
         }
+        field(70101; "Email Address"; Text[100])
+        {
+            ExternalName = 'emailaddress';
+            ExternalType = 'String';
+            Description = '';
+            Caption = 'Email Address';
+        }
     }
 }

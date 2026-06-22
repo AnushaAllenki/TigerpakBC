@@ -60,10 +60,15 @@ tableextension 70106 "Location TExt" extends Location
             Caption = 'Receiving Phone No.';
             ExtendedDatatype = PhoneNo;
         }
-        field(70305; "Receiving Phone No. 2"; Text[30])
+        field(70305; "Receiving Country/Region Code"; Code[10])
         {
-            Caption = 'Receiving Phone No. 2';
-            ExtendedDatatype = PhoneNo;
+            Caption = 'Receiving Country/Region Code';
+            TableRelation = "Country/Region";
+
+            trigger OnValidate()
+            begin
+                PostCode.CheckClearPostCodeCityCounty(City, "Post Code", County, "Country/Region Code", xRec."Country/Region Code");
+            end;
         }
         field(70306; "Receiving Telex No."; Text[30])
         {

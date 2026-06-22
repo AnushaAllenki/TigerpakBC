@@ -33,8 +33,16 @@ tableextension 70122 "Purchase Header TExt" extends "Purchase Header"
             Caption = 'Container No.';
             DataClassification = ToBeClassified;
         }
+        modify("Document Date")
+        {
+            trigger OnAfterValidate()
+            begin
+                if "Document Date" > Today then    //StephanieH: warning in BC when you try and enter a supplier invoice with a document date that is later than the actual date.
+                    Message('Document Date cannot be later than the current system date.');
+            end;
 
 
+        }
     }
 
     // trigger OnInsert()
@@ -46,8 +54,11 @@ tableextension 70122 "Purchase Header TExt" extends "Purchase Header"
     trigger OnInsert()   // Put warning message on Supplier Invoice - Tommy
     begin
         if "Document Type" = "Document Type"::Invoice then begin
-            if "Document Date" <> Today then
-                Message('Document Date is different from today''s date.');
+            if "Document Date" > Today then
+                Error('Document Date cannot be later than the current system date.');
         end;
     end;
+
+
 }
+

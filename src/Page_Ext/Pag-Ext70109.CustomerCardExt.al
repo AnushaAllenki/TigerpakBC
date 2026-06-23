@@ -113,6 +113,7 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
 
 
 
+
         }
 
     }

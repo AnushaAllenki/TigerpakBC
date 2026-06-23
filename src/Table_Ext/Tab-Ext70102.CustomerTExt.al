@@ -59,12 +59,14 @@ tableextension 70102 Customer_TExt extends Customer
             Caption = 'This Qtr Sales Amount';
             Editable = false;
             FieldClass = FlowField;
+            //CalcFormula = sum("Sales Invoice Line"."Line Amount" where("Sell-to Customer No." = field("No."), "Posting Date" = FILTER(calcdate('<-90D>', Today) .. Today)));
             CalcFormula = sum("Sales Invoice Line"."Line Amount" where("Sell-to Customer No." = field("No."), "Posting Date" = field("Qrtr Date Filter")));
         }
         field(70108; "Qrtr Date Filter"; Date)
         {
             Caption = 'Qrtr Date Filter';
             FieldClass = FlowFilter;
+
 
         }
         field(70109; "Last Qrtr Sales Amount"; Decimal)

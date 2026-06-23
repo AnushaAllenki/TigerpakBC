@@ -32,11 +32,20 @@ tableextension 70123 "Purchase Header TExt" extends "Purchase Header"
             Caption = 'Container No.';
             DataClassification = ToBeClassified;
         }
-    }
+        modify("Document Date")
+        {
+            trigger OnAfterValidate()
+            begin
+                if "Document Type" = "Document Type"::Invoice then
+                    if "Document Date" > Today then    //StephanieH: warning in BC when you try and enter a supplier invoice with a document date that is later than the actual date.
+                        Message('Document Date cannot be later than the current system date.');
+            end;
+        }
 
-    // trigger OnInsert()
-    // begin
-    //     if "Delivery Date" = 0D then
-    //         "Delivery Date" := Today();
-    // end;
+        // trigger OnInsert()
+        // begin
+        //     if "Delivery Date" = 0D then
+        //         "Delivery Date" := Today();
+        // end;
+    }
 }

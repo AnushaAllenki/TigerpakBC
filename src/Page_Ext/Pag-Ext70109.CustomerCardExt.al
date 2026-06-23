@@ -98,4 +98,11 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
 
         }
     }
+
+    trigger OnOpenPage()
+    begin
+        REC.SETRANGE("Date Filter", TODAY - 365, TODAY);
+        REC.SETRANGE("Qrtr Date Filter", Today - 90, TODAY);
+        REC.SETRANGE("Last Qrtr Date Filter", Today - 180, TODAY - 91);
+    end;
 }

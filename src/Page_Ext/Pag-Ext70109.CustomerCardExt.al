@@ -69,6 +69,27 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
                 Caption = 'Marketing Industry Text';
             }
         }
+        addafter("Xmas Trading Hours")
+        {
+            field(Marginamount_12months; Rec.Marginamount_12months)
+            {
+                ApplicationArea = All;
+                Caption = 'Margin Amount 12 Months';
+                Editable = false;
+            }
+            field("This Qrtr Sales Amount"; Rec."This Qrtr Sales Amount")
+            {
+                ApplicationArea = All;
+                Caption = 'This Qrtr Sales Amount';
+                Editable = false;
+            }
+            field("Last Qrtr Sales Amount"; Rec."Last Qrtr Sales Amount")
+            {
+                ApplicationArea = All;
+                Caption = 'Last Qrtr Sales Amount';
+                Editable = false;
+            }
+        }
     }
     actions
     {

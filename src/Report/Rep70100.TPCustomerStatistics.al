@@ -59,6 +59,9 @@ report 70100 "TP Customer Statistics"
             column(LastQrtrSalesAmount; "Last Qrtr Sales Amount")
             {
             }
+            column(Customer_Grade; "Customer Grade")
+            {
+            }
 
             dataitem("Price List Line"; "Price List Line")
             {
@@ -259,7 +262,21 @@ report 70100 "TP Customer Statistics"
             //             end;
             //         }
 
+            trigger OnPreDataItem()
+            begin
+                // Apply filters before fetching
+                Customer.SetRange("Date Filter", Today - 365, Today);
+                Customer.SetRange("Qrtr Date Filter", Today - 90, Today);
+                Customer.SetRange("Last Qrtr Date Filter", Today - 180, Today - 91);
+            end;
+
+            trigger OnAfterGetRecord()
+            begin
+                CalcFields(Marginamount_12months, "This Qrtr Sales Amount", "Last Qrtr Sales Amount");
+            end;
+
         }
+
     }
 
 

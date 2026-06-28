@@ -58,6 +58,9 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
     }
     actions
     {
+
+
+
         modify("Make Quote")
         {
             ApplicationArea = all;

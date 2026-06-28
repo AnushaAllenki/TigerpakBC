@@ -16,6 +16,15 @@ pageextension 70148 "Sales Return Order Ext" extends "Sales Return Order"
             }
 
         }
+        addafter("Assigned User ID")
+        {
+            field("Created By"; Rec."Created By")
+            {
+                ApplicationArea = All;
+                Caption = 'Created By';
+                ToolTip = 'Shows the user who created the record.';
+            }
+        }
     }
 }
 

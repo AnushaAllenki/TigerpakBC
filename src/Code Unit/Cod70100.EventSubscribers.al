@@ -1072,6 +1072,25 @@ codeunit 70100 "EventSubscribers1"
     end;
 
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"ArchiveManagement", OnAfterSalesHeaderArchiveInsert, '', false, false)]
+    local procedure OnAfterSalesHeaderArchiveInsert(var SalesHeaderArchive: Record "Sales Header Archive"; SalesHeader: Record "Sales Header")
+
+    begin
+
+        SalesHeaderArchive.SetFilter("Document Type", '%1|%2', SalesHeader."Document Type"::Order, SalesHeader."Document Type"::"Return Order");
+        SalesHeaderArchive.SetRange("No.", SalesHeader."No.");
+        if SalesHeaderArchive.FindSet() then
+            repeat
+                SalesHeaderArchive.CreatedBy := SalesHeader."Created By";
+                SalesHeaderArchive.Modify();
+            until SalesHeaderArchive.Next() = 0;
+
+
+
+    end;
+
+
+
 }
 
 

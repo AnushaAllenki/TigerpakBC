@@ -54,10 +54,60 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
             Enabled = false;
         }
 
+        addafter("Location Code")    // adding backorder status field in Master sales quote subform - Tommy
+        {
+            field("Backorder Status"; Rec."Backorder Status")
+            {
+                ApplicationArea = All;
+                Caption = 'Backorder Status';
+                ToolTip = 'The Backorder Status field shows the backorder status for the sales quote line.';
+            }
+        }
+
 
     }
     actions
     {
+
+
+        addlast(processing)
+        {
+            group(Excel)
+            {
+                Caption = 'Excel';
+
+                action(EditInExcel)
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Edit in Excel';
+                    Image = Excel;
+                    ToolTip = 'Send the data in the sub page to an Excel file for analysis or editing';
+                    AccessByPermission = System "Allow Action Export To Excel" = X;
+
+
+                    trigger OnAction()
+                    var
+                        EditinExcel: Codeunit "Edit in Excel";
+                        EditinExcelFilters: Codeunit "Edit in Excel Filters";
+                    begin
+                        EditinExcelFilters.AddFieldV2(
+                            'Document_No',
+                            Enum::"Edit in Excel Filter Type"::Equal,
+                            Rec."Document No.",
+                            Enum::"Edit in Excel Edm Type"::"Edm.String"
+                        );
+
+                        EditinExcel.EditPageInExcel(
+                            'salesQuoteLines',
+                            Page::"Matser Sales Quote Subform",
+                            EditinExcelFilters,
+                            StrSubstNo('Sales Quote %1', Rec."Document No.")
+                        );
+                    end;
+
+                }
+            }
+        }
 
 
 

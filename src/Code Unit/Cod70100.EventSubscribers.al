@@ -1002,8 +1002,12 @@ codeunit 70100 "EventSubscribers1"
             Message('Please do not contact for payment. Invoices are manually consolidated monthly.');   //A pop up message when a customer card is clicked - Tommy
         end;
         Customer.CalcFields(Balance);
-        if (Customer."Balance" >= Customer."Credit Limit (LCY)") and (Customer."Credit Limit (LCY)" > 0) then
+        if (Customer."Balance" >= Customer."Credit Limit (LCY)") and (Customer."Credit Limit (LCY)" > 0) then begin
             Message('Warning: Customer %1 has reached or exceeded the credit limit!', Customer."No.");
+        end;
+        if (CopyStr(Customer."Customer Price Group", 1, 3) = 'SBG') then begin
+            Message('This is Part of SYNERGY BUYERS GROUP');
+        end;
     end;
 
 

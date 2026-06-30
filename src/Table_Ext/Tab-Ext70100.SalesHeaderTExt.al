@@ -255,6 +255,10 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
     begin
         "Quote_Type_Text" := Format("Quote Type");
         "Quote_Outcome_Text" := Format("Quote Status");
+
+        // if Rec."Document Type" = Rec."Document Type"::Quote then begin
+        //     Rec."Requested Delivery Date" := Today;
+        // end;
     end;
 
 

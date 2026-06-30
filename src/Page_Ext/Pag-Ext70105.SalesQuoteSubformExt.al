@@ -52,5 +52,16 @@ pageextension 70105 "Sales Quote Subform_Ext" extends "Sales Quote Subform"
             }
 
         }
+        addafter("Location Code")    // adding backorder status field in sales quote subform - Tommy
+        {
+            field("Backorder Status"; Rec."Backorder Status")
+            {
+                ApplicationArea = All;
+                Caption = 'Backorder Status';
+                ToolTip = 'The Backorder Status field shows the backorder status for the sales quote line.';
+            }
+        }
+
+
     }
 }

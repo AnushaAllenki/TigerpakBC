@@ -172,25 +172,23 @@ report 70100 "TP Customer Statistics"
                 var
                     Count: Integer;
                     SalesInvLineRec: Record "Sales Invoice Line";
+                    SalesInvLineRec2: Record "Sales Invoice Line";
                     salesamount: Decimal;
-
+                    Date90Days: Date;
                 begin
+
+                    Date90Days := CalcDate('<-90D>', Today);   //TP Customer Statistics Last 90 days inactive items logic corrected and working fine
+                    BlockedDaysSince := Today - SalesInvoiceLine2."Posting Date";
+                    salesamount := SalesInvoiceLine2."Line Amount";
                     IF (ItemCode = '') or (ItemCode <> SalesInvoiceLine2."No.") then begin
                         ItemCode := SalesInvoiceLine2."No.";
                         SalesInvLineRec.reset();
-                        SalesInvLineRec.SetCurrentKey("Order No.", "Order Line No.", "Posting Date");
                         SalesInvLineRec.SetRange("No.", SalesInvoiceLine2."No.");
-                        if SalesInvLineRec.FindLast() then begin
-                            BlockedDaysSince := Today - SalesInvLineRec."Posting Date";
-                            salesamount += SalesInvLineRec."Line Amount";
-                            Count += 1;
-                            if not (SalesInvLineRec."Posting Date" <= (Today - 90)) then
-                                CurrReport.Skip();
-                        end;
-
+                        SalesInvLineRec.SetFilter("Posting Date", '>%1', Date90Days);
+                        if SalesInvLineRec.FindLast() then
+                            CurrReport.Skip()
                     end else
                         CurrReport.Skip();
-
                 end;
             }
             dataitem("salesinvoiceline3"; "Sales Invoice Line")

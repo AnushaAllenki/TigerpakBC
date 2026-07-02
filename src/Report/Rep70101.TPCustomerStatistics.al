@@ -184,7 +184,7 @@ report 70101 "TP Customer Statistics "
                     Date90Days: Date;
                 begin
 
-                    Date90Days := CalcDate('<-90D>', Today);
+                    Date90Days := CalcDate('<-90D>', Today);   //TP Customer Statistics Last 90 days inactive items logic corrected and working fine
                     BlockedDaysSince := Today - SalesInvoiceLine2."Posting Date";
                     salesamount := SalesInvoiceLine2."Line Amount";
                     IF (ItemCode = '') or (ItemCode <> SalesInvoiceLine2."No.") then begin

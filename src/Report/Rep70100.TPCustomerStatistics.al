@@ -20,6 +20,12 @@ report 70100 "TP Customer Statistics"
             column(Name; Name)
             {
             }
+            column(No_; "No.")
+            {
+            }
+            column(Salesperson_Code; "Salesperson Code")
+            {
+            }
             column(Address; Address)
             {
             }

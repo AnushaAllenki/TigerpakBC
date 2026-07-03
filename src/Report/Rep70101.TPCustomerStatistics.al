@@ -18,9 +18,13 @@ report 70101 "TP Customer Statistics "
         {
             DataItemTableView = SORTING("No.");
             RequestFilterFields = "No.";
+            column(No_; "No.")
+            {
+            }
             column(Name; Name)
             {
             }
+
             column(Address; Address)
             {
             }
@@ -37,6 +41,9 @@ report 70101 "TP Customer Statistics "
             {
             }
             column(ContactName; ContactName)
+            {
+            }
+            column(Salesperson_Code; "Salesperson Code")
             {
             }
             column(EMail; "E-Mail")

@@ -31,5 +31,12 @@ tableextension 70128 "Sales Header Archive TExt" extends "Sales Header Archive"
 
 
         }
+        field(70350; "Annualized Quote Figure"; Decimal)
+        {
+            Caption = 'Annualized Quote Figure';
+            DataClassification = ToBeClassified;
+        }
+
     }
+
 }

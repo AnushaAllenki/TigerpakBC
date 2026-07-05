@@ -110,6 +110,12 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             Editable = false;
 
         }
+        field(70350; "Annualized Quote Figure"; Decimal)
+        {
+            Caption = 'Annualized Quote Figure';
+            DataClassification = ToBeClassified;
+        }
+
 
 
 

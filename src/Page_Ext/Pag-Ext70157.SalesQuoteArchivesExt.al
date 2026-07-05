@@ -12,6 +12,11 @@ pageextension 70157 "Sales Quote Archives Ext" extends "Sales Quote Archives"
             {
                 ApplicationArea = All;
             }
+
+            field("Annualized Quote Figure"; Rec."Annualized Quote Figure")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 }

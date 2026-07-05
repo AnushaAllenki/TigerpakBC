@@ -72,6 +72,18 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
         {
             Caption = 'Annualized Quote Figure';
             DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                SalesHeader: Record "Sales Header";
+            begin
+                SalesHeader.SetRange("No.", Rec."Document No.");
+                if SalesHeader.FindFirst() then begin
+                    if SalesHeader."Document Type" = SalesHeader."Document Type"::Quote then
+                        SalesHeader."Annualized Quote Figure" := Rec."Annualized Quote Figure";
+                    SalesHeader.Modify();
+                end;
+
+            end;
         }
 
 

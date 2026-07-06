@@ -51,6 +51,12 @@ pageextension 70122 "Location Card Ext" extends "Location Card"
                     ApplicationArea = All;
                     ToolTip = 'Warehouse Receiving County';
                 }
+                field("Receiving Post Code"; Rec."Receiving Post Code")
+                {
+                    Caption = 'Receiving Post Code';
+                    ApplicationArea = All;
+                    ToolTip = 'Warehouse Receiving Post Code';
+                }
                 field("Receiving Phone No."; Rec."ReceivingPhone No.")
                 {
                     Caption = 'Receiving Phone No.';
@@ -64,6 +70,7 @@ pageextension 70122 "Location Card Ext" extends "Location Card"
                     ApplicationArea = All;
                     ToolTip = 'Warehouse Receiving Country/Region Code';
                 }
+
             }
         }
     }

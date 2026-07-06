@@ -92,7 +92,7 @@ tableextension 70106 "Location TExt" extends Location
 
             trigger OnLookup()
             begin
-                PostCode.LookupPostCode("Receiving City", "Post Code", "Receiving County", "Country/Region Code");
+                PostCode.LookupPostCode("Receiving City", "Receiving Post Code", "Receiving County", "Country/Region Code");
                 //  OnAfterLookupPostCode(Rec, PostCode);
             end;
 
@@ -103,7 +103,7 @@ tableextension 70106 "Location TExt" extends Location
                 IsHandled := false;
                 // OnBeforeValidatePostCode(Rec, PostCode, CurrFieldNo, IsHandled);
                 if not IsHandled then
-                    PostCode.ValidatePostCode("Receiving City", "Post Code", "Receiving County", "Country/Region Code", (CurrFieldNo <> 0) and GuiAllowed);
+                    PostCode.ValidatePostCode("Receiving City", "Receiving Post Code", "Receiving County", "Country/Region Code", (CurrFieldNo <> 0) and GuiAllowed);
                 //OnAfterValidatePostCode(Rec, PostCode);
             end;
         }

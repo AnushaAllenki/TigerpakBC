@@ -28,5 +28,32 @@ pageextension 70152 "Purchase Order Ext" extends "Purchase Order"
                 ApplicationArea = All;
             }
         }
+        addafter("Remit-to Code")
+        {
+            field("Receiving Address"; Rec."Receiving Address")
+            {
+                ApplicationArea = All;
+            }
+            field("Receiving Address2"; Rec."Receiving Address2")
+            {
+                ApplicationArea = All;
+            }
+            field("Receiving City"; Rec."Receiving City")
+            {
+                ApplicationArea = All;
+            }
+            field("Receiving County"; Rec."Receiving County")
+            {
+                ApplicationArea = All;
+            }
+            field("Receiving Post Code"; Rec."Receiving Post Code")
+            {
+                ApplicationArea = All;
+            }
+            field("Receiving Phone No."; Rec."ReceivingPhone No.")
+            {
+                ApplicationArea = All;
+            }
+        }
     }
 }

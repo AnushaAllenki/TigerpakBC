@@ -1095,6 +1095,21 @@ codeunit 70100 "EventSubscribers1"
 
 
 
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Header", OnUpdateShipToAddressOnAfterCopyFromLocation, '', false, false)]
+    local procedure OnUpdateShipToAddressOnAfterCopyFromLocation(var PurchaseHeader: Record "Purchase Header"; Location: Record Location)
+    begin
+        purchaseHeader."Receiving Address" := Location."Receiving Address";
+        PurchaseHeader."Receiving City" := Location."Receiving City";
+        PurchaseHeader."Receiving Post Code" := Location."Receiving Post Code";
+        purchaseHeader."Receiving County" := Location."Receiving County";
+        PurchaseHeader."Receiving Country/Region Code" := Location."Receiving Country/Region Code";
+        PurchaseHeader."ReceivingPhone No." := Location."ReceivingPhone No.";
+
+    end;
+
+
+
 }
 
 

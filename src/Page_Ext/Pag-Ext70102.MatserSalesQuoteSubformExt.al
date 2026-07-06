@@ -57,44 +57,44 @@ pageextension 70102 "Matser Sales Quote Subform_Ext" extends "Matser Sales Quote
     }
     actions
     {
-        // addlast(processing)  // Edit in Excel feature in MSQ lines - Need to confirm with Tommy to publish this feature
-        // {
-        //     group(Excel)
-        //     {
-        //         Caption = 'Excel';
+        addlast(processing)  // Edit in Excel feature in MSQ lines - Need to confirm with Tommy to publish this feature
+        {
+            group(Excel)
+            {
+                Caption = 'Excel';
 
-        //         action(EditInExcel)
-        //         {
-        //             ApplicationArea = Basic, Suite;
-        //             Caption = 'Edit in Excel';
-        //             Image = Excel;
-        //             ToolTip = 'Send the data in the sub page to an Excel file for analysis or editing';
-        //             AccessByPermission = System "Allow Action Export To Excel" = X;
+                action(EditInExcel)
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Edit in Excel';
+                    Image = Excel;
+                    ToolTip = 'Send the data in the sub page to an Excel file for analysis or editing';
+                    AccessByPermission = System "Allow Action Export To Excel" = X;
 
 
-        //             trigger OnAction()
-        //             var
-        //                 EditinExcel: Codeunit "Edit in Excel";
-        //                 EditinExcelFilters: Codeunit "Edit in Excel Filters";
-        //             begin
-        //                 EditinExcelFilters.AddFieldV2(
-        //                     'Document_No',
-        //                     Enum::"Edit in Excel Filter Type"::Equal,
-        //                     Rec."Document No.",
-        //                     Enum::"Edit in Excel Edm Type"::"Edm.String"
-        //                 );
+                    trigger OnAction()
+                    var
+                        EditinExcel: Codeunit "Edit in Excel";
+                        EditinExcelFilters: Codeunit "Edit in Excel Filters";
+                    begin
+                        EditinExcelFilters.AddFieldV2(
+                            'Document_No',
+                            Enum::"Edit in Excel Filter Type"::Equal,
+                            Rec."Document No.",
+                            Enum::"Edit in Excel Edm Type"::"Edm.String"
+                        );
 
-        //                 EditinExcel.EditPageInExcel(
-        //                     'salesQuoteLines',
-        //                     Page::"Matser Sales Quote Subform",
-        //                     EditinExcelFilters,
-        //                     StrSubstNo('Sales Quote %1', Rec."Document No.")
-        //                 );
-        //             end;
+                        EditinExcel.EditPageInExcel(
+                            'salesQuoteLines',
+                            Page::"Matser Sales Quote Subform",
+                            EditinExcelFilters,
+                            StrSubstNo('Sales Quote %1', Rec."Document No.")
+                        );
+                    end;
 
-        //         }
-        //     }
-        // }
+                }
+            }
+        }
         addafter("Update Sales Price")
         {
             action("Delete Line & Price Line")

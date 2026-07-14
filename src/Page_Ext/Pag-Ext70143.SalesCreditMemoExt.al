@@ -8,10 +8,10 @@ pageextension 70143 "Sales Credit Memo Ext" extends "Sales Credit Memo"
     {
         addafter(Status)
         {
-            field("Auto Email - Post"; Rec."Auto Email - Post")
+            field("Auto Email"; Rec."Auto Email - Post")
             {
                 ApplicationArea = All;
-                Caption = 'Auto Email - Post';
+                Caption = 'Auto Email';
 
             }
         }

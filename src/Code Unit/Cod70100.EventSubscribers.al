@@ -295,7 +295,83 @@ codeunit 70100 "EventSubscribers1"
     end;
 
 
-    //end;
+    [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterPostSalesDoc, '', true, true)]
+    local procedure OnAfterPostSalesDoc(var SalesHeader: Record "Sales Header"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; SalesShptHdrNo: Code[20]; RetRcpHdrNo: Code[20]; SalesInvHdrNo: Code[20]; SalesCrMemoHdrNo: Code[20]; CommitIsSuppressed: Boolean; InvtPickPutaway: Boolean; var CustLedgerEntry: Record "Cust. Ledger Entry"; WhseShip: Boolean; WhseReceiv: Boolean; PreviewMode: Boolean)
+    // begin
+    // end;
+
+    // [EventSubscriber(ObjectType::Codeunit, codeunit::"Sales-Post", OnAfterInsertCrMemoHeader, '', true, true)]
+    // local procedure OnAfterInsertCrMemoHeader(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header")
+    var
+        Customer: Record Customer;
+        Contact: Record Contact;
+        EmailMsg: Codeunit "Email Message";
+        Email: Codeunit "Email";
+        CreditMemoReport: Report "Custom Sales Cr. Memo";
+        TempBlob: Codeunit "Temp Blob";
+        TempBlob1: Codeunit "Temp Blob";
+        OutStream: OutStream;
+        Outstr1: OutStream;
+        InStream: InStream;
+        Instr1: InStream;
+        FileName: Text;
+        SCHRecRef: RecordRef;
+        ReportParameters: text;
+        SalesCrMemoHeader2: Record "Sales Cr.Memo Header";
+        reportselection: Record "Report Selections";
+        EmailBody: Text;
+        subject: Text[100];
+    begin
+        SalesCrMemoHeader2.reset;
+        SalesCrMemoHeader2.SetFilter("No.", SalesCrMemoHdrNo);
+        if SalesCrMemoHeader2.FindFirst() then
+            if SalesCrMemoHeader2."Auto Email - Post" then begin     //#254 - Auto Email Credit Memo on Post of CR/SRO - emailing to customer's default contact email
+
+                if Customer.Get(SalesCrMemoHeader2."Sell-to Customer No.") then begin
+                    // Get Primary Contact
+                    if Contact.Get(Customer."Primary Contact No.") then begin
+                        if Contact."E-Mail" <> '' then begin
+                            // Generate Credit Memo PDF into TempBlob
+
+                            TempBlob.CreateOutStream(OutStream);
+                            TempBlob1.CreateOutStream(Outstr1);
+                            reportselection.reset;
+                            reportselection.setrange(Usage, reportselection.Usage::"S.Cr.Memo");
+                            reportselection.SetRange(Sequence, '1');
+                            if reportselection.FindFirst() then;
+
+                            CreditMemoReport.SetTableView(SalesCrMemoHeader2);
+                            ReportParameters := '';
+
+                            // Prepare InStream for attachment
+
+                            FileName := 'CreditMemo_' + SalesCrMemoHeader2."No." + '.pdf';
+
+                            // Create and Send Email
+                            // EmailMsg.Create(Contact."E-Mail",
+                            //                 'Credit Memo ' + SalesCrMemoHeader2."No.",
+                            //                 'Dear ' + Contact.Name + ',<br><br>Please find attached your credit note.<br><br>Regards,<br>Your Company');
+                            SCHRecRef.GetTable(SalesCrMemoHeader2);
+                            Report.SaveAs(reportselection."Report ID", ReportParameters, ReportFormat::Html, OutStr1, SCHRecRef);
+                            TempBlob1.CreateInStream(InStr1);
+                            InStr1.Readtext(EmailBody);
+                            subject := 'Tigerpak - Sales Credit Memo ' + SalesCrMemoHeader2."No.";
+                            EmailMsg.Create(Contact."E-Mail", subject, EmailBody, True);
+
+
+
+                            Report.SaveAs(reportselection."Report ID", ReportParameters, ReportFormat::Pdf, OutStream, SCHRecRef);
+
+                            //CreditMemoReport.SaveAs('', ReportFormat::Pdf, OutStream, SCHRecRef);
+                            TempBlob.CreateInStream(InStream);
+                            EmailMsg.AddAttachment(FileName, FileName, InStream);
+                            Email.Send(EmailMsg, Enum::"Email Scenario"::"Sales Credit Memo");
+                        end;
+                    end;
+                end;
+            end;
+    end;
+
 
     [EventSubscriber(ObjectType::Codeunit, codeunit::"Assembly Line Management", OnAfterUpdateAssemblyLines, '', true, true)]
     local procedure OnAfterUpdateAssemblyLines(var AsmHeader: Record "Assembly Header"; OldAsmHeader: Record "Assembly Header"; FieldNum: Integer; ReplaceLinesFromBOM: Boolean; CurrFieldNo: Integer; CurrentFieldNum: Integer)

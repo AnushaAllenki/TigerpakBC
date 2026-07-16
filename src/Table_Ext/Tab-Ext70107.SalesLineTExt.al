@@ -57,18 +57,41 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             Caption = 'Annualized Quote Figure';
             DataClassification = ToBeClassified;
 
-            trigger OnValidate()
-            var
-                SalesHeader: Record "Sales Header";
-            begin
-                SalesHeader.SetRange("No.", Rec."Document No.");
-                if SalesHeader.FindFirst() then begin
-                    if SalesHeader."Document Type" = SalesHeader."Document Type"::Quote then
-                        SalesHeader."Annualized Quote Figure" := Rec."Annualized Quote Figure";
-                    SalesHeader.Modify();
-                end;
+            // trigger OnValidate()
+            // var
+            //     SL: Record "Sales Line";
+            //     SH: Record "Sales Header";
+            //     TotalAnnualizedQuoteFigure: Decimal;
+            // begin
+            //     if Rec."Document Type" <> Rec."Document Type"::Quote then
+            //         exit;
 
-            end;
+            //     TotalAnnualizedQuoteFigure := 0;
+            //     SL.SetRange("Document Type", Rec."Document Type"::Quote);
+            //     SL.SetRange("Document No.", Rec."Document No.");
+            //     if SL.FindSet() then
+            //         repeat
+            //             TotalAnnualizedQuoteFigure += SL."Annualized Quote Figure";
+            //         until SL.Next() = 0;
+
+            //     if SH.Get(Rec."Document Type", Rec."Document No.") then begin
+            //         SH."Annualized Quote Figure" := TotalAnnualizedQuoteFigure;
+            //         SH.Modify();
+            //     end;
+            // end;
+
+
+
+
+
+
+        }
+        field(70201; "Total Annualized Quote Figure"; Decimal)
+        {
+            Caption = 'Total Annualized Quote Figure';
+            DataClassification = ToBeClassified;
+
+
         }
 
 
@@ -257,6 +280,7 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
     var
         SKU: Record "Stockkeeping Unit";
         SH: Record "Sales Header";
+        TotalAnnualizedQuoteFigure: Decimal;
     begin
         SKU.SetRange("item No.", Rec."No.");
         SKU.SetRange("Location Code", Rec."Location Code");
@@ -277,7 +301,27 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
             end;
 
+            // TotalAnnualizedQuoteFigure := 0;
+            // SH.SetRange("No.", Rec."Document No.");
+            // if SH.FindSet() then begin
+            //     Rec.SetRange("Document Type", Rec."Document Type"::Quote);
+            //     Rec.SetRange("Document No.", SH."No.");
+            //     if Rec.FindSet() then begin
+            //         repeat
+            //             TotalAnnualizedQuoteFigure += Rec."Annualized Quote Figure";
+            //         until Rec.Next() = 0;
+            //     end;
+            //     SH."Annualized Quote Figure" := TotalAnnualizedQuoteFigure;
+            //     SH.Modify();
+            // end;
+
+
+
         end;
+
+
+
+
     end;
 
     // trigger OnInsert()     //Commented because of empty set warning error in sales order and need to identify the issue and fix it back
@@ -296,10 +340,9 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
 
 
-
     trigger OnAfterModify()
-    // var
-    //     SalesHeader: Record "Sales Header";
+    var
+        SalesHeader: Record "Sales Header";
     begin
         //     SalesHeader.SetRange("No.", Rec."Document No.");
         //     if SalesHeader.FindFirst() then begin
@@ -313,6 +356,10 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
         //         SalesHeader.Modify();
         //     end;
         UpdateBackorderQuantity();
+
+
+
+
 
 
     end;

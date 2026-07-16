@@ -129,7 +129,11 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
         field(70350; "Annualized Quote Figure"; Decimal)
         {
             Caption = 'Annualized Quote Figure';
-            DataClassification = ToBeClassified;
+            fieldclass = FlowField;
+            CalcFormula = Sum("Sales Line"."Annualized Quote Figure" where("Document Type" = field("Document Type"), "Document No." = field("No.")));
+            editable = false;
+
+
         }
 
 
@@ -252,14 +256,38 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
     end;
 
     trigger OnInsert()
+    var
+        SL: Record "Sales Line";
+        TotalAnnualizedQuoteFigure: Decimal;
     begin
         "Quote_Type_Text" := Format("Quote Type");
         "Quote_Outcome_Text" := Format("Quote Status");
+
 
         // if Rec."Document Type" = Rec."Document Type"::Quote then begin
         //     Rec."Requested Delivery Date" := Today;
         // end;
     end;
+
+    // trigger OnModify()
+    // var
+    //     SL: Record "Sales Line";
+    //     TotalAnnualizedQuoteFigure: Decimal;
+    // begin
+    //     TotalAnnualizedQuoteFigure := 0;
+    //     if Rec."Document Type" = Rec."Document Type"::Quote then begin
+    //         SL.SetRange("Document Type", Rec."Document Type"::Quote);
+    //         SL.SetRange("Document No.", Rec."No.");
+    //         if SL.FindSet() then begin
+    //             repeat
+    //                 TotalAnnualizedQuoteFigure += SL."Annualized Quote Figure";
+
+    //             until SL.Next() = 0;
+    //             Rec."Annualized Quote Figure" := TotalAnnualizedQuoteFigure;
+    //             Rec.Modify();
+    //         end;
+    //     end;
+    // end;
 
 
 }

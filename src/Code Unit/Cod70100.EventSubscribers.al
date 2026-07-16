@@ -1098,15 +1098,55 @@ codeunit 70100 "EventSubscribers1"
 
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", OnUpdateShipToAddressOnAfterCopyFromLocation, '', false, false)]
     local procedure OnUpdateShipToAddressOnAfterCopyFromLocation(var PurchaseHeader: Record "Purchase Header"; Location: Record Location)
+    var
+
     begin
-        purchaseHeader."Receiving Address" := Location."Receiving Address";
+
+        PurchaseHeader."Receiving Address" := Location."Receiving Address";
         PurchaseHeader."Receiving City" := Location."Receiving City";
         PurchaseHeader."Receiving Post Code" := Location."Receiving Post Code";
-        purchaseHeader."Receiving County" := Location."Receiving County";
+        PurchaseHeader."Receiving County" := Location."Receiving County";
         PurchaseHeader."Receiving Country/Region Code" := Location."Receiving Country/Region Code";
         PurchaseHeader."ReceivingPhone No." := Location."ReceivingPhone No.";
 
     end;
+
+
+    // [EventSubscriber(ObjectType::Page, Page::"Purchase Order", OnBeforeValidateShippingOption, '', false, false)]
+
+
+    // local procedure OnBeforeValidateShippingOption(var PurchaseHeader: Record "Purchase Header"; ShipToOptions: Option "Default (Company Address)",Location,"Customer Address","Custom Address"; var IsHandled: Boolean)
+    // var
+    //     Location: Record Location;
+    // begin
+    //     if ShipToOptions = ShipToOptions::"Customer Address" then begin
+
+    //         PurchaseHeader."Receiving Address" := purchaseHeader."Ship-to Address";
+    //         PurchaseHeader."Receiving Address2" := purchaseHeader."Ship-to Address 2";
+    //         PurchaseHeader."Receiving City" := purchaseHeader."Ship-to City";
+    //         PurchaseHeader."Receiving Post Code" := purchaseHeader."Ship-to Post Code";
+    //         PurchaseHeader."Receiving County" := purchaseHeader."Ship-to County";
+    //         PurchaseHeader."Receiving Country/Region Code" := purchaseHeader."Ship-to Country/Region Code";
+    //         PurchaseHeader."ReceivingPhone No." := purchaseHeader."Ship-to Phone No.";
+    //     end;
+    // end;
+
+    //[EventSubscriber(ObjectType::Page, Page::"Purchase Order", OnAfterCalculateCurrentShippingAndPayToOption, '', false, false)]
+
+    //  [IntegrationEvent(false, false)]
+    // local procedure OnAfterCalculateCurrentShippingAndPayToOption(var ShipToOptions: Option "Default (Company Address)",Location,"Customer Address","Custom Address"; var PayToOptions: Option "Default (Vendor)","Another Vendor","Custom Address"; PurchaseHeader: Record "Purchase Header")
+    // begin
+    //      if ShipToOptions = ShipToOptions::"Customer Address" then begin
+
+    //         PurchaseHeader."Receiving Address" := purchaseHeader."Ship-to Address";
+    //         PurchaseHeader."Receiving Address2" := purchaseHeader."Ship-to Address 2";
+    //         PurchaseHeader."Receiving City" := purchaseHeader."Ship-to City";
+    //         PurchaseHeader."Receiving Post Code" := purchaseHeader."Ship-to Post Code";
+    //         PurchaseHeader."Receiving County" := purchaseHeader."Ship-to County";
+    //         PurchaseHeader."Receiving Country/Region Code" := purchaseHeader."Ship-to Country/Region Code";
+    //         PurchaseHeader."ReceivingPhone No." := purchaseHeader."Ship-to Phone No.";
+    //     end;
+    // end;
 
 
 

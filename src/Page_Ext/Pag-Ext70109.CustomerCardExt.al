@@ -112,6 +112,7 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
                     CustomerRec.SetRange("No.", Rec."No.");
 
                     CustomerStatisticsReport.SetTableView(CustomerRec);
+                    CustomerStatisticsReport.setCustomerNoFilter(Rec."No.");
 
                     CustomerStatisticsReport.Run();
                 end;

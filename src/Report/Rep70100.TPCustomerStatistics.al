@@ -4,6 +4,8 @@ using Microsoft.Sales.History;
 using Microsoft.Pricing.PriceList;
 using Microsoft.Inventory.Item;
 using Microsoft.Inventory.Ledger;
+using Microsoft.CRM.Contact;
+using Microsoft.CRM.BusinessRelation;
 
 report 70100 "TP Customer Statistics"
 {
@@ -16,7 +18,7 @@ report 70100 "TP Customer Statistics"
         dataitem(Customer; Customer)
         {
             DataItemTableView = SORTING("No.");
-            RequestFilterFields = "No.";
+            // RequestFilterFields = "No.";  // Only Customer no. filter commented to add the contact filter as well
             column(Name; Name)
             {
             }
@@ -41,7 +43,7 @@ report 70100 "TP Customer Statistics"
             column(CountryRegionCode; "Country/Region Code")
             {
             }
-            column(ContactName; ContactName)
+            column(ContactName; Contact_Name)
             {
             }
             column(EMail; "E-Mail")
@@ -268,6 +270,7 @@ report 70100 "TP Customer Statistics"
 
             trigger OnPreDataItem()
             begin
+                Customer.SetRange("No.", CustomerNoFilter);  //Customer filter applied usting our own request page
                 // Apply filters before fetching
                 Customer.SetRange("Date Filter", Today - 365, Today);
                 Customer.SetRange("Qrtr Date Filter", Today - 90, Today);
@@ -281,6 +284,59 @@ report 70100 "TP Customer Statistics"
 
         }
 
+    }
+
+    requestpage  // Requestpage added for customer and contact filter - that shows the contacts of the selected customer only
+    {
+        layout
+        {
+            area(content)
+            {
+                group(Options)
+                {
+                    field(CustomerNoFilter; CustomerNoFilter)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Customer No.';
+                        tablerelation = Customer;
+                    }
+                    field(SelectedContactNo; SelectedContactNo)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Contact No.';
+                        trigger OnLookup(var Text: Text): Boolean
+                        var
+                            CustomerRec: Record Customer;
+                            ContactBusinessRelation: Record "Contact Business Relation";
+                            ContactForLookup: Record Contact;
+                            TempCustomer: Record Customer temporary;
+                            IsHandled: Boolean;
+                        begin
+                            CustomerRec.get(customerNoFilter);
+                            ContactForLookup.FilterGroup(2);
+                            if ContactBusinessRelation.FindByRelation(ContactBusinessRelation."Link to Table"::Customer, CustomerRec."No.") then begin
+                                if ContactForLookup.Get(ContactBusinessRelation."Contact No.") and (ContactForLookup.Type = ContactForLookup.Type::Person) then begin
+                                    ContactForLookup.SetRange(Type, ContactForLookup.Type::Person);
+                                    ContactForLookup.SetRange("No.", ContactBusinessRelation."Contact No.");
+                                end else
+                                    ContactForLookup.SetRange("Company No.", ContactBusinessRelation."Contact No.")
+                            end else
+                                ContactForLookup.SetRange("Company No.", '');
+
+                            if SelectedContactNo <> '' then
+                                if ContactForLookup.Get(SelectedContactNo) then;
+                            if Page.RunModal(0, ContactForLookup) = Action::LookupOK then begin
+                                TempCustomer.Copy(CustomerRec);
+                                // Find();
+                                // TransferFields(TempCustomer, false);
+                                SelectedContactNo := ContactForLookup."No.";
+                                Contact_Name := ContactForLookup.Name;
+                            end;
+                        end;
+                    }
+                }
+            }
+        }
     }
 
 
@@ -460,6 +516,9 @@ report 70100 "TP Customer Statistics"
         VE: Record "Value Entry";
         //  Result: Record "Top10DormantItems Buffer" temporary;
         IntCount: Integer;
+        CustomerNoFilter: Code[20];
+        SelectedContactNo: Code[20];
+        Contact_Name: Text[100];
 
     trigger OnInitReport()
     begin
@@ -469,6 +528,12 @@ report 70100 "TP Customer Statistics"
             DaysWithoutSales := 90;     // default dormancy threshold
         if TopN = 0 then
             TopN := 10;                 // default top N
+    end;
+
+    procedure setCustomerNoFilter(CustomerNo: Code[20])  //Customer no. filter for request page filter
+    begin
+        // Rec.SetRange("No.", CustomerNo);
+        CustomerNoFilter := CustomerNo;
     end;
 
 }

@@ -352,7 +352,7 @@ codeunit 70100 "EventSubscribers1"
                             //                 'Credit Memo ' + SalesCrMemoHeader2."No.",
                             //                 'Dear ' + Contact.Name + ',<br><br>Please find attached your credit note.<br><br>Regards,<br>Your Company');
                             SCHRecRef.GetTable(SalesCrMemoHeader2);
-                            Report.SaveAs(reportselection."Report ID", ReportParameters, ReportFormat::Html, OutStr1, SCHRecRef);
+                            // Report.SaveAs(reportselection."Report ID", ReportParameters, ReportFormat::Html, OutStr1, SCHRecRef);
                             TempBlob1.CreateInStream(InStr1);
                             InStr1.Readtext(EmailBody);
                             subject := 'Tigerpak - Sales Credit Memo ' + SalesCrMemoHeader2."No.";

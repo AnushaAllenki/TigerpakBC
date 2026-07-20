@@ -47,6 +47,7 @@ pageextension 70105 "Sales Quote Subform_Ext" extends "Sales Quote Subform"
                 ApplicationArea = All;
                 Caption = 'Total Annualized Quote Figure';
                 ToolTip = 'The Total Annualized Quote Figure field shows the total annualized quote figure for the sales quote line.';
+                visible = false;
             }
 
         }

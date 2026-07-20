@@ -59,6 +59,13 @@ pageextension 70118 "Sales Quote Ext" extends "Sales Quote"
                 ToolTip = 'Quote Outcome Text';
                 Editable = false;
             }
+            field("Annualized Quote Figure"; Rec."Annualized Quote Figure")
+            {
+                ApplicationArea = All;
+                Caption = 'Annualized Quote Figure';
+                ToolTip = 'Annualized Quote Figure';
+                Editable = false;
+            }
 
 
 

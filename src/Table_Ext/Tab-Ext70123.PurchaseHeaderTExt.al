@@ -141,6 +141,29 @@ tableextension 70123 "Purchase Header TExt" extends "Purchase Header"
 
 
         }
+        modify("Sell-to Customer No.")      // Receiving Address fields to be auto populated when Sell-to Customer No. is selected in Purchase Order - for PO report - Tommy
+        {
+            trigger OnAfterValidate()
+            begin
+                if "Sell-to Customer No." <> '' then begin
+                    "Receiving Address" := "Ship-to Address";
+                    "Receiving Address2" := "Ship-to Address 2";
+                    "Receiving City" := "Ship-to City";
+                    "Receiving Post Code" := "Ship-to Post Code";
+                    "Receiving County" := "Ship-to County";
+                    "Receiving Country/Region Code" := "Ship-to Country/Region Code";
+                    "ReceivingPhone No." := "Ship-to Phone No.";
+                end else begin
+                    "Receiving Address" := '';
+                    "Receiving Address2" := '';
+                    "Receiving City" := '';
+                    "Receiving Post Code" := '';
+                    "Receiving County" := '';
+                    "Receiving Country/Region Code" := '';
+                    "ReceivingPhone No." := '';
+                end;
+            end;
+        }
 
 
 

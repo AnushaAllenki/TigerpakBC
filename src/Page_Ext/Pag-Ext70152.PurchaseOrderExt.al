@@ -71,7 +71,10 @@ pageextension 70152 "Purchase Order Ext" extends "Purchase Order"
                 ApplicationArea = All;
                 caption = 'Receiving Phone No.';
             }
+
+
         }
+
     }
 }
 

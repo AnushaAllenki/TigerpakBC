@@ -110,10 +110,13 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             Editable = false;
 
         }
-        field(70350; "Annualized Quote Figure"; Decimal)
+        field(70350; "Annualized Quote Figure"; Decimal)   //Annualized QUote figure calculated as sum of annulized quote figur in line level - Tommy
         {
             Caption = 'Annualized Quote Figure';
-            DataClassification = ToBeClassified;
+            fieldClass = FlowField;
+            CalcFormula = Sum("Sales Line"."Annualized Quote Figure" where("Document Type" = field("Document Type"), "Document No." = field("No.")));
+            Editable = false;
+
         }
 
 

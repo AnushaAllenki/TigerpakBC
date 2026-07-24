@@ -22,6 +22,12 @@ pageextension 70105 "Sales Quote Subform_Ext" extends "Sales Quote Subform"
                 Caption = 'TP Unit Cost_New';
                 ToolTip = 'The TP Unit Cost_New field shows the new TP unit cost for the sales quote line.';
             }
+            field("Annualized Quote Figure"; Rec."Annualized Quote Figure")   //Anualized Quote Figure field added to line level in sales quote - Tommy
+            {
+                ApplicationArea = All;
+                Caption = 'Annualized Quote Figure';
+                ToolTip = 'The Annualized Quote Figure field shows the annualized quote figure for the sales quote line.';
+            }
 
             field("TP Profit%_New"; Rec."TP Profit%_New")
             {
@@ -42,16 +48,16 @@ pageextension 70105 "Sales Quote Subform_Ext" extends "Sales Quote Subform"
             Enabled = false;
         }
 
-        addlast(Control35)
-        {
-            field("Annualized Quote Figure"; Rec."Annualized Quote Figure")
-            {
-                ApplicationArea = All;
-                Caption = 'Annualized Quote Figure';
-                ToolTip = 'The Annualized Quote Figure field shows the annualized quote figure for the sales quote line.';
-            }
+        // addlast(Control35)
+        // {
+        //     field("Annualized Quote Figure"; Rec."Annualized Quote Figure")
+        //     {
+        //         ApplicationArea = All;
+        //         Caption = 'Annualized Quote Figure';
+        //         ToolTip = 'The Annualized Quote Figure field shows the annualized quote figure for the sales quote line.';
+        //     }
 
-        }
+        // }
         addafter("Location Code")    // adding backorder status field in sales quote subform - Tommy
         {
             field("Backorder Status"; Rec."Backorder Status")

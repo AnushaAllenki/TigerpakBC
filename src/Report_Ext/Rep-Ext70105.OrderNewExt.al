@@ -17,6 +17,7 @@ reportextension 70105 "Order New Ext" extends "Order New"
             column(Receiving_Address2; "Receiving Address2")
             {
                 Caption = 'Receiving Address2';
+
             }
             column(Receiving_City; "Receiving City")
             {

@@ -73,6 +73,9 @@ report 70101 "TP Customer Statistics "
             column(LastQrtrSalesAmount; "Last Qrtr Sales Amount")
             {
             }
+            column(Comments; Comments)
+            {
+            }
 
             dataitem("Price List Line"; "Price List Line")
             {
@@ -343,6 +346,11 @@ report 70101 "TP Customer Statistics "
                             end;
                         end;
                     }
+                    field(Comments; Comments)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Comments';
+                    }
                 }
             }
         }
@@ -528,6 +536,7 @@ report 70101 "TP Customer Statistics "
         CustomerNoFilter: Code[20];
         SelectedContactNo: Code[20];
         Contact_Name: Text[100];
+        Comments: Text[250];
 
     trigger OnInitReport()
     begin

@@ -52,7 +52,7 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             //     "Backorder Quantity" := "Quantity" - "Quantity Shipped";
             // end;
         }
-        field(70200; "Annualized Quote Figure"; Decimal)
+        field(70200; "Annualized Quote Figure"; Integer)
         {
             Caption = 'Annualized Quote Figure';
             DataClassification = ToBeClassified;

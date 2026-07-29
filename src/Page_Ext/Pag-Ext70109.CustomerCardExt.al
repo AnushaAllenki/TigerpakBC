@@ -60,13 +60,13 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
             field("Marketing Industry"; Rec."Marketing Industry")
             {
                 ApplicationArea = All;
-                Caption = 'Marketing Industry';
+                Caption = 'Customer Industry';   // Marketing Industry display name changed to Customer Industry - Tommy
                 visible = false;
             }
             field("Marketing Industry Text"; Rec."Marketing Industry Text") //This field s used for integration in dataverse with field Marketing Industry_TP in CRM
             {
                 ApplicationArea = All;
-                Caption = 'Marketing Industry Text';
+                Caption = 'Customer Industry Text';// Marketing Industry display name changed to Customer Industry - Tommy
             }
         }
         addafter("Xmas Trading Hours")

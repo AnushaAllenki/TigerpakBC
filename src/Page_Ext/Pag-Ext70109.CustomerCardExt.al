@@ -46,6 +46,15 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
                 end;
             end;
         }
+        modify(ABN)
+        {
+            ShowMandatory = true;   //ABN field made mandatory - Tommy
+            trigger OnAfterValidate()
+            begin
+                if Rec.ABN = '' then
+                    Error('ABN cannot be blank');
+            end;
+        }
         addafter("Format Region")
         {
             field(Reseller; Rec.Reseller)
@@ -127,4 +136,11 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
         REC.SETRANGE("Qrtr Date Filter", Today - 90, TODAY);
         REC.SETRANGE("Last Qrtr Date Filter", Today - 180, TODAY - 91);
     end;
+
+    trigger OnClosePage()   //ABN field made mandatory - Tommy
+    begin
+        if rec.ABN = '' then
+            Error('ABN cannot be blank');
+    end;
+
 }

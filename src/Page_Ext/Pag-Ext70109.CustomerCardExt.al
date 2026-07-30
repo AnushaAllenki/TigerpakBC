@@ -202,10 +202,11 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
         REC.SETRANGE("Last Qrtr Date Filter", Today - 180, TODAY - 91);
     end;
 
-    trigger OnClosePage()   //ABN field made mandatory - Tommy
+    trigger OnQueryClosePage(CloseAction: Action): Boolean   //ABN field made mandatory - Tommy
     begin
         if rec.ABN = '' then
             Error('ABN cannot be blank');
+        exit(true);
     end;
 
 

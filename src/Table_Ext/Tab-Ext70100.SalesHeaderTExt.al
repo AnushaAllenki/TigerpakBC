@@ -110,7 +110,7 @@ tableextension 70100 "Sales Header T-Ext" extends "Sales Header"
             Editable = false;
 
         }
-        field(70350; "Annualized Quote Figure"; Decimal)   //Annualized QUote figure calculated as sum of annulized quote figur in line level - Tommy
+        field(70350; "Annualized Quote Figure"; Integer)   //Annualized QUote figure calculated as sum of annulized quote figur in line level - Tommy
         {
             Caption = 'Annualized Quote Figure';
             fieldClass = FlowField;

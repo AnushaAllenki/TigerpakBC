@@ -68,7 +68,7 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
             DataClassification = ToBeClassified;
             OptionMembers = " ","Adhesive & Wrapping Solutions","Primary Packaging Materials","Shipping & Protective Solutions","Industrial & Workplace Essentials";
         }
-        field(70200; "Annualized Quote Figure"; Decimal)
+        field(70200; "Annualized Quote Figure"; Integer)
         {
             Caption = 'Annualized Quote Figure';
             DataClassification = ToBeClassified;

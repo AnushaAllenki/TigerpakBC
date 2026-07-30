@@ -27,6 +27,16 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
             }
         }
 
+        modify(ABN)
+        {
+            ShowMandatory = true;
+            trigger OnAfterValidate()
+            begin
+                if Rec.ABN = '' then
+                    Error('ABN cannot be blank');
+            end;
+        }
+
 
 
         modify("Account Status")
@@ -116,7 +126,10 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
 
         }
 
+
     }
+
+
     actions
     {
 
@@ -188,7 +201,17 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
         REC.SETRANGE("Qrtr Date Filter", Today - 90, TODAY);
         REC.SETRANGE("Last Qrtr Date Filter", Today - 180, TODAY - 91);
     end;
+
+    trigger OnClosePage()   //ABN field made mandatory - Tommy
+    begin
+        if rec.ABN = '' then
+            Error('ABN cannot be blank');
+    end;
+
+
 }
+
+
 
 // trigger OnAfterGetRecord()
 // var

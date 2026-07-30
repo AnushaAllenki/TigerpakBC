@@ -1008,7 +1008,11 @@ codeunit 70100 "EventSubscribers1"
         if (CopyStr(Customer."Customer Price Group", 1, 3) = 'SBG') then begin
             Message('This is Part of SYNERGY BUYERS GROUP');
         end;
+
+
     end;
+
+
 
 
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", OnAfterValidateEvent, 'Sell-to Customer No.', false, false)]  // Balance and Credit limit warning on sales order- Tommy

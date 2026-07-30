@@ -106,6 +106,8 @@ tableextension 70102 Customer_TExt extends Customer
                 Rec."E-Mail" := Contact."E-Mail";
             end;
         end;
+
+
     end;
 
     trigger OnModify()
@@ -113,6 +115,7 @@ tableextension 70102 Customer_TExt extends Customer
         EventSub: Codeunit "EventSubscribers1";
     begin
         EventSub.CalcGrosMarginLast12Months(Rec."No.");
+
     end;
 
 

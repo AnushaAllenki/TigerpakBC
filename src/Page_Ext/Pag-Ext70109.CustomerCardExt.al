@@ -46,15 +46,15 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
                 end;
             end;
         }
-        modify(ABN)
-        {
-            ShowMandatory = true;   //ABN field made mandatory - Tommy
-            trigger OnAfterValidate()
-            begin
-                if Rec.ABN = '' then
-                    Error('ABN cannot be blank');
-            end;
-        }
+        // modify(ABN)
+        // {
+        //     ShowMandatory = true;   //ABN field made mandatory - Tommy
+        //     trigger OnAfterValidate()
+        //     begin
+        //         if Rec.ABN = '' then
+        //             Error('ABN cannot be blank');
+        //     end;
+        // }
         addafter("Format Region")
         {
             field(Reseller; Rec.Reseller)
@@ -76,6 +76,12 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
             {
                 ApplicationArea = All;
                 Caption = 'Customer Industry Text';// Marketing Industry display name changed to Customer Industry - Tommy
+            }
+            field("Company Size"; Rec."Company Size")
+            {
+                ApplicationArea = All;
+                Caption = 'Company Size';
+                Editable = false;
             }
         }
         addafter("Xmas Trading Hours")
@@ -137,12 +143,12 @@ pageextension 70109 "Customer Card_Ext" extends "Customer Card"
         REC.SETRANGE("Last Qrtr Date Filter", Today - 180, TODAY - 91);
     end;
 
-    trigger OnQueryClosePage(CloseAction: Action): Boolean   //ABN field made mandatory - Tommy
-    begin
-        if rec.ABN = '' then
-            Error('ABN cannot be blank');
-        exit(true);
-    end;
+    // trigger OnQueryClosePage(CloseAction: Action): Boolean   //ABN field made mandatory - Tommy
+    // begin
+    //     if rec.ABN = '' then
+    //         Error('ABN cannot be blank');
+    //     exit(true);
+    // end;
 
 
 }

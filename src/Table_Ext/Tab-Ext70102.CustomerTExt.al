@@ -76,6 +76,13 @@ tableextension 70102 Customer_TExt extends Customer
             FieldClass = FlowFilter;
         }
 
+        field(70120; "Company Size"; Text[20])
+        {
+            Caption = 'Company Size';
+            Editable = false;
+        }
+
+
 
 
 

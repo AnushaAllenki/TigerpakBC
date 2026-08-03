@@ -13,5 +13,12 @@ tableextension 70127 "CRM AccountExt" extends "CRM Account"
             Description = '';
             Caption = 'Marketing Industry';
         }
+        field(70110; "Company Size_Text"; Text[20])
+        {
+            ExternalName = 'tp_companysize_text';
+            ExternalType = 'String';
+            Description = '';
+            Caption = 'Company Size';
+        }
     }
 }

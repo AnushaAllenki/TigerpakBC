@@ -152,6 +152,17 @@ pageextension
             }
         }
 
+        addbefore("US-Agreed Usage")
+        {
+            field("Customer Code"; Rec."Customer Code")
+            {
+                ApplicationArea = All;
+                Caption = 'Customer Code';
+                ToolTip = 'Customer Code';
+
+            }
+        }
+
         // modify("Purchase MOQ")
         // {
         //     trigger OnAfterValidate()

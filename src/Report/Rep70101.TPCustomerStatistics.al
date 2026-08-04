@@ -49,6 +49,9 @@ report 70101 "TP Customer Statistics "
             column(ContactName; Contact_Name)
             {
             }
+            column(ContactEmail; Contact_Email)
+            {
+            }
             column(Salesperson_Code; "Salesperson Code")
             {
             }
@@ -71,6 +74,9 @@ report 70101 "TP Customer Statistics "
             {
             }
             column(LastQrtrSalesAmount; "Last Qrtr Sales Amount")
+            {
+            }
+            column(Lastappointmentdate; "Last Appointment Date ")
             {
             }
             column(Comment1; Comment1)
@@ -356,6 +362,7 @@ report 70101 "TP Customer Statistics "
                                 // TransferFields(TempCustomer, false);
                                 SelectedContactNo := ContactForLookup."No.";
                                 Contact_Name := ContactForLookup.Name;
+                                Contact_Email := ContactForLookup."E-Mail";
                             end;
                         end;
                     }
@@ -569,6 +576,7 @@ report 70101 "TP Customer Statistics "
         CustomerNoFilter: Code[20];
         SelectedContactNo: Code[20];
         Contact_Name: Text[100];
+        Contact_Email: Text[100];
         Comment1: Text[150];
         Comment2: Text[150];
         Comment3: Text[150];

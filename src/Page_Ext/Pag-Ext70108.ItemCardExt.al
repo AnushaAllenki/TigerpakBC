@@ -97,6 +97,13 @@ pageextension
             {
                 Caption = 'Related';
 
+                field("Customer No."; Rec."Customer No.")
+                {
+                    Caption = 'Customer No.';
+                    ApplicationArea = All;
+                    TableRelation = Customer."No.";
+                }
+
                 field("US-Agreed Usage"; Rec."US-Agreed Usage")
                 {
                     Caption = 'US-Agreed Usage';

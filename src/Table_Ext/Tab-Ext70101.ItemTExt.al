@@ -195,6 +195,13 @@ tableextension 70101 "Item_T-Ext" extends Item
 
         }
 
+        field(70117; "Customer No."; Code[20])
+        {
+            Caption = 'Customer No.';
+            DataClassification = ToBeClassified;
+            TableRelation = Customer."No.";
+        }
+
     }
     trigger OnInsert()
     var

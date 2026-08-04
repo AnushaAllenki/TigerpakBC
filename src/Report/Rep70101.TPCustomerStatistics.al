@@ -73,9 +73,22 @@ report 70101 "TP Customer Statistics "
             column(LastQrtrSalesAmount; "Last Qrtr Sales Amount")
             {
             }
-            column(Comments; Comments)
+            column(Comment1; Comment1)
             {
             }
+            column(Comment2; Comment2)
+            {
+            }
+            column(Comment3; Comment3)
+            {
+            }
+            column(Comment4; Comment4)
+            {
+            }
+            column(Comment5; Comment5)
+            {
+            }
+
 
             dataitem("Price List Line"; "Price List Line")
             {
@@ -346,10 +359,30 @@ report 70101 "TP Customer Statistics "
                             end;
                         end;
                     }
-                    field(Comments; Comments)
+                    field(Comment1; Comment1)
                     {
                         ApplicationArea = All;
-                        Caption = 'Comments';
+                        Caption = 'Comment1';
+                    }
+                    field(Comment2; Comment2)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Comment2';
+                    }
+                    field(Comment3; Comment3)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Comment3';
+                    }
+                    field(Comment4; Comment4)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Comment4';
+                    }
+                    field(Comment5; Comment5)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Comment5';
                     }
                 }
             }
@@ -536,7 +569,13 @@ report 70101 "TP Customer Statistics "
         CustomerNoFilter: Code[20];
         SelectedContactNo: Code[20];
         Contact_Name: Text[100];
-        Comments: Text[250];
+        Comment1: Text[150];
+        Comment2: Text[150];
+        Comment3: Text[150];
+        Comment4: Text[150];
+        Comment5: Text[150];
+        Comments: Text[1000];
+
 
     trigger OnInitReport()
     begin

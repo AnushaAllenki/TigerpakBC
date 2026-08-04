@@ -44,6 +44,14 @@ pageextension 70118 "Sales Quote Ext" extends "Sales Quote"
                 Editable = true;
 
             }
+            field("Annualized Quote QTY"; Rec."Annualized Quote Figure")
+            {
+                ApplicationArea = All;
+                Caption = 'Annualized Quote QTY';
+                ToolTip = 'Annualized Quote QTY';
+                Editable = true;
+
+            }
 
         }
 

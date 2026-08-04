@@ -97,9 +97,9 @@ pageextension
             {
                 Caption = 'Related';
 
-                field("Customer No."; Rec."Customer No.")
+                field("US-Customer No."; Rec."Customer No.")
                 {
-                    Caption = 'Customer No.';
+                    Caption = 'US-Customer No.';
                     ApplicationArea = All;
                     TableRelation = Customer."No.";
                 }

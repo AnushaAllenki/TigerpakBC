@@ -93,6 +93,13 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
 
         }
+        modify("TP Profit%_New")  //When Profit% is mofified then Unit Price will recalculated based on the Profit% and TP Unit Cost_New - Tommy
+        {
+            trigger OnAfterValidate()
+            begin
+                "Unit Price" := "TP Unit Cost_New" + ("TP Unit Cost_New" * "TP Profit%_New" / 100);
+            end;
+        }
 
 
         modify("Unit of Measure Code")
@@ -116,6 +123,7 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
                     Validate("TP Unit Cost_New", rec."Unit Cost");
             end;
         }
+
 
         modify("Location Code")
         {

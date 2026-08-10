@@ -46,6 +46,24 @@ report 70100 "TP Customer Statistics"
             column(ContactName; Contact_Name)
             {
             }
+            column(ContactEmail; Contact_Email)
+            {
+            }
+            column(Comment1; Comment1)
+            {
+            }
+            column(Comment2; Comment2)
+            {
+            }
+            column(Comment3; Comment3)
+            {
+            }
+            column(Comment4; Comment4)
+            {
+            }
+            column(Comment5; Comment5)
+            {
+            }
             column(EMail; "E-Mail")
             {
             }
@@ -65,6 +83,9 @@ report 70100 "TP Customer Statistics"
             {
             }
             column(LastQrtrSalesAmount; "Last Qrtr Sales Amount")
+            {
+            }
+            column(Lastappointmentdate; "Last Appointment Date ")
             {
             }
             column(Customer_Grade; "Customer Grade")
@@ -331,8 +352,35 @@ report 70100 "TP Customer Statistics"
                                 // TransferFields(TempCustomer, false);
                                 SelectedContactNo := ContactForLookup."No.";
                                 Contact_Name := ContactForLookup.Name;
+                                Contact_Email := ContactForLookup."E-Mail";
                             end;
                         end;
+                    }
+
+                    field(Comment1; Comment1)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Comment1';
+                    }
+                    field(Comment2; Comment2)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Comment2';
+                    }
+                    field(Comment3; Comment3)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Comment3';
+                    }
+                    field(Comment4; Comment4)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Comment4';
+                    }
+                    field(Comment5; Comment5)
+                    {
+                        ApplicationArea = All;
+                        Caption = 'Comment5';
                     }
                 }
             }
@@ -519,6 +567,13 @@ report 70100 "TP Customer Statistics"
         CustomerNoFilter: Code[20];
         SelectedContactNo: Code[20];
         Contact_Name: Text[100];
+        Contact_Email: Text[100];
+        Comment1: Text[150];
+        Comment2: Text[150];
+        Comment3: Text[150];
+        Comment4: Text[150];
+        Comment5: Text[150];
+        Comments: Text[1000];
 
     trigger OnInitReport()
     begin

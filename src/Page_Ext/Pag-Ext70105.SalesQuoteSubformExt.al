@@ -31,6 +31,12 @@ pageextension 70105 "Sales Quote Subform_Ext" extends "Sales Quote Subform"
                 Caption = 'TP Profit%_New';
                 ToolTip = 'The TP Profit%_New field shows the new TP profit percentage for the sales quote line.';
             }
+            field("GP%"; Rec."GP%")
+            {
+                ApplicationArea = All;
+                Caption = 'GP%';
+                ToolTip = 'The GP% field shows the gross profit percentage for the sales quote line.';
+            }
             field("Annualized Quote Figure"; Rec."Annualized Quote Figure")
             {
                 ApplicationArea = All;

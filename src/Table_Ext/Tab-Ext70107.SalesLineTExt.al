@@ -93,13 +93,38 @@ tableextension 70107 "Sales Line TExt" extends "Sales Line"
 
 
         }
-        modify("TP Profit%_New")  //When Profit% is mofified then Unit Price will recalculated based on the Profit% and TP Unit Cost_New - Tommy
+
+
+        field(70202; "GP%"; Decimal)
         {
-            trigger OnAfterValidate()
+            Caption = 'GP%';
+            DataClassification = ToBeClassified;
+
+            trigger OnValidate()
+            var
+                NewUnitPrice: Decimal;
             begin
-                "Unit Price" := "TP Unit Cost_New" + ("TP Unit Cost_New" * "TP Profit%_New" / 100);
+                NewUnitPrice := "TP Unit Cost_New" + ("TP Unit Cost_New" * "GP%" / 100);
+                Validate("Unit Price", NewUnitPrice);
+
             end;
+
+
+
         }
+
+
+        // modify("TP Profit%_New")  //When Profit% is mofified then Unit Price will recalculated based on the Profit% and TP Unit Cost_New - Tommy
+        // {
+        //     trigger OnAfterValidate()
+        //     var
+        //         NewUnitPrice: Decimal;
+        //     begin
+        //         NewUnitPrice := "TP Unit Cost_New" + ("TP Unit Cost_New" * "TP Profit%_New" / 100);
+        //         Validate("Unit Price", NewUnitPrice);
+        //         //Rec.CalcFields("Line Amount", "Line Discount Amount", "Amount", "Amount Including VAT");
+        //     end;
+        // }
 
 
         modify("Unit of Measure Code")

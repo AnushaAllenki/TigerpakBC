@@ -5724,6 +5724,30 @@ tkdLAGh7MbZvvTW03t/Ha2FuQ8FrLNGJI7iV9LFAc8wSKg0PnxyY+k9DNkG+i70U91pKfbxDce0af6P2
         <Field Name="XmasTradingHours">
           <DataField>XmasTradingHours</DataField>
         </Field>
+        <Field Name="BillToName">
+          <DataField>BillToName</DataField>
+        </Field>
+        <Field Name="BillToAddress">
+          <DataField>BillToAddress</DataField>
+        </Field>
+        <Field Name="BillToAddress2">
+          <DataField>BillToAddress2</DataField>
+        </Field>
+        <Field Name="BillToCity">
+          <DataField>BillToCity</DataField>
+        </Field>
+        <Field Name="BillToPostCode">
+          <DataField>BillToPostCode</DataField>
+        </Field>
+        <Field Name="BillToCountryRegionCode">
+          <DataField>BillToCountryRegionCode</DataField>
+        </Field>
+        <Field Name="BillToCounty">
+          <DataField>BillToCounty</DataField>
+        </Field>
+        <Field Name="BillToContact">
+          <DataField>BillToContact</DataField>
+        </Field>
       </Fields>
       <Query>
         <DataSourceName>DataSource</DataSourceName>

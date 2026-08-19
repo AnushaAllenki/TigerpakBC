@@ -12,6 +12,17 @@ reportextension 70104 "Tax - Invoice Ext" extends "Tax - Invoice"
 
             }
 
+            column(BillToName; Header."Bill-to Name") { }
+
+            column(BillToAddress; Header."Bill-to Address") { }
+            column(BillToAddress2; Header."Bill-to Address 2") { }
+            column(BillToCity; Header."Bill-to City") { }
+            column(BillToPostCode; Header."Bill-to Post Code") { }
+            column(BillToCountryRegionCode; Header."Bill-to Country/Region Code") { }
+            column(BillToCounty; Header."Bill-to County") { }
+            column(BillToContact; Header."Bill-to Contact") { }
+
+
         }
         modify(Header)
         {
